@@ -1,0 +1,15 @@
+{
+  "originHash" : "d0d8a94bd844cf7314a3f112942217b2c0896f9f46fe638e2f86edf408609e17",
+  "pins" : [
+    {
+      "identity" : "swift-nothing-ear",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/bestK1ngArthur/swift-nothing-ear.git",
+      "state" : {
+        "revision" : "6de410acc5ffc93f027260086d6df4e71230dd2d",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}
