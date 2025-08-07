@@ -18,7 +18,7 @@ Download [DMG installer](https://github.com/bestK1ngArthur/nothing-bar/releases/
 <img width="400" alt="Screenshot" src="Screenshots/screenshot-bar.png" />
 
 ### Settings
-<img width="400" alt="Screenshot" src="Screenshots/screenshot-settings.png" />
+<img width="500" alt="Screenshot" src="Screenshots/screenshot-settings.png" />
 
 ## Supported Devices
 
