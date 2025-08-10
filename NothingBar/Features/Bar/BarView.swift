@@ -18,7 +18,9 @@ struct BarView: View {
 
     var body: some View {
         Group {
-            if deviceState.isConnected {
+            if !deviceState.hasBluetoothPermissions {
+                BarNoPermissionsView()
+            } else if deviceState.isConnected {
                 ScrollView {
                     VStack(spacing: 16) {
                         BarHeaderView()

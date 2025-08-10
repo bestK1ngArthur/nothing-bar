@@ -62,10 +62,25 @@ class AppData {
                     self?.deviceState.lowLatency = settings.lowLatency
                     print("DeviceSettings: \(String(describing: settings))")
                 },
-                onError: { error in
+                onError: { [weak self] error in
+                    self?.handleError(error)
                     print("Error: \(error)")
                 }
             )
         )
+    }
+
+    private func handleError(_ error: Error) {
+        guard let connectionError = error as? NothingEar.ConnectionError else {
+            return
+        }
+
+        switch connectionError {
+            case .bluetoothUnavailable:
+                print("Bluetooth unavailable from SwiftNothingEar")
+                deviceState.hasBluetoothPermissions = false
+            default:
+                print("Other connection error: \(connectionError)")
+        }
     }
 }

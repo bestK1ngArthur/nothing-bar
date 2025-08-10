@@ -22,12 +22,10 @@ struct BarNoDeviceView: View {
         VStack(spacing: 20) {
             Spacer()
 
-            // Headphones icon - optimized size for MenuBarExtra
             Image(systemName: "headphones")
                 .font(.system(size: 36, weight: .light))
                 .foregroundColor(.secondary)
 
-            // Main content
             VStack(spacing: 12) {
                 Text("No Headphones Found")
                     .font(.title3)
@@ -41,7 +39,6 @@ struct BarNoDeviceView: View {
                     .lineSpacing(2)
             }
 
-            // Compact Bluetooth Settings button for MenuBarExtra
             Button(action: {
                 // Open Bluetooth settings
                 NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.bluetooth")!)
