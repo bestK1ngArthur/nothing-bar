@@ -32,7 +32,8 @@ struct BarNoDeviceView: View {
                     .fontWeight(.medium)
                     .foregroundColor(.primary)
 
-                Text("Connect your Nothing headphones using\nBluetooth settings on your Mac")
+                Text("Connect your Nothing headphones using Bluetooth settings on your Mac")
+                    .fixedSize(horizontal: false, vertical: true)
                     .font(.callout)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
@@ -60,7 +61,6 @@ struct BarNoDeviceView: View {
 
             Spacer()
 
-            // Compact search indicator for MenuBarExtra
             HStack(spacing: 6) {
                 ProgressView()
                     .scaleEffect(0.6)
@@ -69,10 +69,12 @@ struct BarNoDeviceView: View {
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.horizontal, 20)
-        .padding(.vertical, 16)
+        .overlay(alignment: .topTrailing) {
+            BarSettingsButton()
+        }
+        .padding(16)
         .onReceive(timer) { _ in
             nothing.checkAndConnectToExistingDevices()
         }

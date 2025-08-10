@@ -25,6 +25,7 @@ struct BarNoPermissionsView: View {
                     .foregroundColor(.primary)
 
                 Text("Please grant Bluetooth permissions in System Settings > Privacy & Security.\n\nIf bluetooth is off, turn it on.")
+                    .fixedSize(horizontal: false, vertical: true)
                     .font(.callout)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
@@ -55,7 +56,9 @@ struct BarNoPermissionsView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.horizontal, 20)
-        .padding(.vertical, 16)
+        .overlay(alignment: .topTrailing) {
+            BarSettingsButton()
+        }
+        .padding(16)
     }
 }

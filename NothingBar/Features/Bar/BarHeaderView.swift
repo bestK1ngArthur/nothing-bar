@@ -12,7 +12,6 @@ import AppKit
 struct BarHeaderView: View {
 
     @Environment(AppData.self) var appData
-    @Environment(\.openSettings) private var openSettings
 
     private var deviceState: DeviceState {
         appData.deviceState
@@ -69,30 +68,7 @@ struct BarHeaderView: View {
 
             Spacer()
 
-            Button {
-                openFocusedSettings()
-            } label: {
-                Image(systemName: "gearshape.fill")
-                    .font(.system(size: 14))
-                    .foregroundColor(.primary)
-            }
-            .buttonStyle(HoverButtonStyle())
-            .help("Settings")
-            .contextMenu {
-                Button {
-                    openFocusedSettings()
-                } label: {
-                    Text("Open Settings")
-                    Image(systemName: "gearshape.fill")
-                }
-
-                Button(role: .destructive) {
-                    quitApp()
-                } label: {
-                    Text("Quit App")
-                    Image(systemName: "xmark.circle.fill")
-                }
-            }
+            BarSettingsButton()
         }
         .padding(.horizontal, 4)
     }
@@ -138,21 +114,6 @@ struct BarHeaderView: View {
         }
     }
 
-    private func openFocusedSettings() {
-        openSettings()
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            NSApp.activate(ignoringOtherApps: true)
-            if let settingsWindow = NSApp.windows.first(where: { $0.title == "Settings" }) {
-                settingsWindow.makeKeyAndOrderFront(nil)
-                settingsWindow.orderFrontRegardless()
-            }
-        }
-    }
-
-    private func quitApp() {
-        NSApp.terminate(nil)
-    }
 }
 
 private extension NothingEar.Model {
@@ -181,33 +142,6 @@ private extension NothingEar.Model {
                 nil
             case .cmfNeckbandPro:
                 nil
-        }
-    }
-}
-
-private struct HoverButtonStyle: ButtonStyle {
-
-    @State private var isHovering = false
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .padding(4)
-            .background(
-                Circle()
-                    .fill(backgroundColor(configuration: configuration))
-            )
-            .onHover { hovering in
-                isHovering = hovering
-            }
-    }
-
-    private func backgroundColor(configuration: Configuration) -> Color {
-        if configuration.isPressed {
-            .secondary.opacity(0.4)
-        } else if isHovering {
-            .secondary.opacity(0.2)
-        } else {
-            .clear
         }
     }
 }
