@@ -31,10 +31,8 @@ struct BarSpatialAudioView: View {
                 ForEach(SpatialAudioMode.allCases, id: \.self) { mode in
                     Button(action: {
                         deviceState.spatialAudioMode = mode
-                        // Интеграция с NothingEar API для Spatial Audio
-                        // Метод setSpatialAudioMode не доступен в текущей версии библиотеки
-                        print("Spatial Audio Mode changed to: \(mode.rawValue)")
-                        // TODO: Реализовать когда API будет доступно
+                        AppLogger.ui.uiSettingChanged("Spatial Audio Mode", value: mode.rawValue)
+                        // TODO: Implement when api will be ready
                     }) {
                         VStack(spacing: 6) {
                             ZStack {
@@ -56,9 +54,6 @@ struct BarSpatialAudioView: View {
                         .frame(width: 66)
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .onHover { _ in
-                        // Добавляем hover эффект
-                    }
                 }
             }
         }

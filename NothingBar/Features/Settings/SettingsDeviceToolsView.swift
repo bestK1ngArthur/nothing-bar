@@ -39,7 +39,7 @@ struct SettingsDeviceToolsView: View {
             Toggle("", isOn: $bindableAppData.deviceState.lowLatency)
                 .onChange(of: deviceState.lowLatency) { _, isEnabled in
                     nothing.setLowLatency(isEnabled)
-                    print("Low Latency Mode changed to: \(isEnabled)")
+                    AppLogger.settings.uiSettingChanged("Low Latency Mode", value: isEnabled)
                 }
         }
 
@@ -59,7 +59,7 @@ struct SettingsDeviceToolsView: View {
             Toggle("", isOn: $bindableAppData.deviceState.inEarDetection)
                 .onChange(of: deviceState.inEarDetection) { _, isEnabled in
                     nothing.setInEarDetection(isEnabled)
-                    print("Over-ear Detection changed to: \(isEnabled)")
+                    AppLogger.settings.uiSettingChanged("Over-ear Detection", value: isEnabled)
                 }
         }
     }

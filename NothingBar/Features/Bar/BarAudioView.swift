@@ -68,7 +68,7 @@ struct BarAudioView: View {
                         nothing.setEnhancedBass(settings)
                         deviceState.enhancedBass = settings
 
-                        print("Bass Enhancement changed to: \(isEnabled)")
+                        AppLogger.audio.uiSettingChanged("Bass Enhancement", value: isEnabled)
 
                     }
                 )

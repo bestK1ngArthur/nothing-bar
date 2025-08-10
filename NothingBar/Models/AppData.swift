@@ -20,7 +20,7 @@ class AppData {
         self.nothing = NothingEar.Device(
             .init(
                 onDiscover: { device in
-                    print("Discovered device: \(device)")
+                    AppLogger.device.deviceDiscovered("\(device)")
                 },
                 onConnect: { [weak self] result in
                     self?.deviceState.isConnected = true
@@ -31,11 +31,11 @@ class AppData {
                         self?.deviceState.bluetoothAddress = deviceInfo.bluetoothAddress ?? "Unknown"
                         self?.deviceState.firmwareVersion = deviceInfo.firmwareVersion ?? "Unknown"
                     }
-                    print("Connected: \(result)")
+                    AppLogger.connection.connectionChanged(true, result: "\(result)")
                 },
                 onDisconnect: { [weak self] result in
                     self?.deviceState.isConnected = false
-                    print("Disconnected: \(result)")
+                    AppLogger.connection.connectionChanged(false, result: "\(result)")
                 },
                 onUpdateBattery: { [weak self] battery in
                     self?.deviceState.battery = battery
@@ -45,26 +45,26 @@ class AppData {
                         self?.deviceState.ancMode = ancMode
 
                     }
-                    print("ANCMode: \(ancMode?.displayName))")
+                    AppLogger.device.deviceSettingChanged("ANCMode", value: ancMode?.displayName ?? "nil")
                 },
                 onUpdateEnhancedBass: { [weak self] enhancedBass in
                     self?.deviceState.enhancedBass = enhancedBass
-                    print("EnhancedBass: \(enhancedBass?.isEnabled))")
+                    AppLogger.device.deviceSettingChanged("EnhancedBass", value: "\(enhancedBass?.isEnabled ?? false)")
                 },
                 onUpdateEQPreset: { [weak self] eqPreset in
                     if let eqPreset {
                         self?.deviceState.eqPreset = eqPreset
                     }
-                    print("EQPreset: \(eqPreset?.displayName)")
+                    AppLogger.device.deviceSettingChanged("EQPreset", value: eqPreset?.displayName ?? "nil")
                 },
                 onUpdateDeviceSettings: { [weak self] settings in
                     self?.deviceState.inEarDetection = settings.inEarDetection
                     self?.deviceState.lowLatency = settings.lowLatency
-                    print("DeviceSettings: \(String(describing: settings))")
+                    AppLogger.device.deviceSettingChanged("DeviceSettings", value: "\(String(describing: settings))")
                 },
                 onError: { [weak self] error in
                     self?.handleError(error)
-                    print("Error: \(error)")
+                    AppLogger.main.logError("\(error)")
                 }
             )
         )
@@ -77,10 +77,10 @@ class AppData {
 
         switch connectionError {
             case .bluetoothUnavailable:
-                print("Bluetooth unavailable from SwiftNothingEar")
+                AppLogger.connection.connectionError("Bluetooth unavailable from SwiftNothingEar")
                 deviceState.hasBluetoothPermissions = false
             default:
-                print("Other connection error: \(connectionError)")
+                AppLogger.connection.connectionError("Other connection error: \(connectionError)")
         }
     }
 }
