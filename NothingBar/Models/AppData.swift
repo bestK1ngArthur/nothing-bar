@@ -26,6 +26,7 @@ class AppData {
                     self?.deviceState.isConnected = true
 
                     if case let .success(deviceInfo) = result {
+                        self?.deviceState.hasBluetoothPermissions = true
                         self?.deviceState.model = deviceInfo.model
                         self?.deviceState.serialNumber = deviceInfo.serialNumber
                         self?.deviceState.bluetoothAddress = deviceInfo.bluetoothAddress ?? "Unknown"

@@ -12,12 +12,6 @@ struct BarNoDeviceView: View {
 
     @Environment(AppData.self) var appData
 
-    private var nothing: NothingEar.Device {
-        appData.nothing
-    }
-
-    private let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
-
     var body: some View {
         VStack(spacing: 20) {
             Spacer()
@@ -75,8 +69,5 @@ struct BarNoDeviceView: View {
             BarSettingsButton()
         }
         .padding(16)
-        .onReceive(timer) { _ in
-            nothing.checkAndConnectToExistingDevices()
-        }
     }
 }
