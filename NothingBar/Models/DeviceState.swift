@@ -14,7 +14,7 @@ import SwiftNothingEar
 class DeviceState {
 
     var isConnected: Bool = false
-    var hasBluetoothPermissions: Bool = true
+    var bluetoothError: NothingEar.ConnectionError.Bluetooth?
     var model: NothingEar.Model = .ear
     var firmwareVersion: String = "Unknown"
     var serialNumber: String = "Unknown"

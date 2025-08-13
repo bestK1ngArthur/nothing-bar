@@ -26,7 +26,7 @@ class AppData {
                     self?.deviceState.isConnected = true
 
                     if case let .success(deviceInfo) = result {
-                        self?.deviceState.hasBluetoothPermissions = true
+                        self?.deviceState.bluetoothError = nil
                         self?.deviceState.model = deviceInfo.model
                         self?.deviceState.serialNumber = deviceInfo.serialNumber
                         self?.deviceState.bluetoothAddress = deviceInfo.bluetoothAddress ?? "Unknown"
@@ -77,10 +77,11 @@ class AppData {
         }
 
         switch connectionError {
-            case .bluetoothUnavailable:
-                AppLogger.connection.connectionError("Bluetooth unavailable from SwiftNothingEar")
-                deviceState.hasBluetoothPermissions = false
+            case .bluetooth(let bluetoothError):
+                deviceState.bluetoothError = bluetoothError
+                AppLogger.connection.connectionError("Bluetooth error: \(bluetoothError)")
             default:
+                deviceState.bluetoothError = nil
                 AppLogger.connection.connectionError("Other connection error: \(connectionError)")
         }
     }

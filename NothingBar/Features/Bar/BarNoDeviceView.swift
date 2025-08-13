@@ -59,7 +59,7 @@ struct BarNoDeviceView: View {
                 ProgressView()
                     .scaleEffect(0.6)
                     .controlSize(.small)
-                Text("Searching for devices...")
+                Text("Waiting for devices...")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }

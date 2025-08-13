@@ -18,7 +18,7 @@ struct BarView: View {
 
     var body: some View {
         Group {
-            if !deviceState.hasBluetoothPermissions {
+            if let bluetoothError = appData.deviceState.bluetoothError, bluetoothError == .unauthorized {
                 BarNoPermissionsView()
             } else if deviceState.isConnected {
                 ScrollView {
