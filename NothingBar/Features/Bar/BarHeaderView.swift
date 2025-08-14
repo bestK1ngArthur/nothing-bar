@@ -19,12 +19,9 @@ struct BarHeaderView: View {
 
     var body: some View {
         HStack {
-            if let imageName = deviceState.model.imageName {
-                Image(imageName)
-                    .resizable()
-                    .interpolation(.high)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 32, height: 32)
+            if let deviceImage = deviceState.model.deviceImage {
+                DeviceImageView(deviceImage: deviceImage)
+                    .frame(height: 32)
             } else {
                 Image(systemName: "headphones")
                     .font(.system(size: 24))
@@ -45,20 +42,19 @@ struct BarHeaderView: View {
                 if let battery = deviceState.battery {
                     switch battery {
                         case .budsWithCase(let `case`, let leftBud, let rightBud):
-                            HStack {
-                                Text("Case:")
+                            HStack(spacing: 4) {
+                                Text("C")
                                 batteryView(for: `case`)
+                                    .padding(.trailing, 6)
 
-                                Spacer()
-
-                                Text("Left:")
+                                Text("L")
                                 batteryView(for: leftBud)
+                                    .padding(.trailing, 6)
 
-                                Spacer()
-
-                                Text("Right:")
+                                Text("R")
                                 batteryView(for: rightBud)
                             }
+                            .font(.caption2)
 
                         case .single(let battery):
                             batteryView(for: battery)
@@ -114,34 +110,4 @@ struct BarHeaderView: View {
         }
     }
 
-}
-
-private extension NothingEar.Model {
-
-    var imageName: String? {
-        switch self {
-            case .ear1:
-                nil
-            case .ear2:
-                nil
-            case .earStick:
-                nil
-            case .earOpen:
-                nil
-            case .ear:
-                nil
-            case .earA:
-                nil
-            case .headphone1:
-                "headphone_1_grey"
-            case .cmfBudsPro:
-                nil
-            case .cmfBuds:
-                nil
-            case .cmfBudsPro2:
-                nil
-            case .cmfNeckbandPro:
-                nil
-        }
-    }
 }

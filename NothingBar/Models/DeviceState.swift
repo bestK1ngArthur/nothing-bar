@@ -15,7 +15,7 @@ class DeviceState {
 
     var isConnected: Bool = false
     var bluetoothError: NothingEar.ConnectionError.Bluetooth?
-    var model: NothingEar.Model = .ear
+    var model: NothingEar.Model = .ear(.black)
     var firmwareVersion: String = "Unknown"
     var serialNumber: String = "Unknown"
     var bluetoothAddress: String = "Unknown"

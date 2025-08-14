@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "cmf_buds_pro_white_left@3x.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

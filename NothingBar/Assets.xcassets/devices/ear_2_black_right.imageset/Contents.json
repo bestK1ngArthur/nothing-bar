@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ear_2_black_right@3x.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

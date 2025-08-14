@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "cmf_neckband_pro_white.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

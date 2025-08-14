@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "cmf_buds_pro_2_white_right.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "cmf_buds_pro_2_white_right@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "cmf_buds_pro_2_white_right@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

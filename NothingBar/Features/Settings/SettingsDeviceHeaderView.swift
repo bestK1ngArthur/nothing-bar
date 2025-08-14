@@ -18,12 +18,9 @@ struct SettingsDeviceHeaderView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            if let imageName = deviceState.model.imageName {
-                Image(imageName)
-                    .resizable()
-                    .interpolation(.high)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 64, height: 64)
+            if let deviceImage = deviceState.model.deviceImage {
+                DeviceImageView(deviceImage: deviceImage)
+                    .frame(height: 64)
             } else {
                 Image(systemName: "headphones")
                     .font(.system(size: 48))
@@ -48,35 +45,5 @@ struct SettingsDeviceHeaderView: View {
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .padding(.vertical, 16)
-    }
-}
-
-private extension NothingEar.Model {
-
-    var imageName: String? {
-        switch self {
-            case .ear1:
-                nil
-            case .ear2:
-                nil
-            case .earStick:
-                nil
-            case .earOpen:
-                nil
-            case .ear:
-                nil
-            case .earA:
-                nil
-            case .headphone1:
-                "headphone_1_grey"
-            case .cmfBudsPro:
-                nil
-            case .cmfBuds:
-                nil
-            case .cmfBudsPro2:
-                nil
-            case .cmfNeckbandPro:
-                nil
-        }
     }
 }

@@ -9,7 +9,8 @@
 /* Begin PBXBuildFile section */
 		A53E4AC22E3BBA46003D6D2A /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A53E4AC12E3BBA46003D6D2A /* SwiftNothingEar */; };
 		A561D1862E4CF190003F01E1 /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A561D1852E4CF190003F01E1 /* SwiftNothingEar */; };
-		A561D1892E4D201A003F01E1 /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A561D1882E4D201A003F01E1 /* SwiftNothingEar */; };
+		A5652B8E2E4E65EF0013037B /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A5652B8D2E4E65EF0013037B /* SwiftNothingEar */; };
+		A5AD96C92E4E872600E51D4B /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A5AD96C82E4E872600E51D4B /* SwiftNothingEar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,8 +31,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A53E4AC22E3BBA46003D6D2A /* SwiftNothingEar in Frameworks */,
-				A561D1892E4D201A003F01E1 /* SwiftNothingEar in Frameworks */,
+				A5652B8E2E4E65EF0013037B /* SwiftNothingEar in Frameworks */,
 				A561D1862E4CF190003F01E1 /* SwiftNothingEar in Frameworks */,
+				A5AD96C92E4E872600E51D4B /* SwiftNothingEar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,7 +78,8 @@
 			packageProductDependencies = (
 				A53E4AC12E3BBA46003D6D2A /* SwiftNothingEar */,
 				A561D1852E4CF190003F01E1 /* SwiftNothingEar */,
-				A561D1882E4D201A003F01E1 /* SwiftNothingEar */,
+				A5652B8D2E4E65EF0013037B /* SwiftNothingEar */,
+				A5AD96C82E4E872600E51D4B /* SwiftNothingEar */,
 			);
 			productName = NothingBar;
 			productReference = A53E4AB12E3BBA36003D6D2A /* NothingBar.app */;
@@ -107,7 +110,7 @@
 			mainGroup = A53E4AA82E3BBA36003D6D2A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				A561D1872E4D201A003F01E1 /* XCRemoteSwiftPackageReference "swift-nothing-ear" */,
+				A5AD96C72E4E872600E51D4B /* XCRemoteSwiftPackageReference "swift-nothing-ear" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A53E4AB22E3BBA36003D6D2A /* Products */;
@@ -342,12 +345,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		A561D1872E4D201A003F01E1 /* XCRemoteSwiftPackageReference "swift-nothing-ear" */ = {
+		A5AD96C72E4E872600E51D4B /* XCRemoteSwiftPackageReference "swift-nothing-ear" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/bestK1ngArthur/swift-nothing-ear.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.1;
+				minimumVersion = 1.0.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -361,9 +364,13 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = SwiftNothingEar;
 		};
-		A561D1882E4D201A003F01E1 /* SwiftNothingEar */ = {
+		A5652B8D2E4E65EF0013037B /* SwiftNothingEar */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A561D1872E4D201A003F01E1 /* XCRemoteSwiftPackageReference "swift-nothing-ear" */;
+			productName = SwiftNothingEar;
+		};
+		A5AD96C82E4E872600E51D4B /* SwiftNothingEar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5AD96C72E4E872600E51D4B /* XCRemoteSwiftPackageReference "swift-nothing-ear" */;
 			productName = SwiftNothingEar;
 		};
 /* End XCSwiftPackageProductDependency section */
