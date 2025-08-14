@@ -10,7 +10,7 @@ Special credits to:
 
 ## Installation
 
-Download [DMG installer](https://github.com/bestK1ngArthur/nothing-bar/releases/download/1.2/NothingBar.dmg) from [releases](https://github.com/bestK1ngArthur/nothing-bar/releases) and drag `NothingBar.app` to `/Applications` folder.
+Download [DMG installer](https://github.com/bestK1ngArthur/nothing-bar/releases/download/1.3/NothingBar.dmg) from [releases](https://github.com/bestK1ngArthur/nothing-bar/releases) and drag `NothingBar.app` to `/Applications` folder.
 
 ## Screenshots
 
