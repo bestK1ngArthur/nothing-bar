@@ -39,6 +39,12 @@ Download [DMG installer](https://github.com/bestK1ngArthur/nothing-bar/releases/
 - 🟡 CMF Buds Pro 2
 - 🟡 CMF Neckband Pro
 
+## Future Features
+
+- [ ] Auto-update system
+- [ ] Installation from brew
+- [ ] Spatial Audio
+
 ## Legal Disclaimer
 
 1. This software is not affiliated with, sponsored by, or endorsed by Nothing Technology. This software is a third-party project and is NOT an official Nothing product.
