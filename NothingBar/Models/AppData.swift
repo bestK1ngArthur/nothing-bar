@@ -12,11 +12,13 @@ import SwiftNothingEar
 class AppData {
 
     var deviceState: DeviceState
+    var appVersion: AppVersion
     var nothing: NothingEar.Device!
 
     @MainActor
     init() {
         self.deviceState = DeviceState()
+        self.appVersion = AppVersion()
         self.nothing = NothingEar.Device(
             .init(
                 onDiscover: { device in

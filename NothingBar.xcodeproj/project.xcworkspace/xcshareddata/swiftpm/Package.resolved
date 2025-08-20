@@ -1,6 +1,24 @@
 {
-  "originHash" : "d0d8a94bd844cf7314a3f112942217b2c0896f9f46fe638e2f86edf408609e17",
+  "originHash" : "cdcb673aa47e8115ce1885c1b3beea740433860045694b6248fa63f7944ad45c",
   "pins" : [
+    {
+      "identity" : "appupdater",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/s1ntoneli/AppUpdater.git",
+      "state" : {
+        "revision" : "0f280e4ecf2792f9be4bf4cbab76307d78024b3f",
+        "version" : "2.0.0"
+      }
+    },
+    {
+      "identity" : "path.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mxcl/Path.swift.git",
+      "state" : {
+        "revision" : "8e355c28e9393c42e58b18c54cace2c42c98a616",
+        "version" : "1.4.1"
+      }
+    },
     {
       "identity" : "swift-nothing-ear",
       "kind" : "remoteSourceControl",
@@ -8,6 +26,15 @@
       "state" : {
         "revision" : "42fbb9d53a12059cf9a4eb4842fd07eda78d807e",
         "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "version",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mxcl/Version.git",
+      "state" : {
+        "revision" : "67ce582bb9de70e1eb2ee41fd71aad3b5f86d97b",
+        "version" : "2.2.0"
       }
     }
   ],

@@ -9,9 +9,9 @@ import SwiftNothingEar
 import SwiftUI
 
 struct DeviceImageView: View {
-    
+
     let deviceImage: NothingEar.Model.DeviceImage
-    
+
     var body: some View {
         switch deviceImage {
             case let .buds(left, right):
@@ -23,7 +23,7 @@ struct DeviceImageView: View {
                 imageView(image)
         }
     }
-    
+
     private func imageView(_ image: ImageResource) -> some View {
         Image(image)
             .resizable()
@@ -38,7 +38,7 @@ extension NothingEar.Model {
         case buds(left: ImageResource, right: ImageResource)
         case single(ImageResource)
     }
-    
+
     var deviceImage: DeviceImage? {
         switch self {
             case .ear1(.black):
