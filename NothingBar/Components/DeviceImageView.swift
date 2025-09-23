@@ -49,6 +49,10 @@ extension NothingEar.Model {
                 .buds(left: .ear2BlackLeft, right: .ear2BlackRight)
             case .ear2(.white):
                 .buds(left: .ear2WhiteLeft, right: .ear2WhiteRight)
+            case .ear3(.black):
+                .buds(left: .ear3BlackLeft, right: .ear3BlackRight)
+            case .ear3(.white):
+                .buds(left: .ear3WhiteLeft, right: .ear3WhiteRight)
             case .earStick:
                 .buds(left: .earStickLeft, right: .earStickRight)
             case .earOpen:

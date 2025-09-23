@@ -1,5 +1,5 @@
 {
-  "originHash" : "cdcb673aa47e8115ce1885c1b3beea740433860045694b6248fa63f7944ad45c",
+  "originHash" : "b29c2e5eb485fa7638f57e34a2672d3ef5d4333496a54cc37d01de34a6435939",
   "pins" : [
     {
       "identity" : "appupdater",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/bestK1ngArthur/swift-nothing-ear.git",
       "state" : {
-        "revision" : "42fbb9d53a12059cf9a4eb4842fd07eda78d807e",
-        "version" : "1.0.2"
+        "revision" : "105b7b6bceefbe5be40274712ed3d156283e513d",
+        "version" : "1.0.3"
       }
     },
     {
