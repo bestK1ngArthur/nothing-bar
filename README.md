@@ -44,7 +44,7 @@ Download .zip archive from [releases](https://github.com/bestK1ngArthur/nothing-
 
 - [x] Auto-update system
 - [ ] Installation from brew
-- [ ] Spatial Audio
+- [x] Spatial Audio
 
 ## Legal Disclaimer
 
