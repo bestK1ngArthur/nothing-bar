@@ -5,9 +5,9 @@
 //  Created by Artem Belkov on 31.07.2025.
 //
 
+import AppUpdater
 import Foundation
 import SwiftUI
-import AppUpdater
 
 @Observable
 class AppVersion {

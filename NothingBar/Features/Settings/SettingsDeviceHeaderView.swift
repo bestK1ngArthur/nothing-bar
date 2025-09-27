@@ -5,8 +5,8 @@
 //  Created by Artem Belkov on 31.07.2025.
 //
 
-import SwiftUI
 import SwiftNothingEar
+import SwiftUI
 
 struct SettingsDeviceHeaderView: View {
 
@@ -32,18 +32,26 @@ struct SettingsDeviceHeaderView: View {
                     .font(.title)
                     .fontWeight(.semibold)
 
-                HStack(spacing: 6) {
-                    Circle()
-                        .fill(deviceState.isConnected ? Color.green : Color.red)
-                        .frame(width: 8, height: 8)
-
-                    Text(deviceState.isConnected ? "Connected" : "Disconnected")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
+                subtitleView
             }
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .padding(.vertical, 16)
+    }
+
+    private var subtitleView: some View {
+        HStack(spacing: 6) {
+            Circle()
+                .fill(deviceState.isConnected ? Color.green : Color.red)
+                .frame(width: 8, height: 8)
+
+            Text(deviceState.isConnected ? "Connected" : "Disconnected")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+
+            if let battery = deviceState.battery, deviceState.isConnected {
+                BatteryView(battery: battery)
+            }
+        }
     }
 }

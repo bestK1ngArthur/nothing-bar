@@ -5,8 +5,8 @@
 //  Created by Artem Belkov on 31.07.2025.
 //
 
-import SwiftUI
 import AppKit
+import SwiftUI
 
 struct BarSettingsButton: View {
 

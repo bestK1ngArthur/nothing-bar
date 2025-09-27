@@ -5,10 +5,8 @@
 //  Created by Artem Belkov on 31.07.2025.
 //
 
-import SwiftUI
 import SwiftNothingEar
-
-// MARK: - Device State
+import SwiftUI
 
 @Observable
 class DeviceState {
