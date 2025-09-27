@@ -45,6 +45,5 @@ struct BarView: View {
         }
         .frame(width: 300)
         .cornerRadius(12)
-        .background(.ultraThinMaterial)
     }
 }
