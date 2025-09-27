@@ -20,25 +20,10 @@ class DeviceState {
 
     var battery: NothingEar.Battery?
     var ancMode: NothingEar.ANCMode?
-    var spatialAudioMode: SpatialAudioMode = .fixed
+    var spatialAudioMode: NothingEar.SpatialAudioMode?
     var eqPreset: NothingEar.EQPreset?
     var enhancedBass: NothingEar.EnhancedBassSettings?
 
     var lowLatency: Bool = false
     var inEarDetection: Bool = false
-}
-
-enum SpatialAudioMode: String, CaseIterable {
-
-    case headTracking = "Head-tracking"
-    case fixed = "Fixed"
-    case off = "Off"
-
-    var systemImage: String {
-        switch self {
-            case .headTracking: return "location.circle"
-            case .fixed: return "location.circle.fill"
-            case .off: return "speaker.slash.circle"
-        }
-    }
 }

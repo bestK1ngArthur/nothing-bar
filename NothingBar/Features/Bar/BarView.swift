@@ -21,29 +21,40 @@ struct BarView: View {
             if let bluetoothError = appData.deviceState.bluetoothError, bluetoothError == .unauthorized {
                 BarNoPermissionsView()
             } else if deviceState.isConnected {
-                ScrollView {
-                    VStack(spacing: 16) {
-                        BarHeaderView()
-
-                        if deviceState.model.supportsANC {
-                            Divider()
-                                .opacity(0.3)
-
-                            BarNoiseCancellationView()
-                        }
-
-                        Divider()
-                            .opacity(0.3)
-
-                        BarAudioView()
-                    }
-                    .padding(16)
-                }
+                connectedView
             } else {
                 BarNoDeviceView()
             }
         }
         .frame(width: 300)
         .cornerRadius(12)
+    }
+    
+    private var connectedView: some View {
+        VStack(spacing: 16) {
+            BarHeaderView()
+
+            if deviceState.model.supportsANC {
+                divider
+
+                BarNoiseCancellationView()
+            }
+            
+            if deviceState.model.supportsSpatialAudio {
+                divider
+                
+                BarSpatialAudioView()
+            }
+
+            divider
+
+            BarAudioView()
+        }
+        .padding(16)
+    }
+    
+    private var divider: some View {
+        Divider()
+            .opacity(0.3)
     }
 }

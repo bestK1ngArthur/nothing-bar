@@ -22,7 +22,7 @@ struct BarNoiseCancellationView: View {
 
     var body: some View {
         BarSectionView(
-            title: "Noise cancellation",
+            title: "Noise Cancellation",
             value: value
         ) {
             HStack(alignment: .top, spacing: 8) {
@@ -38,7 +38,6 @@ struct BarNoiseCancellationView: View {
                                     .frame(width: 44, height: 44)
 
                                 Image(mode.imageName)
-                                    .font(.system(size: 20))
                                     .foregroundColor(isActive ? .white : .primary)
                             }
                             .frame(width: 60, height: 60)
@@ -52,6 +51,7 @@ struct BarNoiseCancellationView: View {
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                                 .multilineTextAlignment(.center)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                         .frame(width: 66)
                     }

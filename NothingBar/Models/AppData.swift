@@ -46,9 +46,14 @@ class AppData {
                 onUpdateANCMode: { [weak self] ancMode in
                     if let ancMode {
                         self?.deviceState.ancMode = ancMode
-
                     }
                     AppLogger.device.deviceSettingChanged("ANCMode", value: ancMode?.displayName ?? "nil")
+                },
+                onUpdateSpatialAudio: { [weak self] spatialAudioMode in
+                    if let spatialAudioMode {
+                        self?.deviceState.spatialAudioMode = spatialAudioMode
+                    }
+                    AppLogger.device.deviceSettingChanged("SpatialAudio", value: spatialAudioMode?.displayName ?? "nil")
                 },
                 onUpdateEnhancedBass: { [weak self] enhancedBass in
                     self?.deviceState.enhancedBass = enhancedBass

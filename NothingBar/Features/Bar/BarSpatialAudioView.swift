@@ -21,42 +21,60 @@ struct BarSpatialAudioView: View {
     }
 
     var body: some View {
-        VStack(spacing: 12) {
-            Text("Spatial audio")
-                .font(.headline)
-                .foregroundColor(.primary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
+        BarSectionView(
+            title: "Spatial Audio",
+            value: currentMode.displayName
+        ) {
             HStack(alignment: .top, spacing: 8) {
-                ForEach(SpatialAudioMode.allCases, id: \.self) { mode in
-                    Button(action: {
+                ForEach(NothingEar.SpatialAudioMode.allCases.reversed(), id: \.self) { mode in
+                    Button {
+                        nothing.setSpatialAudioMode(mode)
                         deviceState.spatialAudioMode = mode
-                        AppLogger.ui.uiSettingChanged("Spatial Audio Mode", value: mode.rawValue)
-                        // TODO: Implement when api will be ready
-                    }) {
-                        VStack(spacing: 6) {
+                    } label: {
+                        VStack(spacing: 0) {
+                            let isActive = currentMode == mode
                             ZStack {
                                 Circle()
-                                    .fill(deviceState.spatialAudioMode == mode ? Color.accentColor : Color(NSColor.controlBackgroundColor))
+                                    .fill(isActive ? Color.accentColor : Color.gray)
                                     .frame(width: 44, height: 44)
 
-                                Image(systemName: mode.systemImage)
-                                    .font(.system(size: 20))
-                                    .foregroundColor(deviceState.spatialAudioMode == mode ? .white : .primary)
+                                Image(mode.imageName)
+                                    .renderingMode(.template)
+                                    .foregroundColor(isActive ? .white : .primary)
                             }
                             .frame(width: 60, height: 60)
 
-                            Text(mode.rawValue)
+                            Text(mode.displayName)
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                                 .multilineTextAlignment(.center)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                         .frame(width: 66)
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
             }
+            .disabled(deviceState.spatialAudioMode == nil)
         }
-        .padding(.horizontal, 4)
+    }
+
+    private var currentMode: NothingEar.SpatialAudioMode {
+        deviceState.spatialAudioMode ?? .off
+    }
+}
+
+
+private extension NothingEar.SpatialAudioMode {
+
+    var imageName: ImageResource {
+        switch self {
+            case .headTracking:
+                return .spatialAudioTracked
+            case .fixed:
+                return .spatialAudioFixed
+            case .off:
+                return .spatialAudioOff
+        }
     }
 }
