@@ -43,8 +43,11 @@ Download .zip archive from [releases](https://github.com/bestK1ngArthur/nothing-
 ## Future Features
 
 - [x] Auto-update system
-- [ ] Installation from brew
 - [x] Spatial Audio
+- [ ] Installation from brew
+- [ ] Find buds
+- [ ] More EQ capabilities
+- [ ] Handle controls gestures
 
 ## Legal Disclaimer
 
