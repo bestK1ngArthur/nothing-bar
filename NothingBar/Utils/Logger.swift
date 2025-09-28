@@ -5,22 +5,26 @@ import os
 struct AppLogger {
 
     /// Main logger for the application
-    static let main = Logger(subsystem: Bundle.main.bundleIdentifier ?? "com.nothingbar.app", category: "main")
+    static let main = Logger(subsystem: subsystem, category: "main")
 
     /// Logger for device-related operations
-    static let device = Logger(subsystem: Bundle.main.bundleIdentifier ?? "com.nothingbar.app", category: "device")
+    static let device = Logger(subsystem: subsystem, category: "device")
 
     /// Logger for UI-related operations
-    static let ui = Logger(subsystem: Bundle.main.bundleIdentifier ?? "com.nothingbar.app", category: "ui")
+    static let ui = Logger(subsystem: subsystem, category: "ui")
 
     /// Logger for audio-related operations
-    static let audio = Logger(subsystem: Bundle.main.bundleIdentifier ?? "com.nothingbar.app", category: "audio")
+    static let audio = Logger(subsystem: subsystem, category: "audio")
 
     /// Logger for settings-related operations
-    static let settings = Logger(subsystem: Bundle.main.bundleIdentifier ?? "com.nothingbar.app", category: "settings")
+    static let settings = Logger(subsystem: subsystem, category: "settings")
 
     /// Logger for connection-related operations
-    static let connection = Logger(subsystem: Bundle.main.bundleIdentifier ?? "com.nothingbar.app", category: "connection")
+    static let connection = Logger(subsystem: subsystem, category: "connection")
+
+    private static var subsystem: String {
+        Bundle.main.bundleIdentifier ?? "com.nothingbar.app"
+    }
 }
 
 /// Convenience extensions for common logging patterns
