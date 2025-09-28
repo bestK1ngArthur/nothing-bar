@@ -13,10 +13,11 @@ class DeviceState {
 
     var isConnected: Bool = false
     var bluetoothError: NothingEar.ConnectionError.Bluetooth?
-    var model: NothingEar.Model = .ear(.black)
-    var firmwareVersion: String = "Unknown"
-    var serialNumber: String = "Unknown"
-    var bluetoothAddress: String = "Unknown"
+
+    var model: NothingEar.Model?
+    var firmwareVersion: String?
+    var serialNumber: String?
+    var bluetoothAddress: String?
 
     var battery: NothingEar.Battery?
     var ancMode: NothingEar.ANCMode?

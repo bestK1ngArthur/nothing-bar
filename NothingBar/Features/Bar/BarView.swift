@@ -20,8 +20,8 @@ struct BarView: View {
         Group {
             if let bluetoothError = appData.deviceState.bluetoothError, bluetoothError == .unauthorized {
                 BarNoPermissionsView()
-            } else if deviceState.isConnected {
-                connectedView
+            } else if let model = deviceState.model {
+                deviceView(model: model)
             } else {
                 BarNoDeviceView()
             }
@@ -29,20 +29,29 @@ struct BarView: View {
         .frame(width: 300)
         .cornerRadius(12)
     }
-    
-    private var connectedView: some View {
+
+    private func deviceView(model: NothingEar.Model) -> some View {
         VStack(spacing: 16) {
             BarHeaderView()
 
-            if deviceState.model.supportsANC {
+            if deviceState.isConnected {
+                connectedView(model: model)
+            }
+        }
+        .padding(16)
+    }
+
+    private func connectedView(model: NothingEar.Model) -> some View {
+        VStack(spacing: 16) {
+            if model.supportsANC {
                 divider
 
                 BarNoiseCancellationView()
             }
-            
-            if deviceState.model.supportsSpatialAudio {
+
+            if model.supportsSpatialAudio {
                 divider
-                
+
                 BarSpatialAudioView()
             }
 
@@ -50,9 +59,8 @@ struct BarView: View {
 
             BarAudioView()
         }
-        .padding(16)
     }
-    
+
     private var divider: some View {
         Divider()
             .opacity(0.3)

@@ -19,7 +19,7 @@ struct BarHeaderView: View {
 
     var body: some View {
         HStack {
-            if let deviceImage = deviceState.model.deviceImage {
+            if let deviceImage = deviceState.model?.deviceImage {
                 DeviceImageView(deviceImage: deviceImage)
                     .frame(height: 32)
             } else {
@@ -30,7 +30,7 @@ struct BarHeaderView: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 4) {
-                    Text(deviceState.model.displayName)
+                    Text(deviceState.model?.displayName ?? "Unknown")
                         .font(.headline)
                         .foregroundColor(.primary)
 

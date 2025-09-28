@@ -22,7 +22,7 @@ struct BarAudioView: View {
 
     var body: some View {
         VStack(spacing: 12) {
-            if deviceState.model.supportsEnhancedBass {
+            if let model = deviceState.model, model.supportsEnhancedBass {
                 enhancedBassView
                     .disabled(deviceState.enhancedBass == nil)
             }
@@ -144,7 +144,7 @@ struct BarAudioView: View {
             .moreBass
         ]
 
-        if deviceState.model.supportsCustomEQ {
+        if let model = deviceState.model, model.supportsCustomEQ {
             presets.append(.custom)
         }
 

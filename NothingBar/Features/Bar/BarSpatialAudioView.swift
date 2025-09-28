@@ -64,7 +64,6 @@ struct BarSpatialAudioView: View {
     }
 }
 
-
 private extension NothingEar.SpatialAudioMode {
 
     var imageName: ImageResource {

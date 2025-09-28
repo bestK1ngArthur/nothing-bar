@@ -18,7 +18,7 @@ struct SettingsDeviceHeaderView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            if let deviceImage = deviceState.model.deviceImage {
+            if let deviceImage = deviceState.model?.deviceImage {
                 DeviceImageView(deviceImage: deviceImage)
                     .frame(height: 64)
             } else {
@@ -28,7 +28,7 @@ struct SettingsDeviceHeaderView: View {
             }
 
             VStack(spacing: 8) {
-                Text(deviceState.model.displayName)
+                Text(deviceState.model?.displayName ?? "Unknown")
                     .font(.title)
                     .fontWeight(.semibold)
 

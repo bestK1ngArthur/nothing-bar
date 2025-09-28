@@ -41,6 +41,7 @@ struct SettingsDeviceToolsView: View {
                     nothing.setLowLatency(isEnabled)
                     AppLogger.settings.uiSettingChanged("Low Latency Mode", value: isEnabled)
                 }
+                .disabled(!deviceState.isConnected)
         }
 
         // Over-ear detection
@@ -61,6 +62,7 @@ struct SettingsDeviceToolsView: View {
                     nothing.setInEarDetection(isEnabled)
                     AppLogger.settings.uiSettingChanged("Over-ear Detection", value: isEnabled)
                 }
+                .disabled(!deviceState.isConnected)
         }
     }
 }

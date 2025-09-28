@@ -16,10 +16,10 @@ struct SettingsDeviceInfoView: View {
     }
 
     var body: some View {
-        InfoRow(title: "Model", value: deviceState.model.displayName)
-        InfoRow(title: "Serial number", value: deviceState.serialNumber)
-        InfoRow(title: "Bluetooth address", value: deviceState.bluetoothAddress)
-        InfoRow(title: "Firmware version", value: deviceState.firmwareVersion)
+        InfoRow(title: "Model", value: deviceState.model?.displayName ?? "Unknown")
+        InfoRow(title: "Serial number", value: deviceState.serialNumber ?? "Unknown")
+        InfoRow(title: "Bluetooth address", value: deviceState.bluetoothAddress ?? "Unknown")
+        InfoRow(title: "Firmware version", value: deviceState.firmwareVersion ?? "Unknown")
     }
 }
 
