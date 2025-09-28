@@ -23,16 +23,11 @@ struct SettingsDeviceToolsView: View {
     var body: some View {
         @Bindable var bindableAppData = appData
 
-        // Low lag mode
         HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Low lag mode")
-                    .font(.body)
-                Text("Minimise latency for an improved gaming experience.")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.leading)
-            }
+            text(
+                title: "Low lag mode",
+                subtitle: "Minimise latency for an improved gaming experience."
+            )
 
             Spacer()
 
@@ -44,16 +39,11 @@ struct SettingsDeviceToolsView: View {
                 .disabled(!deviceState.isConnected)
         }
 
-        // Over-ear detection
         HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Over-ear detection")
-                    .font(.body)
-                Text("Automatically play audio when headphones are in and pause when removed.")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.leading)
-            }
+            text(
+                title: "Over-ear detection",
+                subtitle: "Automatically play audio when headphones are in and pause when removed."
+            )
 
             Spacer()
 
@@ -63,6 +53,19 @@ struct SettingsDeviceToolsView: View {
                     AppLogger.settings.uiSettingChanged("Over-ear Detection", value: isEnabled)
                 }
                 .disabled(!deviceState.isConnected)
+        }
+    }
+
+    private func text(title: String, subtitle: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.body)
+
+            Text(subtitle)
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: true, vertical: false)
         }
     }
 }

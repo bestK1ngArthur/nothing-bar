@@ -66,8 +66,6 @@ struct BarAudioView: View {
                             level: deviceState.enhancedBass?.level ?? 1
                         )
                         setEnhancedBassSettings(settings)
-                        AppLogger.audio.uiSettingChanged("Bass Enhancement", value: isEnabled)
-
                     }
                 )
             )
@@ -105,6 +103,8 @@ struct BarAudioView: View {
 
         nothing.setEnhancedBass(settings)
         deviceState.enhancedBass = settings
+
+        AppLogger.audio.uiSettingChanged("Enhanced Bass", value: settings.displayValue)
     }
 
     // MARK: Equalizer

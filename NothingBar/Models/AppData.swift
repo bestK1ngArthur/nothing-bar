@@ -42,33 +42,34 @@ class AppData {
                 },
                 onUpdateBattery: { [weak self] battery in
                     self?.deviceState.battery = battery
+                    AppLogger.device.deviceSettingChanged("Battery", value: battery)
                 },
-                onUpdateANCMode: { [weak self] ancMode in
-                    if let ancMode {
-                        self?.deviceState.ancMode = ancMode
+                onUpdateANCMode: { [weak self] newMode in
+                    if let newMode {
+                        self?.deviceState.ancMode = newMode
                     }
-                    AppLogger.device.deviceSettingChanged("ANCMode", value: ancMode?.displayName ?? "nil")
+                    AppLogger.device.deviceSettingChanged("Noise Cancellation", value: newMode)
                 },
-                onUpdateSpatialAudio: { [weak self] spatialAudioMode in
-                    if let spatialAudioMode {
-                        self?.deviceState.spatialAudioMode = spatialAudioMode
+                onUpdateSpatialAudio: { [weak self] newMode in
+                    if let newMode {
+                        self?.deviceState.spatialAudioMode = newMode
                     }
-                    AppLogger.device.deviceSettingChanged("SpatialAudio", value: spatialAudioMode?.displayName ?? "nil")
+                    AppLogger.device.deviceSettingChanged("Spatial Audio", value: newMode)
                 },
                 onUpdateEnhancedBass: { [weak self] enhancedBass in
                     self?.deviceState.enhancedBass = enhancedBass
-                    AppLogger.device.deviceSettingChanged("EnhancedBass", value: "\(enhancedBass?.isEnabled ?? false)")
+                    AppLogger.device.deviceSettingChanged("Enhanced Bass", value: enhancedBass?.isEnabled)
                 },
                 onUpdateEQPreset: { [weak self] eqPreset in
                     if let eqPreset {
                         self?.deviceState.eqPreset = eqPreset
                     }
-                    AppLogger.device.deviceSettingChanged("EQPreset", value: eqPreset?.displayName ?? "nil")
+                    AppLogger.device.deviceSettingChanged("EQ Preset", value: eqPreset?.displayName)
                 },
                 onUpdateDeviceSettings: { [weak self] settings in
                     self?.deviceState.inEarDetection = settings.inEarDetection
                     self?.deviceState.lowLatency = settings.lowLatency
-                    AppLogger.device.deviceSettingChanged("DeviceSettings", value: "\(String(describing: settings))")
+                    AppLogger.device.deviceSettingChanged("Device Settings", value: settings)
                 },
                 onError: { [weak self] error in
                     self?.handleError(error)

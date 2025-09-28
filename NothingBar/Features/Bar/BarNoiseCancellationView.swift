@@ -34,6 +34,7 @@ struct BarNoiseCancellationView: View {
                         isActive: isActive
                     ) {
                         nothing.setANCMode(mode)
+                        AppLogger.audio.uiSettingChanged("Noise Cancellation", value: mode)
                     } overlay: {
                         if case .noiseCancellation(let noiseMode) = currentMode, isActive {
                             AnyView(noiseCancellationMenu(currentMode: noiseMode))

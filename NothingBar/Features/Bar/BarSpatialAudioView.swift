@@ -54,6 +54,8 @@ struct BarSpatialAudioView: View {
 
         nothing.setSpatialAudioMode(mode)
         deviceState.spatialAudioMode = mode
+
+        AppLogger.audio.uiSettingChanged("Spatial Audio", value: mode)
     }
 }
 
