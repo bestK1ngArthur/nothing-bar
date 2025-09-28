@@ -69,11 +69,11 @@ struct BarAudioView: View {
                     }
                 )
             )
-            .toggleStyle(SwitchToggleStyle())
+            .toggleStyle(.switch)
+            .padding(.trailing, -8)
             .scaleEffect(0.8)
         }
         .padding(.horizontal, 4)
-
     }
 
     private func enhancedBassMenu(currentLevel: Int) -> some View {
