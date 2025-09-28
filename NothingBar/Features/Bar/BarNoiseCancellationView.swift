@@ -27,35 +27,20 @@ struct BarNoiseCancellationView: View {
         ) {
             HStack(alignment: .top, spacing: 8) {
                 ForEach(NothingEar.ANCMode.allCases, id: \.self) { mode in
-                    Button {
+                    let isActive = modeIsEquivalent(mode, currentMode)
+                    ModeCircleView(
+                        image: mode.imageName,
+                        name: mode.displayName,
+                        isActive: isActive
+                    ) {
                         nothing.setANCMode(mode)
-                    } label: {
-                        VStack(spacing: 0) {
-                            let isActive = modeIsEquivalent(mode, currentMode)
-                            ZStack {
-                                Circle()
-                                    .fill(isActive ? Color.accentColor : Color.gray)
-                                    .frame(width: 44, height: 44)
-
-                                Image(mode.imageName)
-                                    .foregroundColor(isActive ? .white : .primary)
-                            }
-                            .frame(width: 60, height: 60)
-                            .overlay(alignment: .topTrailing) {
-                                if case .noiseCancellation(let noiseMode) = currentMode, isActive {
-                                    noiseCancellationMenu(currentMode: noiseMode)
-                                }
-                            }
-
-                            Text(mode.displayName)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                                .multilineTextAlignment(.center)
-                                .fixedSize(horizontal: false, vertical: true)
+                    } overlay: {
+                        if case .noiseCancellation(let noiseMode) = currentMode, isActive {
+                            AnyView(noiseCancellationMenu(currentMode: noiseMode))
+                        } else {
+                            AnyView(EmptyView())
                         }
-                        .frame(width: 66)
                     }
-                    .buttonStyle(PlainButtonStyle())
                 }
             }
             .disabled(deviceState.ancMode == nil)

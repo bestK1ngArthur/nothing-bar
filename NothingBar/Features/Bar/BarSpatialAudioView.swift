@@ -27,32 +27,14 @@ struct BarSpatialAudioView: View {
         ) {
             HStack(alignment: .top, spacing: 8) {
                 ForEach(NothingEar.SpatialAudioMode.allCases.reversed(), id: \.self) { mode in
-                    Button {
+                    ModeCircleView<EmptyView>(
+                        image: mode.imageName,
+                        name: mode.displayName,
+                        isActive: currentMode == mode
+                    ) {
                         nothing.setSpatialAudioMode(mode)
                         deviceState.spatialAudioMode = mode
-                    } label: {
-                        VStack(spacing: 0) {
-                            let isActive = currentMode == mode
-                            ZStack {
-                                Circle()
-                                    .fill(isActive ? Color.accentColor : Color.gray)
-                                    .frame(width: 44, height: 44)
-
-                                Image(mode.imageName)
-                                    .renderingMode(.template)
-                                    .foregroundColor(isActive ? .white : .primary)
-                            }
-                            .frame(width: 60, height: 60)
-
-                            Text(mode.displayName)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                                .multilineTextAlignment(.center)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                        .frame(width: 66)
                     }
-                    .buttonStyle(PlainButtonStyle())
                 }
             }
             .disabled(deviceState.spatialAudioMode == nil)
