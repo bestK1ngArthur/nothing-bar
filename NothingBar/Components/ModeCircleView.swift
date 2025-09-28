@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ModeCircleView<Overlay: View>: View {
-    
+
     let image: ImageResource
     let name: String
     let isActive: Bool
-    
+
     let onTap: () -> Void
     let overlay: (() -> Overlay)?
 
@@ -29,7 +29,7 @@ struct ModeCircleView<Overlay: View>: View {
         self.onTap = onTap
         self.overlay = overlay
     }
-    
+
     var body: some View {
         Button(action: onTap) {
             VStack(spacing: 0) {
@@ -40,7 +40,7 @@ struct ModeCircleView<Overlay: View>: View {
                             overlay()
                         }
                     }
-                
+
                 Text(name)
                     .font(.caption)
                     .foregroundColor(.secondary)

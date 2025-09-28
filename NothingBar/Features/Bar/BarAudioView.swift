@@ -65,9 +65,7 @@ struct BarAudioView: View {
                             isEnabled: isEnabled,
                             level: deviceState.enhancedBass?.level ?? 1
                         )
-                        nothing.setEnhancedBass(settings)
-                        deviceState.enhancedBass = settings
-
+                        setEnhancedBassSettings(settings)
                         AppLogger.audio.uiSettingChanged("Bass Enhancement", value: isEnabled)
 
                     }
@@ -85,8 +83,7 @@ struct BarAudioView: View {
             ForEach(1...5, id: \.self) { level in
                 Button {
                     let settings = NothingEar.EnhancedBassSettings(isEnabled: true, level: level)
-                    nothing.setEnhancedBass(settings)
-                    deviceState.enhancedBass = settings
+                    setEnhancedBassSettings(settings)
                 } label: {
                     Text("Level \(level)") + (currentLevel == level ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
                 }
@@ -97,6 +94,17 @@ struct BarAudioView: View {
                 .foregroundColor(.secondary)
         }
         .menuStyle(BorderlessButtonMenuStyle())
+    }
+
+    private func setEnhancedBassSettings(_ settings: NothingEar.EnhancedBassSettings) {
+        // Enhanced bass and spatial audio can't work simultaneously
+        if settings.isEnabled, deviceState.spatialAudioMode != .off {
+            nothing.setSpatialAudioMode(.off)
+            deviceState.spatialAudioMode = .off
+        }
+
+        nothing.setEnhancedBass(settings)
+        deviceState.enhancedBass = settings
     }
 
     // MARK: Equalizer

@@ -32,8 +32,7 @@ struct BarSpatialAudioView: View {
                         name: mode.displayName,
                         isActive: currentMode == mode
                     ) {
-                        nothing.setSpatialAudioMode(mode)
-                        deviceState.spatialAudioMode = mode
+                        setMode(mode)
                     }
                 }
             }
@@ -43,6 +42,18 @@ struct BarSpatialAudioView: View {
 
     private var currentMode: NothingEar.SpatialAudioMode {
         deviceState.spatialAudioMode ?? .off
+    }
+
+    private func setMode(_ mode: NothingEar.SpatialAudioMode) {
+        // Enhanced bass and spatial audio can't work simultaneously
+        if mode != .off, let bass = deviceState.enhancedBass, bass.isEnabled {
+            let newBass = NothingEar.EnhancedBassSettings(isEnabled: false, level: bass.level)
+            nothing.setEnhancedBass(newBass)
+            deviceState.enhancedBass = newBass
+        }
+
+        nothing.setSpatialAudioMode(mode)
+        deviceState.spatialAudioMode = mode
     }
 }
 
