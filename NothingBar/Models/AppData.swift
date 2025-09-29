@@ -13,6 +13,7 @@ class AppData {
 
     var deviceState: DeviceState
     var appVersion: AppVersion
+
     var nothing: NothingEar.Device!
 
     @MainActor
@@ -34,10 +35,15 @@ class AppData {
                         self?.deviceState.bluetoothAddress = deviceInfo.bluetoothAddress ?? "Unknown"
                         self?.deviceState.firmwareVersion = deviceInfo.firmwareVersion ?? "Unknown"
                     }
+
+                    self?.showNotification()
+
                     AppLogger.connection.connectionChanged(true, result: "\(result)")
                 },
                 onDisconnect: { [weak self] result in
                     self?.deviceState.isConnected = false
+                    self?.showNotification()
+
                     AppLogger.connection.connectionChanged(false, result: "\(result)")
                 },
                 onUpdateBattery: { [weak self] battery in
@@ -92,5 +98,10 @@ class AppData {
                 deviceState.bluetoothError = nil
                 AppLogger.connection.connectionError("Other connection error: \(connectionError)")
         }
+    }
+
+    @MainActor
+    private func showNotification() {
+        BarNotificationCenter.shared.show(with: self)
     }
 }
