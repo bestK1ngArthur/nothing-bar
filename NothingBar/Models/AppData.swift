@@ -14,6 +14,8 @@ class AppData {
     var deviceState: DeviceState
     var appVersion: AppVersion
 
+    var showNotifications: Bool = true
+
     var nothing: NothingEar.Device!
 
     @MainActor
@@ -102,6 +104,8 @@ class AppData {
 
     @MainActor
     private func showNotification() {
+        guard showNotifications else { return }
+
         BarNotificationCenter.shared.show(with: self)
     }
 }
