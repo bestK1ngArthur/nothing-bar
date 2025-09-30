@@ -38,10 +38,8 @@ struct BarNotificationView: View {
             }
         }
         .overlay(alignment: .trailing) {
-            if let battery = deviceState.battery {
-                batteryView(battery: battery)
-                    .frame(height: iconSize)
-            }
+            batteryView(battery: deviceState.battery ?? .single(.disconnected))
+                .frame(height: iconSize)
         }
         .padding(16)
         .background {
@@ -90,7 +88,7 @@ struct BarNotificationView: View {
                 .stroke(style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
                 .foregroundColor(color)
                 .rotationEffect(Angle(degrees: 270.0))
-                .animation(.linear, value: progress)
+                .animation(.easeInOut, value: progress)
         }
     }
 }

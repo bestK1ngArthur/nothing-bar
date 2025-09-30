@@ -53,6 +53,8 @@ struct NothingBarApp: App {
                 }
         }
         .defaultLaunchBehavior(.suppressed)
+        .windowResizability(.contentSize)
+        .windowBackgroundDragBehavior(.enabled)
     }
 
     private var barImage: String {
