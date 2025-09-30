@@ -40,33 +40,19 @@ struct NothingBarApp: App {
             }
         }
 
-        Settings {
+        Window("Settings", id: "settings") {
             SettingsView()
                 .environment(appData)
                 .onAppear {
                     isSettingsWindowOpen = true
                     updateDockVisibility()
-
-                    NSApp.activate(ignoringOtherApps: true)
-                    if let settingsWindow = NSApp.windows.first(where: { $0.title == "Settings" }) {
-                        settingsWindow.makeKeyAndOrderFront(nil)
-                        settingsWindow.orderFrontRegardless()
-                        settingsWindowDelegate = SettingsWindowDelegate {
-                            isSettingsWindowOpen = false
-                            updateDockVisibility()
-                        }
-                        settingsWindow.delegate = settingsWindowDelegate
-                    }
                 }
                 .onDisappear {
                     isSettingsWindowOpen = false
                     updateDockVisibility()
                 }
         }
-        .windowResizability(.contentSize)
-        .windowStyle(.hiddenTitleBar)
-        .windowToolbarStyle(.unified)
-        .windowBackgroundDragBehavior(.enabled)
+        .defaultLaunchBehavior(.suppressed)
     }
 
     private var barImage: String {

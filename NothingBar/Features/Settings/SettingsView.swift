@@ -15,7 +15,7 @@ struct SettingsView: View {
 
     var body: some View {
         NavigationSplitView(
-            columnVisibility: .constant(.all),
+            preferredCompactColumn: .constant(.detail),
             sidebar: { sidebar },
             detail: { detail }
         )
@@ -28,8 +28,6 @@ struct SettingsView: View {
                 Label(tab.title, systemImage: tab.icon)
             }
         }
-        .toolbar(removing: .sidebarToggle)
-        .listStyle(.sidebar)
         .frame(width: 215)
         .overlay(alignment: .bottom) {
             Button(role: .destructive) {
@@ -44,7 +42,7 @@ struct SettingsView: View {
     }
 
     private var detail: some View {
-        Group {
+        NavigationStack {
             switch selectedTab {
                 case .device:
                     SettingsDeviceView()
@@ -54,7 +52,6 @@ struct SettingsView: View {
         }
         .toolbar(removing: .title)
         .frame(maxHeight: .infinity, alignment: .top)
-        .navigationSplitViewColumnWidth(min: 500, ideal: 500)
     }
 }
 
