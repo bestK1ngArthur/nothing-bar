@@ -20,6 +20,9 @@ Download .zip archive from [releases](https://github.com/bestK1ngArthur/nothing-
 ### Settings
 <img width="500" alt="Screenshot" src="Screenshots/screenshot-settings.png" />
 
+### Notifications
+<img width="400" alt="Screenshot" src="Screenshots/screenshot-notification.png" />
+
 ## Supported Devices
 
 - 🟢 _works and tested_
