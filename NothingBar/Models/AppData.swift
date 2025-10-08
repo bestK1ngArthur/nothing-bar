@@ -18,6 +18,8 @@ class AppData {
 
     var nothing: NothingEar.Device!
 
+    private let batteryLowLevel = 20 // 20%
+
     @MainActor
     init() {
         self.deviceState = DeviceState()
@@ -49,7 +51,9 @@ class AppData {
                     AppLogger.connection.connectionChanged(false, result: "\(result)")
                 },
                 onUpdateBattery: { [weak self] battery in
+                    self?.showBatteryLevelNotification(battery)
                     self?.deviceState.battery = battery
+
                     AppLogger.device.deviceSettingChanged("Battery", value: battery)
                 },
                 onUpdateANCMode: { [weak self] newMode in
@@ -103,9 +107,37 @@ class AppData {
     }
 
     @MainActor
+    private func showBatteryLevelNotification(_ battery: NothingEar.Battery?) {
+        guard let battery else { return }
+
+        let needNotification = if let oldLevel = deviceState.battery?.level {
+            oldLevel > batteryLowLevel && battery.level <= batteryLowLevel
+        } else {
+            battery.level == batteryLowLevel
+        }
+
+        if needNotification {
+            showNotification()
+        }
+    }
+
+    @MainActor
     private func showNotification() {
         guard showNotifications else { return }
 
         BarNotificationCenter.shared.show(with: self)
+    }
+}
+
+private extension NothingEar.Battery {
+
+    var level: Int {
+        switch self {
+            case .budsWithCase(let `case`, let leftBud, let rightBud):
+                leftBud.level < rightBud.level ? leftBud.level : rightBud.level
+
+            case .single(let battery):
+                battery.level
+        }
     }
 }
