@@ -133,7 +133,7 @@ private extension NothingEar.Battery {
 
     var level: Int {
         switch self {
-            case .budsWithCase(let `case`, let leftBud, let rightBud):
+            case .budsWithCase(_, let leftBud, let rightBud):
                 leftBud.level < rightBud.level ? leftBud.level : rightBud.level
 
             case .single(let battery):
