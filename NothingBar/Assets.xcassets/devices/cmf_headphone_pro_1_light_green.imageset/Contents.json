@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "cmf_headphone_pro_1_light_green.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "cmf_headphone_pro_1_light_green@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "cmf_headphone_pro_1_light_green@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

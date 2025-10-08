@@ -97,6 +97,12 @@ extension NothingEar.Model {
                 .single(.cmfNeckbandProOrange)
             case .cmfNeckbandPro(.white):
                 .single(.cmfNeckbandProWhite)
+            case .cmfHeadphonePro(.darkGrey):
+                .single(.cmfHeadphonePro1DarkGrey)
+            case .cmfHeadphonePro(.lightGreen):
+                .single(.cmfHeadphonePro1LightGreen)
+            case .cmfHeadphonePro(.lightGrey):
+                .single(.cmfHeadphonePro1LightGrey)
         }
     }
 }
