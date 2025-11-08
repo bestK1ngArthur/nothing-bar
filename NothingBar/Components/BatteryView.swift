@@ -43,7 +43,7 @@ struct BatteryView: View {
                 )
             )
             .font(.caption)
-            .foregroundColor(batteryColor(for: battery.level))
+            .foregroundColor(batteryColor(for: battery.level, isCharging: battery.isCharging))
 
             Text("\(battery.level)%")
                 .font(.caption)
@@ -66,11 +66,14 @@ struct BatteryView: View {
         }
     }
 
-    private func batteryColor(for level: Int) -> Color {
+    private func batteryColor(for level: Int, isCharging: Bool) -> Color {
+        guard !isCharging else {
+            return .secondary
+        }
+        
         switch level {
             case 21...100: return .secondary
-            case 11...20: return .orange
-            case 1...10: return .red
+            case 0...20: return .red
             default: return .red
         }
     }

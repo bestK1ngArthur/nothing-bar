@@ -18,7 +18,7 @@ class AppData {
 
     var nothing: NothingEar.Device!
 
-    private let batteryLowLevel = 20 // 20%
+    private let batteryLowLevels = [20, 10, 5]
 
     @MainActor
     init() {
@@ -111,9 +111,11 @@ class AppData {
         guard let battery else { return }
 
         let needNotification = if let oldLevel = deviceState.battery?.level {
-            oldLevel > batteryLowLevel && battery.level <= batteryLowLevel
+            batteryLowLevels.contains { lowLevel in
+                oldLevel > lowLevel && battery.level <= lowLevel
+            }
         } else {
-            battery.level == batteryLowLevel
+            batteryLowLevels.contains(battery.level)
         }
 
         if needNotification {
