@@ -70,7 +70,7 @@ struct BatteryView: View {
         guard !isCharging else {
             return .secondary
         }
-        
+
         switch level {
             case 21...100: return .secondary
             case 0...20: return .red

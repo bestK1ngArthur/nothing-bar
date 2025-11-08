@@ -14,7 +14,8 @@ class AppData {
     var deviceState: DeviceState
     var appVersion: AppVersion
 
-    var showNotifications: Bool = true
+    var showConnectNotifications: Bool = true
+    var showBatteryNotifications: Bool = true
 
     var nothing: NothingEar.Device!
 
@@ -108,7 +109,7 @@ class AppData {
 
     @MainActor
     private func showBatteryLevelNotification(_ battery: NothingEar.Battery?) {
-        guard let battery else { return }
+        guard showBatteryNotifications, let battery else { return }
 
         let needNotification = if let oldLevel = deviceState.battery?.level {
             batteryLowLevels.contains { lowLevel in
@@ -119,13 +120,13 @@ class AppData {
         }
 
         if needNotification {
-            showNotification()
+            BarNotificationCenter.shared.show(with: self)
         }
     }
 
     @MainActor
     private func showNotification() {
-        guard showNotifications else { return }
+        guard showConnectNotifications else { return }
 
         BarNotificationCenter.shared.show(with: self)
     }

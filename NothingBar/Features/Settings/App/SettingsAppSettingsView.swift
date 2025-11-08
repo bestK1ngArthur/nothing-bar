@@ -13,12 +13,10 @@ struct SettingsAppSettingsView: View {
     @Environment(AppData.self) private var appData
 
     @AppStorage("launchAtLogin") private var launchAtLogin = false
-    @AppStorage("showNotifications") private var showNotifications = true
 
     var body: some View {
         Group {
-            // Launch at Login Setting
-            rowView(
+            SettingsRow(
                 title: "Launch at login",
                 description: "Automatically start app when you log in to your Mac."
             ) {
@@ -28,19 +26,7 @@ struct SettingsAppSettingsView: View {
                     }
             }
 
-            // Notification Setting
-            rowView(
-                title: "Notifications",
-                description: "Show connect/disconnect overlay notifications."
-            ) {
-                Toggle("", isOn: $showNotifications)
-                    .onChange(of: showNotifications) { _, newValue in
-                        appData.showNotifications = newValue
-                    }
-            }
-
-            // Auto Update Setting
-            rowView(
+            SettingsRow(
                 title: "Automatic updates",
                 description: "Automatically download and install app updates in the background."
             ) {
@@ -53,8 +39,7 @@ struct SettingsAppSettingsView: View {
                 )
             }
 
-            // Manual Update Check
-            rowView(
+            SettingsRow(
                 title: "Check for updates",
                 description: "Current version: \(appData.appVersion.currentVersion)"
             ) {
@@ -73,9 +58,8 @@ struct SettingsAppSettingsView: View {
                 .disabled(appData.appVersion.isCheckingForUpdates)
             }
 
-            // Update Available Indicator
             if appData.appVersion.updateAvailable {
-                rowView(
+                SettingsRow(
                     title: "Update available",
                     description: "A new version is ready to install."
                 ) {
@@ -90,29 +74,6 @@ struct SettingsAppSettingsView: View {
         }
         .onAppear {
             updateLaunchAtLoginState()
-        }
-    }
-
-    private func rowView<Value: View>(
-        title: String,
-        description: String,
-        value: () -> Value
-    ) -> some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.body)
-
-                Text(description)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.leading)
-                    .fixedSize(horizontal: true, vertical: false)
-            }
-
-            Spacer()
-
-            value()
         }
     }
 
