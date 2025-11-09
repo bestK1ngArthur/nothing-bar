@@ -58,6 +58,7 @@ struct SettingsDeviceToolsView: View {
                     description: "Trigger a loud sound to find your headphones."
                 ) {
                     ringButtons(current: ringBuds)
+                        .disabled(!deviceState.isConnected)
                 }
             }
         }
