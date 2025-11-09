@@ -24,6 +24,7 @@ class DeviceState {
     var spatialAudioMode: NothingEar.SpatialAudioMode?
     var eqPreset: NothingEar.EQPreset?
     var enhancedBass: NothingEar.EnhancedBassSettings?
+    var ringBuds: NothingEar.RingBuds?
 
     var lowLatency: Bool = false
     var inEarDetection: Bool = false

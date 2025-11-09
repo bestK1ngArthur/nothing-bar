@@ -55,34 +55,38 @@ class AppData {
                     self?.showBatteryLevelNotification(battery)
                     self?.deviceState.battery = battery
 
-                    AppLogger.device.deviceSettingChanged("Battery", value: battery)
+                    AppLogger.device.deviceStateChanged("Battery", value: battery)
                 },
                 onUpdateANCMode: { [weak self] newMode in
                     if let newMode {
                         self?.deviceState.ancMode = newMode
                     }
-                    AppLogger.device.deviceSettingChanged("Noise Cancellation", value: newMode)
+                    AppLogger.device.deviceStateChanged("Noise Cancellation", value: newMode)
                 },
                 onUpdateSpatialAudio: { [weak self] newMode in
                     if let newMode {
                         self?.deviceState.spatialAudioMode = newMode
                     }
-                    AppLogger.device.deviceSettingChanged("Spatial Audio", value: newMode)
+                    AppLogger.device.deviceStateChanged("Spatial Audio", value: newMode)
                 },
                 onUpdateEnhancedBass: { [weak self] enhancedBass in
                     self?.deviceState.enhancedBass = enhancedBass
-                    AppLogger.device.deviceSettingChanged("Enhanced Bass", value: enhancedBass?.isEnabled)
+                    AppLogger.device.deviceStateChanged("Enhanced Bass", value: enhancedBass?.isEnabled)
                 },
                 onUpdateEQPreset: { [weak self] eqPreset in
                     if let eqPreset {
                         self?.deviceState.eqPreset = eqPreset
                     }
-                    AppLogger.device.deviceSettingChanged("EQ Preset", value: eqPreset?.displayName)
+                    AppLogger.device.deviceStateChanged("EQ Preset", value: eqPreset?.displayName)
                 },
                 onUpdateDeviceSettings: { [weak self] settings in
                     self?.deviceState.inEarDetection = settings.inEarDetection
                     self?.deviceState.lowLatency = settings.lowLatency
-                    AppLogger.device.deviceSettingChanged("Device Settings", value: settings)
+                    AppLogger.device.deviceStateChanged("Device Settings", value: settings)
+                },
+                onUpdateRingBuds: { [weak self] ringBuds in
+                    self?.deviceState.ringBuds = ringBuds
+                    AppLogger.device.deviceStateChanged("Ring Buds", value: ringBuds)
                 },
                 onError: { [weak self] error in
                     self?.handleError(error)

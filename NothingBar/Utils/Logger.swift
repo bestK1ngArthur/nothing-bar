@@ -44,8 +44,8 @@ extension Logger {
         }
     }
 
-    /// Log device setting changes
-    func deviceSettingChanged(_ setting: String, value: Any?) {
+    /// Log device state changes
+    func deviceStateChanged(_ setting: String, value: Any?) {
         let value = value.flatMap { String(describing: $0) } ?? "nil"
         self.info("\(setting): \(value)")
     }
