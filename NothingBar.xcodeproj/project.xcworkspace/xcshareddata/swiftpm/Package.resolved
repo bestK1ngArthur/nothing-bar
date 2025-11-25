@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/bestK1ngArthur/swift-nothing-ear.git",
       "state" : {
-        "revision" : "eafe5bf0c1d8714a536bd838dff72b54cbe0b026",
-        "version" : "1.3.0"
+        "branch" : "cmf-buds-fix",
+        "revision" : "16ad7b82d1d46dbf48aef819b182ed58fb8c096d"
       }
     },
     {
