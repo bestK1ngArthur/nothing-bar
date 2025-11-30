@@ -15,27 +15,27 @@ struct BatteryView: View {
     var body: some View {
         switch battery {
             case .budsWithCase(let `case`, let leftBud, let rightBud):
-                HStack(spacing: 4) {
+                HStack(spacing: 2) {
                     Text("C")
-                    levelView(for: `case`)
-                        .padding(.trailing, 6)
+                    levelView(for: `case`, isCompact: true)
+                        .padding(.trailing, 4)
 
                     Text("L")
-                    levelView(for: leftBud)
-                        .padding(.trailing, 6)
+                    levelView(for: leftBud, isCompact: true)
+                        .padding(.trailing, 4)
 
                     Text("R")
-                    levelView(for: rightBud)
+                    levelView(for: rightBud, isCompact: true)
                 }
                 .font(.caption2)
 
             case .single(let battery):
-                levelView(for: battery)
+                levelView(for: battery, isCompact: false)
         }
     }
 
-    private func levelView(for battery: NothingEar.BatteryLevel) -> some View {
-        HStack(spacing: 4) {
+    private func levelView(for battery: NothingEar.BatteryLevel, isCompact: Bool) -> some View {
+        HStack(spacing: isCompact ? 2 : 4) {
             Image(
                 systemName: batteryIcon(
                     for: battery.level,
