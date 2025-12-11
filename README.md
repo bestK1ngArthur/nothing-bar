@@ -40,7 +40,7 @@ Download .zip archive from [releases](https://github.com/bestK1ngArthur/nothing-
 - 🟢 Nothing Headphone (1)
 - 🟡 CMF Buds Pro
 - 🟡 CMF Buds
-- 🟡 CMF Buds Pro 2
+- 🟢 CMF Buds Pro 2
 - 🟡 CMF Neckband Pro
 
 ## Future Features
