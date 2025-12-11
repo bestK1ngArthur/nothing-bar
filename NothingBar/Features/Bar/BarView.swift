@@ -26,7 +26,7 @@ struct BarView: View {
                 BarNoDeviceView()
             }
         }
-        .frame(width: 300)
+        .frame(width: 320)
         .cornerRadius(12)
     }
 
