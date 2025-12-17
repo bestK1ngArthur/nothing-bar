@@ -83,6 +83,12 @@ extension NothingEar.Model {
                 .buds(left: .cmfBudsOrangeLeft, right: .cmfBudsOrangeRight)
             case .cmfBuds(.white):
                 .buds(left: .cmfBudsWhiteLeft, right: .cmfBudsWhiteRight)
+            case .cmfBuds2(.lightGreen):
+                .buds(left: .cmfBuds2GreenLeft, right: .cmfBuds2GreenRight)
+            case .cmfBuds2(.orange):
+                .buds(left: .cmfBuds2OrangeLeft, right: .cmfBuds2OrangeRight)
+            case .cmfBuds2(.darkGrey):
+                .buds(left: .cmfBuds2BlackLeft, right: .cmfBuds2BlackRight)
             case .cmfBudsPro2(.black):
                 .buds(left: .cmfBudsPro2BlackLeft, right: .cmfBudsPro2BlackRight)
             case .cmfBudsPro2(.blue):
