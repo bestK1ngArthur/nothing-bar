@@ -16,16 +16,22 @@ struct BatteryView: View {
         switch battery {
             case .budsWithCase(let `case`, let leftBud, let rightBud):
                 HStack(spacing: 2) {
-                    Text("C")
-                    levelView(for: `case`, isCompact: true)
-                        .padding(.trailing, 4)
+                    if `case`.isConnected {
+                        Text("C")
+                        levelView(for: `case`, isCompact: true)
+                            .padding(.trailing, 4)
+                    }
 
-                    Text("L")
-                    levelView(for: leftBud, isCompact: true)
-                        .padding(.trailing, 4)
+                    if leftBud.isConnected {
+                        Text("L")
+                        levelView(for: leftBud, isCompact: true)
+                            .padding(.trailing, 4)
+                    }
 
-                    Text("R")
-                    levelView(for: rightBud, isCompact: true)
+                    if rightBud.isConnected {
+                        Text("R")
+                        levelView(for: rightBud, isCompact: true)
+                    }
                 }
                 .font(.caption2)
 
