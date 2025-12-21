@@ -94,9 +94,19 @@ struct BarAudioView: View {
         .menuStyle(BorderlessButtonMenuStyle())
     }
 
+    private var isCompatibleWithSpatialAudio: Bool {
+        guard let model = deviceState.model else {
+            return false
+        }
+        
+        return SpatialAudioMode.isCompatibleWithEnhancedBass(by: model)
+    }
+
     private func setEnhancedBassSettings(_ settings: EnhancedBass) {
-        // Enhanced bass and spatial audio can't work simultaneously
-        if settings.isEnabled, deviceState.spatialAudioMode != .off {
+        // Enhanced bass and spatial audio can't work simultaneously for some devices
+        if !isCompatibleWithSpatialAudio,
+           settings.isEnabled,
+           deviceState.spatialAudioMode != .off {
             nothing.setSpatialAudioMode(.off)
             deviceState.spatialAudioMode = .off
         }

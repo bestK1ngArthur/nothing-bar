@@ -51,11 +51,21 @@ struct BarSpatialAudioView: View {
 
         return SpatialAudioMode.allSupported(by: model)
     }
+    
+    private var isCompatibleWithEnhancedBass: Bool {
+        guard let model = deviceState.model else {
+            return false
+        }
+        
+        return SpatialAudioMode.isCompatibleWithEnhancedBass(by: model)
+    }
 
     private func setMode(_ mode: SpatialAudioMode) {
-        // FIXME: Some devices supports simultaneously
-        // Enhanced bass and spatial audio can't work simultaneously
-        if mode != .off, let bass = deviceState.enhancedBass, bass.isEnabled {
+        // Enhanced bass and spatial audio can't work simultaneously for some devices
+        if !isCompatibleWithEnhancedBass,
+            mode != .off,
+            let bass = deviceState.enhancedBass,
+            bass.isEnabled {
             let newBass = EnhancedBass(isEnabled: false, level: bass.level)
             nothing.setEnhancedBass(newBass)
             deviceState.enhancedBass = newBass
