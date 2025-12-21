@@ -59,12 +59,15 @@ struct BarNotificationView: View {
         }
     }
 
+    @ViewBuilder
     private func batteryView(battery: Battery) -> some View {
         switch battery {
             case .single(let status):
                 ringView(progress: Double(status.level) / 100.0)
             case let .budsWithCase(_, leftBud, rightBud):
-                ringView(progress: Double(min(leftBud.level, rightBud.level)) / 100.0)
+                let leftBudLevel = leftBud.isConnected ? leftBud.level : 100
+                let rightBudLevel = rightBud.isConnected ? rightBud.level : 100
+                ringView(progress: Double(min(leftBudLevel, rightBudLevel)) / 100.0)
         }
     }
 
