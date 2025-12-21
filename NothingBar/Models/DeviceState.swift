@@ -12,19 +12,19 @@ import SwiftUI
 class DeviceState {
 
     var isConnected: Bool = false
-    var bluetoothError: NothingEar.ConnectionError.Bluetooth?
+    var bluetoothError: ConnectionError.Bluetooth?
 
-    var model: NothingEar.Model?
+    var model: Model?
     var firmwareVersion: String?
     var serialNumber: String?
     var bluetoothAddress: String?
 
-    var battery: NothingEar.Battery?
-    var ancMode: NothingEar.ANCMode?
-    var spatialAudioMode: NothingEar.SpatialAudioMode?
-    var eqPreset: NothingEar.EQPreset?
-    var enhancedBass: NothingEar.EnhancedBassSettings?
-    var ringBuds: NothingEar.RingBuds?
+    var battery: Battery?
+    var ancMode: ANCMode?
+    var spatialAudioMode: SpatialAudioMode?
+    var eqPreset: EQPreset?
+    var enhancedBass: EnhancedBassSettings?
+    var ringBuds: RingBuds?
 
     var lowLatency: Bool = false
     var inEarDetection: Bool = false

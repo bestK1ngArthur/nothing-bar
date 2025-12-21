@@ -13,13 +13,13 @@ struct SettingsDeviceToolsView: View {
     @Environment(AppData.self) private var appData
 
     @State private var showRingBudsAlert = false
-    @State private var pendingRingBuds: NothingEar.RingBuds?
+    @State private var pendingRingBuds: RingBuds?
 
     private var deviceState: DeviceState {
         appData.deviceState
     }
 
-    private var nothing: NothingEar.Device {
+    private var nothing: Device {
         appData.nothing
     }
 
@@ -77,7 +77,7 @@ struct SettingsDeviceToolsView: View {
     }
 
     @ViewBuilder
-    private func ringButtons(current: NothingEar.RingBuds) -> some View {
+    private func ringButtons(current: RingBuds) -> some View {
         switch current.bud {
             case .left:
                 HStack(spacing: 6) {
@@ -97,7 +97,7 @@ struct SettingsDeviceToolsView: View {
     }
 
     @ViewBuilder
-    private func ringButton(_ value: NothingEar.RingBuds) -> some View {
+    private func ringButton(_ value: RingBuds) -> some View {
         let systemImage = value.isOn ? "stop.fill" : "play.fill"
         Button(value.title, systemImage: systemImage) {
             if value.isOn {
@@ -109,7 +109,7 @@ struct SettingsDeviceToolsView: View {
         }
     }
 
-    private func setRingBuds(_ ringBuds: NothingEar.RingBuds) {
+    private func setRingBuds(_ ringBuds: RingBuds) {
         deviceState.ringBuds = ringBuds
         nothing.setRingBuds(ringBuds)
     }
@@ -127,7 +127,7 @@ private extension DeviceState {
     }
 }
 
-private extension NothingEar.RingBuds {
+private extension RingBuds {
 
     var title: String {
         let prefix = isOn ? "Stop" : "Play"

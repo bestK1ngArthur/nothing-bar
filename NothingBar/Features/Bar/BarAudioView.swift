@@ -16,7 +16,7 @@ struct BarAudioView: View {
         appData.deviceState
     }
 
-    private var nothing: NothingEar.Device {
+    private var nothing: Device {
         appData.nothing
     }
 
@@ -61,7 +61,7 @@ struct BarAudioView: View {
                         deviceState.enhancedBass?.isEnabled ?? false
                     },
                     set: { isEnabled in
-                        let settings = NothingEar.EnhancedBassSettings(
+                        let settings = EnhancedBassSettings(
                             isEnabled: isEnabled,
                             level: deviceState.enhancedBass?.level ?? 1
                         )
@@ -80,7 +80,7 @@ struct BarAudioView: View {
         Menu {
             ForEach(1...5, id: \.self) { level in
                 Button {
-                    let settings = NothingEar.EnhancedBassSettings(isEnabled: true, level: level)
+                    let settings = EnhancedBassSettings(isEnabled: true, level: level)
                     setEnhancedBassSettings(settings)
                 } label: {
                     Text("Level \(level)") + (currentLevel == level ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
@@ -94,7 +94,7 @@ struct BarAudioView: View {
         .menuStyle(BorderlessButtonMenuStyle())
     }
 
-    private func setEnhancedBassSettings(_ settings: NothingEar.EnhancedBassSettings) {
+    private func setEnhancedBassSettings(_ settings: EnhancedBassSettings) {
         // Enhanced bass and spatial audio can't work simultaneously
         if settings.isEnabled, deviceState.spatialAudioMode != .off {
             nothing.setSpatialAudioMode(.off)
@@ -126,7 +126,7 @@ struct BarAudioView: View {
         .padding(.horizontal, 4)
     }
 
-    private func eqPresetMenu(currentPreset: NothingEar.EQPreset) -> some View {
+    private func eqPresetMenu(currentPreset: EQPreset) -> some View {
         Menu {
             ForEach(supportedEqPresets, id: \.self) { preset in
                 Button {
@@ -144,8 +144,8 @@ struct BarAudioView: View {
         .menuStyle(BorderlessButtonMenuStyle())
     }
 
-    private var supportedEqPresets: [NothingEar.EQPreset] {
-        var presets: [NothingEar.EQPreset] = [
+    private var supportedEqPresets: [EQPreset] {
+        var presets: [EQPreset] = [
             .balanced,
             .voice,
             .moreTreble,
@@ -160,7 +160,7 @@ struct BarAudioView: View {
     }
 }
 
-private extension NothingEar.EnhancedBassSettings {
+private extension EnhancedBassSettings {
 
     var displayValue: String {
         guard isEnabled else {

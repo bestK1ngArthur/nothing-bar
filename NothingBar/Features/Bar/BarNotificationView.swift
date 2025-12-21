@@ -54,7 +54,7 @@ struct BarNotificationView: View {
         }
     }
 
-    private func batteryView(battery: NothingEar.Battery) -> some View {
+    private func batteryView(battery: Battery) -> some View {
         switch battery {
             case .single(let status):
                 ringView(progress: Double(status.level) / 100.0)

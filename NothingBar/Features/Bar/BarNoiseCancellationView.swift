@@ -16,7 +16,7 @@ struct BarNoiseCancellationView: View {
         appData.deviceState
     }
 
-    private var nothing: NothingEar.Device {
+    private var nothing: Device {
         appData.nothing
     }
 
@@ -26,7 +26,7 @@ struct BarNoiseCancellationView: View {
             value: value
         ) {
             HStack(alignment: .top, spacing: 8) {
-                ForEach(NothingEar.ANCMode.allCases, id: \.self) { mode in
+                ForEach(ANCMode.allCases, id: \.self) { mode in
                     let isActive = modeIsEquivalent(mode, currentMode)
                     ModeCircleView(
                         image: mode.imageName,
@@ -48,9 +48,9 @@ struct BarNoiseCancellationView: View {
         }
     }
 
-    private func noiseCancellationMenu(currentMode: NothingEar.ANCMode.NoiseCancellation) -> some View {
+    private func noiseCancellationMenu(currentMode: ANCMode.NoiseCancellation) -> some View {
         Menu {
-            ForEach(NothingEar.ANCMode.NoiseCancellation.allCases, id: \.self) { mode in
+            ForEach(ANCMode.NoiseCancellation.allCases, id: \.self) { mode in
                 Button {
                     nothing.setANCMode(.noiseCancellation(mode))
                 } label: {
@@ -80,11 +80,11 @@ struct BarNoiseCancellationView: View {
         }
     }
 
-    private var currentMode: NothingEar.ANCMode {
+    private var currentMode: ANCMode {
         deviceState.ancMode ?? .off
     }
 
-    private func modeIsEquivalent(_ mode1: NothingEar.ANCMode, _ mode2: NothingEar.ANCMode) -> Bool {
+    private func modeIsEquivalent(_ mode1: ANCMode, _ mode2: ANCMode) -> Bool {
         switch (mode1, mode2) {
             case (.noiseCancellation, .noiseCancellation),
                  (.transparent, .transparent),
@@ -96,7 +96,7 @@ struct BarNoiseCancellationView: View {
     }
 }
 
-private extension NothingEar.ANCMode {
+private extension ANCMode {
 
     var imageName: ImageResource {
         switch self {

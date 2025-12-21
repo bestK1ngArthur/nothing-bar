@@ -17,7 +17,7 @@ class AppData {
     var showConnectNotifications: Bool = true
     var showBatteryNotifications: Bool = true
 
-    var nothing: NothingEar.Device!
+    var nothing: Device!
 
     private let batteryLowLevels = [20, 10, 5]
 
@@ -25,7 +25,7 @@ class AppData {
     init() {
         self.deviceState = DeviceState()
         self.appVersion = AppVersion()
-        self.nothing = NothingEar.Device(
+        self.nothing = Device(
             .init(
                 onDiscover: { device in
                     AppLogger.device.deviceDiscovered("\(device)")
@@ -97,7 +97,7 @@ class AppData {
     }
 
     private func handleError(_ error: Error) {
-        guard let connectionError = error as? NothingEar.ConnectionError else {
+        guard let connectionError = error as? ConnectionError else {
             return
         }
 
@@ -112,7 +112,7 @@ class AppData {
     }
 
     @MainActor
-    private func showBatteryLevelNotification(_ battery: NothingEar.Battery?) {
+    private func showBatteryLevelNotification(_ battery: Battery?) {
         guard showBatteryNotifications, let battery else { return }
 
         let needNotification = if let oldLevel = deviceState.battery?.level {
@@ -136,7 +136,7 @@ class AppData {
     }
 }
 
-private extension NothingEar.Battery {
+private extension Battery {
 
     var level: Int {
         switch self {

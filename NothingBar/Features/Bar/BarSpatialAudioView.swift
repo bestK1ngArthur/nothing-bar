@@ -16,7 +16,7 @@ struct BarSpatialAudioView: View {
         appData.deviceState
     }
 
-    private var nothing: NothingEar.Device {
+    private var nothing: Device {
         appData.nothing
     }
 
@@ -26,7 +26,7 @@ struct BarSpatialAudioView: View {
             value: currentMode.displayName
         ) {
             HStack(alignment: .top, spacing: 8) {
-                ForEach(NothingEar.SpatialAudioMode.allCases.reversed(), id: \.self) { mode in
+                ForEach(SpatialAudioMode.allCases.reversed(), id: \.self) { mode in
                     ModeCircleView<EmptyView>(
                         image: mode.imageName,
                         name: mode.displayName,
@@ -40,14 +40,14 @@ struct BarSpatialAudioView: View {
         }
     }
 
-    private var currentMode: NothingEar.SpatialAudioMode {
+    private var currentMode: SpatialAudioMode {
         deviceState.spatialAudioMode ?? .off
     }
 
-    private func setMode(_ mode: NothingEar.SpatialAudioMode) {
+    private func setMode(_ mode: SpatialAudioMode) {
         // Enhanced bass and spatial audio can't work simultaneously
         if mode != .off, let bass = deviceState.enhancedBass, bass.isEnabled {
-            let newBass = NothingEar.EnhancedBassSettings(isEnabled: false, level: bass.level)
+            let newBass = EnhancedBassSettings(isEnabled: false, level: bass.level)
             nothing.setEnhancedBass(newBass)
             deviceState.enhancedBass = newBass
         }
@@ -59,7 +59,7 @@ struct BarSpatialAudioView: View {
     }
 }
 
-private extension NothingEar.SpatialAudioMode {
+private extension SpatialAudioMode {
 
     var imageName: ImageResource {
         switch self {

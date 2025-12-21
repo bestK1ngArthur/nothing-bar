@@ -10,7 +10,7 @@ import SwiftUI
 
 struct BatteryView: View {
 
-    let battery: NothingEar.Battery
+    let battery: Battery
 
     var body: some View {
         switch battery {
@@ -34,7 +34,7 @@ struct BatteryView: View {
         }
     }
 
-    private func levelView(for battery: NothingEar.BatteryLevel, isCompact: Bool) -> some View {
+    private func levelView(for battery: BatteryLevel, isCompact: Bool) -> some View {
         HStack(spacing: isCompact ? 2 : 4) {
             Image(
                 systemName: batteryIcon(
