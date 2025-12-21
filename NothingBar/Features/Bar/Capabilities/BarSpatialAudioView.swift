@@ -51,12 +51,12 @@ struct BarSpatialAudioView: View {
 
         return SpatialAudioMode.allSupported(by: model)
     }
-    
+
     private var isCompatibleWithEnhancedBass: Bool {
         guard let model = deviceState.model else {
             return false
         }
-        
+
         return SpatialAudioMode.isCompatibleWithEnhancedBass(by: model)
     }
 

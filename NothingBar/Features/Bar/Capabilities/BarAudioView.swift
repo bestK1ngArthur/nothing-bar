@@ -98,7 +98,7 @@ struct BarAudioView: View {
         guard let model = deviceState.model else {
             return false
         }
-        
+
         return SpatialAudioMode.isCompatibleWithEnhancedBass(by: model)
     }
 

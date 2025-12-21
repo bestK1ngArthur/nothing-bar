@@ -52,7 +52,7 @@ struct BarNoiseCancellationView: View {
             }
         }
     }
-    
+
     private func noiseCancellationMenu(currentMode: NoiseCancellationMode.Active) -> some View {
         Menu {
             ForEach(NoiseCancellationMode.Active.allCases, id: \.self) { mode in

@@ -19,25 +19,15 @@ struct BarNotificationView: View {
     private let iconSize = 32.0
 
     var body: some View {
-        VStack(spacing: 2) {
-            if let displayName = deviceState.model?.displayName {
-                Text(displayName)
-                    .font(.headline)
-                    .foregroundColor(.primary)
-            }
-
-            Text(deviceState.isConnected ? "Connected" : "Disconnected")
-                .font(.body)
-                .foregroundColor(.secondary)
-        }
-        .padding(.horizontal, iconSize + 16)
-        .overlay(alignment: .leading) {
+        HStack(spacing: 8) {
             if let deviceImage = deviceState.model?.deviceImage {
                 DeviceImageView(deviceImage: deviceImage)
                     .frame(height: iconSize)
             }
-        }
-        .overlay(alignment: .trailing) {
+
+            contentView
+                .frame(minWidth: 120)
+
             batteryView(battery: deviceState.battery ?? .single(.disconnected))
                 .frame(height: iconSize)
         }
@@ -51,6 +41,21 @@ struct BarNotificationView: View {
                 Capsule()
                     .fill(.regularMaterial)
             }
+        }
+    }
+
+    private var contentView: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            if let displayName = deviceState.model?.displayName {
+                Text(displayName)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+
+            Text(deviceState.isConnected ? "Connected" : "Disconnected")
+                .font(.body)
+                .foregroundColor(.secondary)
         }
     }
 
