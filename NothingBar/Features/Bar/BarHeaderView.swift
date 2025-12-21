@@ -18,7 +18,7 @@ struct BarHeaderView: View {
     }
 
     var body: some View {
-        HStack {
+        HStack(spacing: 8) {
             if let deviceImage = deviceState.model?.deviceImage {
                 DeviceImageView(deviceImage: deviceImage)
                     .frame(height: 32)
