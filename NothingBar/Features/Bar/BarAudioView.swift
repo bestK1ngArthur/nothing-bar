@@ -61,7 +61,7 @@ struct BarAudioView: View {
                         deviceState.enhancedBass?.isEnabled ?? false
                     },
                     set: { isEnabled in
-                        let settings = EnhancedBassSettings(
+                        let settings = EnhancedBass(
                             isEnabled: isEnabled,
                             level: deviceState.enhancedBass?.level ?? 1
                         )
@@ -80,7 +80,7 @@ struct BarAudioView: View {
         Menu {
             ForEach(1...5, id: \.self) { level in
                 Button {
-                    let settings = EnhancedBassSettings(isEnabled: true, level: level)
+                    let settings = EnhancedBass(isEnabled: true, level: level)
                     setEnhancedBassSettings(settings)
                 } label: {
                     Text("Level \(level)") + (currentLevel == level ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
@@ -94,7 +94,7 @@ struct BarAudioView: View {
         .menuStyle(BorderlessButtonMenuStyle())
     }
 
-    private func setEnhancedBassSettings(_ settings: EnhancedBassSettings) {
+    private func setEnhancedBassSettings(_ settings: EnhancedBass) {
         // Enhanced bass and spatial audio can't work simultaneously
         if settings.isEnabled, deviceState.spatialAudioMode != .off {
             nothing.setSpatialAudioMode(.off)
@@ -145,22 +145,15 @@ struct BarAudioView: View {
     }
 
     private var supportedEqPresets: [EQPreset] {
-        var presets: [EQPreset] = [
-            .balanced,
-            .voice,
-            .moreTreble,
-            .moreBass
-        ]
-
-        if let model = deviceState.model, model.supportsCustomEQ {
-            presets.append(.custom)
+        guard let model = deviceState.model else {
+            return []
         }
 
-        return presets
+        return EQPreset.allSupported(by: model)
     }
 }
 
-private extension EnhancedBassSettings {
+private extension EnhancedBass {
 
     var displayValue: String {
         guard isEnabled else {

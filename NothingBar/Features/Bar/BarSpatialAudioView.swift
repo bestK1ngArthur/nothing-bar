@@ -26,7 +26,7 @@ struct BarSpatialAudioView: View {
             value: currentMode.displayName
         ) {
             HStack(alignment: .top, spacing: 8) {
-                ForEach(SpatialAudioMode.allCases.reversed(), id: \.self) { mode in
+                ForEach(supportedModes.reversed(), id: \.self) { mode in
                     ModeCircleView<EmptyView>(
                         image: mode.imageName,
                         name: mode.displayName,
@@ -44,10 +44,19 @@ struct BarSpatialAudioView: View {
         deviceState.spatialAudioMode ?? .off
     }
 
+    private var supportedModes: [SpatialAudioMode] {
+        guard let model = deviceState.model else {
+            return []
+        }
+
+        return SpatialAudioMode.allSupported(by: model)
+    }
+
     private func setMode(_ mode: SpatialAudioMode) {
+        // FIXME: Some devices supports simultaneously
         // Enhanced bass and spatial audio can't work simultaneously
         if mode != .off, let bass = deviceState.enhancedBass, bass.isEnabled {
-            let newBass = EnhancedBassSettings(isEnabled: false, level: bass.level)
+            let newBass = EnhancedBass(isEnabled: false, level: bass.level)
             nothing.setEnhancedBass(newBass)
             deviceState.enhancedBass = newBass
         }

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct DeviceImageView: View {
 
-    let deviceImage: Model.DeviceImage
+    let deviceImage: DeviceModel.DeviceImage
 
     var body: some View {
         switch deviceImage {
@@ -32,7 +32,7 @@ struct DeviceImageView: View {
     }
 }
 
-extension Model {
+extension DeviceModel {
 
     enum DeviceImage {
         case buds(left: ImageResource, right: ImageResource)

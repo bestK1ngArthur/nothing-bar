@@ -14,7 +14,7 @@ class DeviceState {
     var isConnected: Bool = false
     var bluetoothError: ConnectionError.Bluetooth?
 
-    var model: Model?
+    var model: DeviceModel?
     var firmwareVersion: String?
     var serialNumber: String?
     var bluetoothAddress: String?
@@ -23,7 +23,7 @@ class DeviceState {
     var ancMode: ANCMode?
     var spatialAudioMode: SpatialAudioMode?
     var eqPreset: EQPreset?
-    var enhancedBass: EnhancedBassSettings?
+    var enhancedBass: EnhancedBass?
     var ringBuds: RingBuds?
 
     var lowLatency: Bool = false

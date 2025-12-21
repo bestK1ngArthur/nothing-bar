@@ -30,7 +30,7 @@ struct BarView: View {
         .cornerRadius(12)
     }
 
-    private func deviceView(model: Model) -> some View {
+    private func deviceView(model: DeviceModel) -> some View {
         VStack(spacing: 16) {
             BarHeaderView()
 
@@ -41,7 +41,7 @@ struct BarView: View {
         .padding(16)
     }
 
-    private func connectedView(model: Model) -> some View {
+    private func connectedView(model: DeviceModel) -> some View {
         VStack(spacing: 16) {
             if model.supportsANC {
                 divider
