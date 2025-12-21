@@ -20,7 +20,7 @@ class DeviceState {
     var bluetoothAddress: String?
 
     var battery: Battery?
-    var ancMode: ANCMode?
+    var noiseCancellationMode: NoiseCancellationMode?
     var spatialAudioMode: SpatialAudioMode?
     var eqPreset: EQPreset?
     var enhancedBass: EnhancedBass?

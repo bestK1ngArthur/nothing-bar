@@ -43,7 +43,7 @@ struct BarView: View {
 
     private func connectedView(model: DeviceModel) -> some View {
         VStack(spacing: 16) {
-            if model.supportsANC {
+            if model.supportsNoiseCancellation {
                 divider
 
                 BarNoiseCancellationView()

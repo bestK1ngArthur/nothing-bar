@@ -26,33 +26,38 @@ struct BarNoiseCancellationView: View {
             value: value
         ) {
             HStack(alignment: .top, spacing: 8) {
-                ForEach(ANCMode.allCases, id: \.self) { mode in
-                    let isActive = modeIsEquivalent(mode, currentMode)
-                    ModeCircleView(
-                        image: mode.imageName,
-                        name: mode.displayName,
-                        isActive: isActive
-                    ) {
-                        nothing.setANCMode(mode)
-                        AppLogger.audio.uiSettingChanged("Noise Cancellation", value: mode)
-                    } overlay: {
-                        if case .noiseCancellation(let noiseMode) = currentMode, isActive {
-                            AnyView(noiseCancellationMenu(currentMode: noiseMode))
-                        } else {
-                            AnyView(EmptyView())
-                        }
-                    }
+                ForEach(NoiseCancellationMode.allCases, id: \.self) { mode in
+                    noiseCancellationItem(mode)
                 }
             }
-            .disabled(deviceState.ancMode == nil)
+            .disabled(deviceState.noiseCancellationMode == nil)
         }
     }
 
-    private func noiseCancellationMenu(currentMode: ANCMode.NoiseCancellation) -> some View {
+    @ViewBuilder
+    private func noiseCancellationItem(_ mode: NoiseCancellationMode) -> some View {
+        let isActive = modeIsEquivalent(mode, currentMode)
+        ModeCircleView(
+            image: mode.imageName,
+            name: mode.displayName,
+            isActive: isActive
+        ) {
+            nothing.setNoiseCancellationMode(mode)
+            AppLogger.audio.uiSettingChanged("Noise Cancellation", value: mode)
+        } overlay: {
+            if case .active(let activeMode) = currentMode, isActive {
+                AnyView(noiseCancellationMenu(currentMode: activeMode))
+            } else {
+                AnyView(EmptyView())
+            }
+        }
+    }
+    
+    private func noiseCancellationMenu(currentMode: NoiseCancellationMode.Active) -> some View {
         Menu {
-            ForEach(ANCMode.NoiseCancellation.allCases, id: \.self) { mode in
+            ForEach(NoiseCancellationMode.Active.allCases, id: \.self) { mode in
                 Button {
-                    nothing.setANCMode(.noiseCancellation(mode))
+                    nothing.setNoiseCancellationMode(.active(mode))
                 } label: {
                     Text(mode.displayName) + (currentMode == mode ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
                 }
@@ -73,20 +78,20 @@ struct BarNoiseCancellationView: View {
 
     private var value: String {
         switch currentMode {
-            case .noiseCancellation(let mode):
+            case .active(let mode):
                 return mode.displayName
             default:
                 return currentMode.displayName
         }
     }
 
-    private var currentMode: ANCMode {
-        deviceState.ancMode ?? .off
+    private var currentMode: NoiseCancellationMode {
+        deviceState.noiseCancellationMode ?? .off
     }
 
-    private func modeIsEquivalent(_ mode1: ANCMode, _ mode2: ANCMode) -> Bool {
+    private func modeIsEquivalent(_ mode1: NoiseCancellationMode, _ mode2: NoiseCancellationMode) -> Bool {
         switch (mode1, mode2) {
-            case (.noiseCancellation, .noiseCancellation),
+            case (.active, .active),
                  (.transparent, .transparent),
                  (.off, .off):
                 return true
@@ -96,11 +101,11 @@ struct BarNoiseCancellationView: View {
     }
 }
 
-private extension ANCMode {
+private extension NoiseCancellationMode {
 
     var imageName: ImageResource {
         switch self {
-            case .noiseCancellation:
+            case .active:
                 return .ancActive
             case .transparent:
                 return .ancTransparent

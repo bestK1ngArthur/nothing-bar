@@ -59,7 +59,7 @@ class AppData {
                 },
                 onUpdateANCMode: { [weak self] newMode in
                     if let newMode {
-                        self?.deviceState.ancMode = newMode
+                        self?.deviceState.noiseCancellationMode = newMode
                     }
                     AppLogger.device.deviceStateChanged("Noise Cancellation", value: newMode)
                 },
