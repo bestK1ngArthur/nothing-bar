@@ -9,7 +9,7 @@
             <sparkle:shortVersionString>2.3.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <sparkle:releaseNotesLink>https://nothingbar.bestk1ng.com/releases/2.3.0.html</sparkle:releaseNotesLink>
-            <enclosure url="https://github.com/bestK1ngArthur/nothing-bar/releases/download/2.3.0/nothing-bar-2.3.0.zip" length="3968753" type="application/octet-stream" sparkle:edSignature="Y+lxtU16JRH8MdxsuLt+BNDjrcpjkMPo2CuhyOQ1LyCnXOuOblRTPYf5XHJHqrwrfxEr57OEG5V2wLwl+Xc4DQ=="/>
+            <enclosure url="https://github.com/bestK1ngArthur/nothing-bar/releases/download/2.3.0/nothing-bar-2.3.0.zip" length="3968737" type="application/octet-stream" sparkle:edSignature="0MuxfUKiQ8XIUffRk6ty0RIjuM3C8i0u0pB1gOX8obY9dNauqFlQTcw+Ki248ChVI0sGl4QsU0gsEb+Y7HI/CQ=="/>
         </item>
     </channel>
 </rss>
