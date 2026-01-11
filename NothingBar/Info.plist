@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>SUFeedURL</key>
-	<string>https://nothingbar.bestk1ng.com/</string>
+	<string>https://nothingbar.bestk1ng.com/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>ExOTAuWclCnqcmBPh91agO5TX4fjdfu7sgyHIfAmLn0=</string>
 </dict>
