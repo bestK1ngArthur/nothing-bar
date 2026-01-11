@@ -1,23 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <channel>
-    <title>NothingBar Updates</title>
-    <link>https://nothingbar.bestk1ng.com/</link>
-    <description>Release notes for NothingBar.</description>
-    <language>en</language>
-
-    <item>
-      <title>NothingBar 2.3.0</title>
-      <sparkle:shortVersionString>2.3.0</sparkle:shortVersionString>
-      <sparkle:version>16</sparkle:version>
-      <pubDate>Sat, 11 Jan 2025 20:45:00 +0000</pubDate>
-      <sparkle:releaseNotesLink>https://nothingbar.bestk1ng.com/releases/2.3.0.html</sparkle:releaseNotesLink>
-      <enclosure
-        url="https://github.com/bestK1ngArthur/nothing-bar/releases/download/2.3.0/nothing-bar-2.3.0.zip"
-        length="0"
-        type="application/zip"
-        sparkle:edSignature="TODO_GENERATE_EDDSA_SIGNATURE"
-      />
-    </item>
-  </channel>
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>NothingBar</title>
+        <item>
+            <title>2.3.0</title>
+            <pubDate>Sun, 11 Jan 2026 21:33:17 +0300</pubDate>
+            <sparkle:version>16</sparkle:version>
+            <sparkle:shortVersionString>2.3.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://nothingbar.bestk1ng.com/releases/2.3.0.html</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/bestK1ngArthur/nothing-bar/releases/download/2.3.0/nothing-bar-2.3.0.zip" length="3968753" type="application/octet-stream" sparkle:edSignature="Y+lxtU16JRH8MdxsuLt+BNDjrcpjkMPo2CuhyOQ1LyCnXOuOblRTPYf5XHJHqrwrfxEr57OEG5V2wLwl+Xc4DQ=="/>
+        </item>
+    </channel>
 </rss>
