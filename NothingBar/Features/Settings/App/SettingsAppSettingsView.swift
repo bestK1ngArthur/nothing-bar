@@ -43,32 +43,8 @@ struct SettingsAppSettingsView: View {
                 title: "Check for updates",
                 description: "Current version: \(appData.appVersion.currentVersion)"
             ) {
-                Button {
-                    Task {
-                        await appData.appVersion.checkForUpdatesManually()
-                    }
-                } label: {
-                    if appData.appVersion.isCheckingForUpdates {
-                        ProgressView()
-                            .scaleEffect(0.8)
-                    } else {
-                        Text("Check Now")
-                    }
-                }
-                .disabled(appData.appVersion.isCheckingForUpdates)
-            }
-
-            if appData.appVersion.updateAvailable {
-                SettingsRow(
-                    title: "Update available",
-                    description: "A new version is ready to install."
-                ) {
-                    Button("Install Now") {
-                        Task {
-                            await appData.appVersion.installUpdate()
-                        }
-                    }
-                    .buttonStyle(.borderedProminent)
+                Button("Check Now") {
+                    appData.appVersion.checkForUpdatesManually()
                 }
             }
         }
