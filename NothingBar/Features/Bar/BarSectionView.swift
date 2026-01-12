@@ -25,6 +25,8 @@ struct BarSectionView<Content: View>: View {
                     Text(value)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
+                        .contentTransition(.opacity)
+                        .animation(.easeInOut, value: value)
                 }
             } else {
                 titleView
