@@ -28,26 +28,30 @@ struct BarHeaderView: View {
                     .foregroundColor(.primary)
             }
 
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(spacing: 4) {
-                    Text(deviceState.model?.displayName ?? "Unknown")
-                        .font(.headline)
-                        .foregroundColor(.primary)
-
-                    Circle()
-                        .fill(deviceState.isConnected ? Color.green : Color.red)
-                        .frame(width: 8, height: 8)
-                }
-
-                if let battery = deviceState.battery {
-                    BatteryView(battery: battery)
-                }
-            }
+            titleView
 
             Spacer()
 
             BarSettingsButton()
         }
         .padding(.horizontal, 4)
+    }
+
+    private var titleView: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(deviceState.model?.displayName ?? "Unknown")
+                .font(.headline)
+                .foregroundColor(.primary)
+
+            if deviceState.isConnected {
+                if let battery = deviceState.battery {
+                    BatteryView(battery: battery)
+                }
+            } else {
+                Text("Disconnected")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+        }
     }
 }

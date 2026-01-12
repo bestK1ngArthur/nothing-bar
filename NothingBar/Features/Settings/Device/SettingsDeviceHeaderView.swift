@@ -41,10 +41,6 @@ struct SettingsDeviceHeaderView: View {
 
     private var subtitleView: some View {
         HStack(spacing: 6) {
-            Circle()
-                .fill(deviceState.isConnected ? Color.green : Color.red)
-                .frame(width: 8, height: 8)
-
             Text(deviceState.isConnected ? "Connected" : "Disconnected")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
