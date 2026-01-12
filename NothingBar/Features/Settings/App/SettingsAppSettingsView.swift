@@ -40,10 +40,10 @@ struct SettingsAppSettingsView: View {
             }
 
             SettingsRow(
-                title: "Check for updates",
+                title: appData.appVersion.isUpdateAvailable ? "Update available" : "Check for updates",
                 description: "Current version: \(appData.appVersion.currentVersion)"
             ) {
-                Button("Check Now") {
+                Button(appData.appVersion.isUpdateAvailable ? "Update" : "Check Now") {
                     appData.appVersion.checkForUpdatesManually()
                 }
             }

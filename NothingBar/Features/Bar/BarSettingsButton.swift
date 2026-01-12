@@ -12,14 +12,24 @@ struct BarSettingsButton: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openWindow) private var openWindow
+    @Environment(AppData.self) private var appData
 
     var body: some View {
         Button {
             openFocusedSettings()
         } label: {
-            Image(systemName: "gearshape.fill")
-                .font(.system(size: 14))
-                .foregroundColor(.primary)
+            ZStack(alignment: .topTrailing) {
+                Image(systemName: "gearshape.fill")
+                    .font(.system(size: 14))
+                    .foregroundColor(.primary)
+
+                if appData.appVersion.isUpdateAvailable {
+                    Circle()
+                        .fill(Color.red)
+                        .frame(width: 6, height: 6)
+                        .offset(x: 4, y: -3)
+                }
+            }
         }
         .buttonStyle(HoverButtonStyle())
         .help("Settings")

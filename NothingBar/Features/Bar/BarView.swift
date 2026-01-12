@@ -68,12 +68,4 @@ struct BarView: View {
             }
             .padding(16)
     }
-
-    private var noDeviceView: some View {
-        NoDeviceView()
-            .overlay(alignment: .topTrailing) {
-                BarSettingsButton()
-            }
-            .padding(16)
-    }
 }

@@ -11,7 +11,9 @@ import SwiftUI
 struct SettingsView: View {
 
     @Environment(AppData.self) private var appData
+
     @State private var selectedTab: SettingsTab = .device
+    @State private var didPresentUpdate = false
 
     var body: some View {
         NavigationSplitView(
@@ -20,12 +22,23 @@ struct SettingsView: View {
             detail: { detail }
         )
         .frame(width: 715, height: 470)
+        .onAppear {
+            presentUpdateIfNeeded()
+        }
     }
 
     private var sidebar: some View {
         List(SettingsTab.allCases, id: \.self, selection: $selectedTab) { tab in
             NavigationLink(value: tab) {
-                Label(tab.title, systemImage: tab.icon)
+                HStack(spacing: 6) {
+                    Label(tab.title, systemImage: tab.icon)
+
+                    Spacer()
+
+                    if tab == .app && appData.appVersion.isUpdateAvailable {
+                        updateBadge
+                    }
+                }
             }
         }
         .frame(width: 215)
@@ -52,6 +65,20 @@ struct SettingsView: View {
         }
         .toolbar(removing: .title)
         .frame(maxHeight: .infinity, alignment: .top)
+    }
+
+    private var updateBadge: some View {
+        Circle()
+            .fill(Color.red)
+            .frame(width: 6, height: 6)
+            .padding(.trailing, 4)
+    }
+
+    private func presentUpdateIfNeeded() {
+        guard !didPresentUpdate, appData.appVersion.isUpdateAvailable else { return }
+
+        didPresentUpdate = true
+        appData.appVersion.checkForUpdatesManually()
     }
 }
 

@@ -13,6 +13,7 @@ import SwiftUI
 final class AppVersion {
 
     private let updaterController: SPUStandardUpdaterController
+    private let updaterDelegate: AppUpdateDelegate
 
     var isAutoUpdateEnabled: Bool {
         get { UserDefaults.standard.bool(forKey: "autoUpdateEnabled") }
@@ -22,16 +23,21 @@ final class AppVersion {
         }
     }
 
+    var isUpdateAvailable: Bool = false
+
     var currentVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
     }
 
     init() {
+        let updaterDelegate = AppUpdateDelegate()
+        self.updaterDelegate = updaterDelegate
         self.updaterController = SPUStandardUpdaterController(
             startingUpdater: true,
-            updaterDelegate: nil,
+            updaterDelegate: updaterDelegate,
             userDriverDelegate: nil
         )
+        updaterDelegate.appVersion = self
 
         if !UserDefaults.standard.bool(forKey: "autoUpdateEnabledSet") {
             UserDefaults.standard.set(true, forKey: "autoUpdateEnabled")
@@ -39,6 +45,8 @@ final class AppVersion {
         }
 
         updateUpdaterPreferences()
+        updaterController.startUpdater()
+        updaterController.updater.checkForUpdatesInBackground()
     }
 
     @MainActor
@@ -55,5 +63,22 @@ final class AppVersion {
         let updater = updaterController.updater
         updater.automaticallyChecksForUpdates = isAutoUpdateEnabled
         updater.automaticallyDownloadsUpdates = isAutoUpdateEnabled
+    }
+}
+
+private final class AppUpdateDelegate: NSObject, SPUUpdaterDelegate {
+
+    weak var appVersion: AppVersion?
+
+    func updater(_ updater: SPUUpdater, didFindValidUpdate item: SUAppcastItem) {
+        DispatchQueue.main.async { [weak self] in
+            self?.appVersion?.isUpdateAvailable = true
+        }
+    }
+
+    func updater(_ updater: SPUUpdater, didNotFindUpdate error: Error) {
+        DispatchQueue.main.async { [weak self] in
+            self?.appVersion?.isUpdateAvailable = false
+        }
     }
 }
