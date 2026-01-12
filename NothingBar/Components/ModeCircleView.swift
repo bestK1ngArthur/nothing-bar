@@ -47,7 +47,7 @@ struct ModeCircleView<Overlay: View>: View {
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            .frame(width: 66)
+            .frame(width: 70)
         }
         .buttonStyle(PlainButtonStyle())
     }
