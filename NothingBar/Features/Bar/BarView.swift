@@ -44,25 +44,28 @@ struct BarView: View {
     private func connectedView(model: DeviceModel) -> some View {
         VStack(spacing: 16) {
             if model.supportsNoiseCancellation {
-                divider
+                Divider()
 
                 BarNoiseCancellationView()
             }
 
             if model.supportsSpatialAudio {
-                divider
+                Divider()
 
                 BarSpatialAudioView()
             }
 
-            divider
+            Divider()
 
             BarAudioView()
         }
     }
 
-    private var divider: some View {
-        Divider()
-            .opacity(0.3)
+    private var noDeviceView: some View {
+        NoDeviceView()
+            .overlay(alignment: .topTrailing) {
+                BarSettingsButton()
+            }
+            .padding(16)
     }
 }
