@@ -1,14 +1,13 @@
 //
-//  BarNoDeviceView.swift
+//  NoDeviceView.swift
 //  NothingBar
 //
-//  Created by Artem Belkov on 31.07.2025.
+//  Created by Artem Belkov on 12.01.2026.
 //
 
-import SwiftNothingEar
 import SwiftUI
 
-struct BarNoDeviceView: View {
+struct NoDeviceView: View {
 
     @Environment(AppData.self) var appData
 
@@ -34,10 +33,7 @@ struct BarNoDeviceView: View {
                     .lineSpacing(2)
             }
 
-            Button(action: {
-                // Open Bluetooth settings
-                NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.bluetooth")!)
-            }) {
+            Button(action: openSettings) {
                 HStack(spacing: 6) {
                     Image(systemName: "gear")
                         .font(.system(size: 12, weight: .medium))
@@ -65,9 +61,9 @@ struct BarNoDeviceView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .overlay(alignment: .topTrailing) {
-            BarSettingsButton()
-        }
-        .padding(16)
+    }
+
+    private func openSettings() {
+        NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.bluetooth")!)
     }
 }

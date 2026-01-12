@@ -18,18 +18,29 @@ struct SettingsDeviceView: View {
     var body: some View {
         Form {
             Section {
-                SettingsDeviceHeaderView()
+                header
             }
 
             Section("Settings") {
                 SettingsDeviceToolsView()
             }
+            .disabled(!deviceState.isConnected)
 
             Section("Information") {
                 SettingsDeviceInfoView()
             }
+            .disabled(!deviceState.isConnected)
         }
         .formStyle(.grouped)
         .padding(.top, -20)
+    }
+
+    @ViewBuilder
+    private var header: some View {
+        if deviceState.model != nil {
+            SettingsDeviceHeaderView()
+        } else {
+            NoDeviceView()
+        }
     }
 }

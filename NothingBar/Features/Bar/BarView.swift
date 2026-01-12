@@ -23,7 +23,7 @@ struct BarView: View {
             } else if let model = deviceState.model {
                 deviceView(model: model)
             } else {
-                BarNoDeviceView()
+                noDeviceView
             }
         }
         .frame(width: 320)
@@ -59,6 +59,14 @@ struct BarView: View {
 
             BarAudioView()
         }
+    }
+
+    private var noDeviceView: some View {
+        NoDeviceView()
+            .overlay(alignment: .topTrailing) {
+                BarSettingsButton()
+            }
+            .padding(16)
     }
 
     private var noDeviceView: some View {

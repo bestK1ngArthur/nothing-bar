@@ -17,6 +17,12 @@ struct SettingsDeviceHeaderView: View {
     }
 
     var body: some View {
+        connectedView
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.vertical, 16)
+    }
+
+    private var connectedView: some View {
         VStack(spacing: 16) {
             if let deviceImage = deviceState.model?.deviceImage {
                 DeviceImageView(deviceImage: deviceImage)
@@ -35,8 +41,6 @@ struct SettingsDeviceHeaderView: View {
                 subtitleView
             }
         }
-        .frame(maxWidth: .infinity, alignment: .center)
-        .padding(.vertical, 16)
     }
 
     private var subtitleView: some View {
