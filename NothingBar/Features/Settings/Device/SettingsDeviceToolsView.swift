@@ -28,7 +28,7 @@ struct SettingsDeviceToolsView: View {
         Group {
             SettingsRow(
                 title: "Low lag mode",
-                description: "Minimise latency for an improved gaming experience."
+                description: "Minimise latency for an improved gaming experience"
             ) {
                 Toggle("", isOn: $bindableAppData.deviceState.lowLatency)
                     .onChange(of: deviceState.lowLatency) { _, isEnabled in
@@ -40,7 +40,7 @@ struct SettingsDeviceToolsView: View {
 
             SettingsRow(
                 title: "Over-ear detection",
-                description: "Automatically play audio when headphones are in and pause when removed."
+                description: "Automatically play audio when headphones are in and pause when removed"
             ) {
                 Toggle("", isOn: $bindableAppData.deviceState.inEarDetection)
                     .onChange(of: deviceState.inEarDetection) { _, isEnabled in
@@ -55,7 +55,7 @@ struct SettingsDeviceToolsView: View {
                let ringBuds = deviceState.ringBuds {
                 SettingsRow(
                     title: "Find my headphones",
-                    description: "Trigger a loud sound to find your headphones."
+                    description: "Trigger a loud sound to find your headphones"
                 ) {
                     ringButtons(current: ringBuds)
                         .disabled(!deviceState.isConnected)

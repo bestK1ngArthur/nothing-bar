@@ -18,7 +18,7 @@ struct SettingsAppNotificationsView: View {
         Group {
             SettingsRow(
                 title: "Connection status",
-                description: "Show connect and disconnect notifications."
+                description: "Show connect and disconnect notifications"
             ) {
                 Toggle("", isOn: $showConnectNotifications)
                     .onChange(of: showConnectNotifications) { _, newValue in
@@ -28,7 +28,7 @@ struct SettingsAppNotificationsView: View {
 
             SettingsRow(
                 title: "Battery level",
-                description: "Show 20%, 10%, 5% level notifications."
+                description: "Show 20% / 10% / 5% level notifications"
             ) {
                 Toggle("", isOn: $showBatteryNotifications)
                     .onChange(of: showBatteryNotifications) { _, newValue in

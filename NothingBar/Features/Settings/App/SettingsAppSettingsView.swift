@@ -18,7 +18,7 @@ struct SettingsAppSettingsView: View {
         Group {
             SettingsRow(
                 title: "Launch at login",
-                description: "Automatically start app when you log in to your Mac."
+                description: "Automatically start app when you log in to your Mac"
             ) {
                 Toggle("", isOn: $launchAtLogin)
                     .onChange(of: launchAtLogin) { _, newValue in
@@ -28,7 +28,7 @@ struct SettingsAppSettingsView: View {
 
             SettingsRow(
                 title: "Automatic updates",
-                description: "Automatically download and install app updates in the background."
+                description: "Automatically download and install app updates in the background"
             ) {
                 Toggle(
                     "",
