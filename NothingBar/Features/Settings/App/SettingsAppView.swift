@@ -10,6 +10,8 @@ import SwiftUI
 struct SettingsAppView: View {
 
     @AppStorage("launchAtLogin") private var launchAtLogin = false
+    @Environment(AppData.self) private var appData
+    @State private var showDeviceLogs = false
 
     var body: some View {
         Form {
@@ -25,12 +27,26 @@ struct SettingsAppView: View {
                 SettingsAppSettingsView()
             }
 
+            Section("Developer") {
+                SettingsRow(
+                    title: "Stream device logs",
+                    description: "Open live logs from the library"
+                ) {
+                    Button("Show") {
+                        showDeviceLogs = true
+                    }
+                }
+            }
+
             Section("About") {
                 SettingsAppInfoView()
             }
         }
         .formStyle(.grouped)
         .padding(.top, -20)
+        .sheet(isPresented: $showDeviceLogs) {
+            SettingsDeviceLogsView()
+        }
     }
 
     private var header: some View {

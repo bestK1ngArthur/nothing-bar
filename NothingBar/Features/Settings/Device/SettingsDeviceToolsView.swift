@@ -61,6 +61,7 @@ struct SettingsDeviceToolsView: View {
                         .disabled(!deviceState.isConnected)
                 }
             }
+
         }
         .alert(isPresented: $showRingBudsAlert) {
             Alert(
