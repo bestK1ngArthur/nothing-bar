@@ -86,6 +86,10 @@ private extension SpatialAudioMode {
                 return .spatialAudioTracked
             case .fixed:
                 return .spatialAudioFixed
+            case .concert:
+                return .spatialAudioConcert
+            case .cinema:
+                return .spatialAudioCinema
             case .off:
                 return .spatialAudioOff
         }
