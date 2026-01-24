@@ -23,6 +23,7 @@ class DeviceState {
     var noiseCancellationMode: NoiseCancellationMode?
     var spatialAudioMode: SpatialAudioMode?
     var eqPreset: EQPreset?
+    var eqPresetCustom: EQPresetCustom?
     var enhancedBass: EnhancedBass?
     var ringBuds: RingBuds?
 

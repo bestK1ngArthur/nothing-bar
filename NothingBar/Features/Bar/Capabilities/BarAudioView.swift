@@ -27,7 +27,7 @@ struct BarAudioView: View {
                     .disabled(deviceState.enhancedBass == nil)
             }
 
-            eqView
+            BarAudioEQView()
                 .disabled(deviceState.eqPreset == nil)
         }
     }
@@ -117,50 +117,6 @@ struct BarAudioView: View {
         AppLogger.audio.uiSettingChanged("Enhanced Bass", value: settings.displayValue)
     }
 
-    // MARK: Equalizer
-
-    private var eqView: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Equalizer")
-                    .font(.subheadline)
-                    .foregroundColor(.primary)
-
-                eqPresetMenu(currentPreset: deviceState.eqPreset ?? .balanced)
-                    .fixedSize()
-                    .padding(.leading, -4)
-            }
-
-            Spacer()
-        }
-        .padding(.horizontal, 4)
-    }
-
-    private func eqPresetMenu(currentPreset: EQPreset) -> some View {
-        Menu {
-            ForEach(supportedEqPresets, id: \.self) { preset in
-                Button {
-                    nothing.setEQPreset(preset)
-                    deviceState.eqPreset = preset
-                } label: {
-                    Text(preset.displayName) + (currentPreset == preset ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
-                }
-            }
-        } label: {
-            Text(deviceState.eqPreset?.displayName ?? "Unknown")
-                .font(.footnote)
-                .foregroundColor(.secondary)
-        }
-        .menuStyle(BorderlessButtonMenuStyle())
-    }
-
-    private var supportedEqPresets: [EQPreset] {
-        guard let model = deviceState.model else {
-            return []
-        }
-
-        return EQPreset.allSupported(by: model)
-    }
 }
 
 private extension EnhancedBass {

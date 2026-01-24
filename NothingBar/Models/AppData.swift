@@ -79,6 +79,10 @@ class AppData {
                     }
                     AppLogger.device.deviceStateChanged("EQ Preset", value: eqPreset?.displayName)
                 },
+                onUpdateEQPresetCustom: { [weak self] eqPresetCustom in
+                    self?.deviceState.eqPresetCustom = eqPresetCustom
+                    AppLogger.device.deviceStateChanged("EQ Preset Custom", value: eqPresetCustom)
+                },
                 onUpdateDeviceSettings: { [weak self] settings in
                     self?.deviceState.inEarDetection = settings.inEarDetection
                     self?.deviceState.lowLatency = settings.lowLatency
