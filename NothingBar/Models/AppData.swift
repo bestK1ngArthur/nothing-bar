@@ -11,11 +11,18 @@ import SwiftNothingEar
 @Observable
 class AppData {
 
+    private enum Keys {
+        static let showConnectNotifications = "showNotifications"
+        static let showBatteryNotifications = "showBatteryNotifications"
+        static let notificationStyle = "notificationStyle"
+    }
+
     var deviceState: DeviceState
     var appVersion: AppVersion
 
     var showConnectNotifications: Bool = true
     var showBatteryNotifications: Bool = true
+    var notificationStyle: NotificationStyle = .classic
 
     var nothing: Device!
 
@@ -23,8 +30,14 @@ class AppData {
 
     @MainActor
     init() {
+        let defaults = UserDefaults.standard
         self.deviceState = DeviceState()
         self.appVersion = AppVersion()
+        self.showConnectNotifications = defaults.object(forKey: Keys.showConnectNotifications) as? Bool ?? true
+        self.showBatteryNotifications = defaults.object(forKey: Keys.showBatteryNotifications) as? Bool ?? true
+        self.notificationStyle = NotificationStyle(
+            rawValue: defaults.string(forKey: Keys.notificationStyle) ?? ""
+        ) ?? .classic
         self.nothing = Device(
             .init(
                 onDiscover: { device in
@@ -149,6 +162,22 @@ private extension Battery {
 
             case .single(let battery):
                 battery.level
+        }
+    }
+}
+
+enum NotificationStyle: String, CaseIterable, Identifiable {
+    case classic
+    case apple
+
+    var id: String { rawValue }
+
+    var displayName: String {
+        switch self {
+            case .classic:
+                "Classic"
+            case .apple:
+                "Apple"
         }
     }
 }
