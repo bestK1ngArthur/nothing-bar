@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/bestK1ngArthur/swift-nothing-ear.git",
       "state" : {
-        "revision" : "c3eb5601d49d94964ac6023af739239f874096b5",
-        "version" : "1.6.1"
+        "revision" : "771e99af306dda7d2ffa8b852505cf7ba479b1a8",
+        "version" : "1.7.0"
       }
     }
   ],

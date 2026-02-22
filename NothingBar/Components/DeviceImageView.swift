@@ -89,6 +89,16 @@ extension DeviceModel {
                 .buds(left: .cmfBuds2OrangeLeft, right: .cmfBuds2OrangeRight)
             case .cmfBuds2(.darkGrey):
                 .buds(left: .cmfBuds2BlackLeft, right: .cmfBuds2BlackRight)
+            case .cmfBuds2a(.lightGrey):
+                .buds(left: .cmfBuds2ALightGreyLeft, right: .cmfBuds2ALightGreyRight)
+            case .cmfBuds2a(.orange):
+                .buds(left: .cmfBuds2AOrangeLeft, right: .cmfBuds2AOrangeRight)
+            case .cmfBuds2a(.darkGrey):
+                .buds(left: .cmfBuds2ABlackLeft, right: .cmfBuds2ABlackRight)
+            case .cmfBuds2Plus(.blue):
+                .buds(left: .cmfBuds2PlusBlueLeft, right: .cmfBuds2PlusBlueRight)
+            case .cmfBuds2Plus(.lightGrey):
+                .buds(left: .cmfBuds2PlusLightGreyLeft, right: .cmfBuds2PlusLightGreyRight)
             case .cmfBudsPro2(.black):
                 .buds(left: .cmfBudsPro2BlackLeft, right: .cmfBudsPro2BlackRight)
             case .cmfBudsPro2(.blue):

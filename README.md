@@ -41,7 +41,9 @@ Download .zip archive from [releases](https://github.com/bestK1ngArthur/nothing-
 - 🟡 CMF Buds Pro
 - 🟢 CMF Buds Pro 2
 - 🟡 CMF Buds
+- 🟡 CMF Buds 2a
 - 🟢 CMF Buds 2
+- 🟡 CMF Buds 2 Plus
 - 🟡 CMF Neckband Pro
 - 🟡 CMF Headphone Pro
 
