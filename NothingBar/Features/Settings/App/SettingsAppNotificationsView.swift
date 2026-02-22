@@ -13,7 +13,7 @@ struct SettingsAppNotificationsView: View {
 
     @AppStorage("showNotifications") private var showConnectNotifications = true
     @AppStorage("showBatteryNotifications") private var showBatteryNotifications = true
-    @AppStorage("notificationStyle") private var notificationStyleRawValue = NotificationStyle.classic.rawValue
+    @AppStorage("notificationStyle") private var notificationStyleRawValue = NotificationStyle.defaultValue.rawValue
 
     var body: some View {
         Group {
@@ -37,35 +37,39 @@ struct SettingsAppNotificationsView: View {
                     }
             }
 
-            SettingsRow(
-                title: "Notification style",
-                description: "Choose notification appearance"
-            ) {
-                Picker(
-                    "",
-                    selection: .init(
-                        get: {
-                            NotificationStyle(rawValue: notificationStyleRawValue) ?? .classic
-                        },
-                        set: { newValue in
-                            notificationStyleRawValue = newValue.rawValue
-                            appData.notificationStyle = newValue
-                        }
-                    )
-                ) {
-                    ForEach(NotificationStyle.allCases) { style in
-                        Text(style.displayName)
-                            .tag(style)
-                    }
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Notification style")
+                    .font(.body)
+
+                Text("Choose where and how notifications are shown")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.leading)
+
+                HStack(spacing: 10) {
+                    styleCard(.classic)
+                    styleCard(.apple)
                 }
-                .pickerStyle(.segmented)
-                .frame(width: 150)
             }
         }
         .onAppear {
             appData.showConnectNotifications = showConnectNotifications
             appData.showBatteryNotifications = showBatteryNotifications
-            appData.notificationStyle = NotificationStyle(rawValue: notificationStyleRawValue) ?? .classic
+            appData.notificationStyle = NotificationStyle(rawValue: notificationStyleRawValue) ?? .defaultValue
+        }
+    }
+
+    private var selectedStyle: NotificationStyle {
+        NotificationStyle(rawValue: notificationStyleRawValue) ?? .defaultValue
+    }
+
+    private func styleCard(_ style: NotificationStyle) -> some View {
+        NotificationStyleCard(
+            style: style,
+            isSelected: selectedStyle == style
+        ) {
+            notificationStyleRawValue = style.rawValue
+            appData.notificationStyle = style
         }
     }
 }

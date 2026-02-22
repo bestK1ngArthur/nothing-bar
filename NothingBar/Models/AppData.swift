@@ -22,7 +22,7 @@ class AppData {
 
     var showConnectNotifications: Bool = true
     var showBatteryNotifications: Bool = true
-    var notificationStyle: NotificationStyle = .classic
+    var notificationStyle: NotificationStyle = .defaultValue
 
     var nothing: Device!
 
@@ -37,7 +37,7 @@ class AppData {
         self.showBatteryNotifications = defaults.object(forKey: Keys.showBatteryNotifications) as? Bool ?? true
         self.notificationStyle = NotificationStyle(
             rawValue: defaults.string(forKey: Keys.notificationStyle) ?? ""
-        ) ?? .classic
+        ) ?? .defaultValue
         self.nothing = Device(
             .init(
                 onDiscover: { device in
@@ -171,6 +171,7 @@ enum NotificationStyle: String, CaseIterable, Identifiable {
     case apple
 
     var id: String { rawValue }
+    static let defaultValue: NotificationStyle = .apple
 
     var displayName: String {
         switch self {
@@ -178,6 +179,24 @@ enum NotificationStyle: String, CaseIterable, Identifiable {
                 "Classic"
             case .apple:
                 "Apple"
+        }
+    }
+
+    var descriptionText: String {
+        switch self {
+            case .classic:
+                "Larger, more detailed notification appearance."
+            case .apple:
+                "Compact style similar to native system accessories alerts."
+        }
+    }
+
+    var placementText: String {
+        switch self {
+            case .classic:
+                "Top-right corner of the screen"
+            case .apple:
+                "Under the menu bar item"
         }
     }
 }
