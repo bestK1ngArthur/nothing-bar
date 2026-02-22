@@ -21,7 +21,12 @@ Download .zip archive from [releases](https://github.com/bestK1ngArthur/nothing-
 <img width="500" alt="Screenshot" src="Screenshots/screenshot-settings.png" />
 
 ### Notifications
-<img width="400" alt="Screenshot" src="Screenshots/screenshot-notification.png" />
+
+<img width="500" alt="Screenshot" src="Screenshots/screenshot-notification-setting.png" />
+
+| Classic | Apple |
+| --- | --- |
+| <img width="400" alt="Classic notification screenshot" src="Screenshots/screenshot-notification-classic.png" /> | <img width="400" alt="Apple notification screenshot" src="Screenshots/screenshot-notification-apple.png" /> |
 
 ## Supported Devices
 
