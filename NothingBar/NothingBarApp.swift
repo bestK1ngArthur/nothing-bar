@@ -7,38 +7,59 @@
 
 import AppKit
 import Foundation
-import SwiftNothingEar
 import SwiftUI
 
 @main
 struct NothingBarApp: App {
 
-    @State private var appData = AppData()
+    @Environment(\.openWindow) private var openWindow
+    @NSApplicationDelegateAdaptor(NothingBarApplicationDelegate.self) private var applicationDelegate
 
+    @State private var appData: AppData
+    @State private var statusController: StatusBarController
+    @State private var deviceSearchController: DeviceSearchController
     @State private var isSettingsWindowOpen = false
-    @State private var settingsWindowDelegate: SettingsWindowDelegate?
-    @State private var deviceSearchTimer: Timer?
 
     init() {
-        setupSystemNotifications()
+        let appData = AppData()
+        let statusController = StatusBarController(appData: appData)
+        let deviceSearchController = DeviceSearchController(appData: appData)
+
+        _appData = State(initialValue: appData)
+        _statusController = State(initialValue: statusController)
+        _deviceSearchController = State(initialValue: deviceSearchController)
+
+        appData.onConnectionStateChanged = { [weak appData, weak statusController, weak deviceSearchController] isConnected in
+            guard let appData, let statusController else { return }
+
+            statusController.sync(
+                isConnected: isConnected,
+                hideWhenDisconnected: appData.hideMenuBarWhenDisconnected
+            )
+            deviceSearchController?.updateConnectionState(isConnected: isConnected)
+        }
+
+        appData.onHideMenuPreferenceChanged = { [weak appData, weak statusController] hideWhenDisconnected in
+            guard let appData, let statusController else { return }
+
+            statusController.sync(
+                isConnected: appData.deviceState.isConnected,
+                hideWhenDisconnected: hideWhenDisconnected
+            )
+        }
+
+        statusController.sync(
+            isConnected: appData.deviceState.isConnected,
+            hideWhenDisconnected: appData.hideMenuBarWhenDisconnected
+        )
+
+        DispatchQueue.main.async {
+            NSApp.setActivationPolicy(.accessory)
+        }
     }
 
     var body: some Scene {
-        MenuBarExtra("Nothing Headphones", systemImage: barImage) {
-            BarView()
-                .environment(appData)
-                .task {
-                    startDeviceSearchTimer()
-                }
-        }
-        .menuBarExtraStyle(.window)
-        .onChange(of: appData.deviceState.isConnected) { _, isConnected in
-            if isConnected {
-                stopDeviceSearchTimer()
-            } else {
-                startDeviceSearchTimer()
-            }
-        }
+        let _ = configureRuntimeCallbacks()
 
         Window("Settings", id: "settings") {
             SettingsView()
@@ -57,10 +78,6 @@ struct NothingBarApp: App {
         .windowBackgroundDragBehavior(.enabled)
     }
 
-    private var barImage: String {
-        appData.deviceState.isConnected ? "headphones" : "headphones.slash"
-    }
-
     private func updateDockVisibility() {
         if isSettingsWindowOpen {
             NSApp.setActivationPolicy(.regular)
@@ -69,56 +86,41 @@ struct NothingBarApp: App {
         }
     }
 
-    private func setupSystemNotifications() {
-        NotificationCenter.default.addObserver(
-            forName: NSWorkspace.didWakeNotification,
-            object: nil,
-            queue: .main
-        ) { [self] _ in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                Task { @MainActor in
-                    appData.nothing.checkAndConnectToExistingDevices()
-                }
+    private func configureRuntimeCallbacks() {
+        let openWindow = self.openWindow
+        let statusController = self.statusController
 
-                if !appData.deviceState.isConnected {
-                    startDeviceSearchTimer()
+        if applicationDelegate.onReopenRequested == nil {
+            applicationDelegate.onReopenRequested = {
+                if statusController.isInserted {
+                    statusController.showPopover()
+                } else {
+                    Self.openSettingsWindow(using: openWindow)
                 }
+            }
+        }
+
+        if appData.onOpenSettingsRequested == nil {
+            appData.onOpenSettingsRequested = {
+                statusController.closePopover()
+                Self.openSettingsWindow(using: openWindow)
             }
         }
     }
 
-    private func startDeviceSearchTimer() {
-        stopDeviceSearchTimer()
+    private static func openSettingsWindow(using openWindow: OpenWindowAction) {
+        openWindow(id: "settings")
 
-        guard !appData.deviceState.isConnected else { return }
-
-        deviceSearchTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [self] _ in
-            Task { @MainActor in
-                appData.nothing.checkAndConnectToExistingDevices()
+        DispatchQueue.main.async {
+            guard let window = NSApp.windows.first(where: { $0.title == "Settings" }) else {
+                return
             }
+
+            window.collectionBehavior.insert(.moveToActiveSpace)
+            window.makeKeyAndOrderFront(nil)
+
+            NSApp.setActivationPolicy(.regular)
+            NSApp.activate(ignoringOtherApps: true)
         }
-
-        Task { @MainActor in
-            appData.nothing.checkAndConnectToExistingDevices()
-        }
-    }
-
-    private func stopDeviceSearchTimer() {
-        deviceSearchTimer?.invalidate()
-        deviceSearchTimer = nil
-    }
-}
-
-private class SettingsWindowDelegate: NSObject, NSWindowDelegate {
-
-    private let onClose: () -> Void
-
-    init(onClose: @escaping () -> Void) {
-        self.onClose = onClose
-        super.init()
-    }
-
-    func windowWillClose(_ notification: Notification) {
-        onClose()
     }
 }
