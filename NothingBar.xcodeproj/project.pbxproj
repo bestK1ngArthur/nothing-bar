@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		A50261272F24CF0E00FCE6E1 /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A50261262F24CF0E00FCE6E1 /* SwiftNothingEar */; };
 		A514A7EC2F4B19DE00D059AD /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A514A7EB2F4B19DE00D059AD /* SwiftNothingEar */; };
-		A514A7EF2F4B3ECB00D059AD /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A514A7EE2F4B3ECB00D059AD /* SwiftNothingEar */; };
 		A52A50912EF7E5A6009908D6 /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A52A50902EF7E5A6009908D6 /* SwiftNothingEar */; };
 		A53E4AC22E3BBA46003D6D2A /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A53E4AC12E3BBA46003D6D2A /* SwiftNothingEar */; };
 		A5521C862E96C01700AAB678 /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A5521C852E96C01700AAB678 /* SwiftNothingEar */; };
@@ -20,6 +19,8 @@
 		A5755E002F24CADD00527021 /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A5755DFF2F24CADD00527021 /* SwiftNothingEar */; };
 		A5B386C12E884267005F3C89 /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A5B386C02E884267005F3C89 /* SwiftNothingEar */; };
 		A5D397A12EF2F8AE004B10E4 /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A5D397A02EF2F8AE004B10E4 /* SwiftNothingEar */; };
+		A5FDBDDD2F5C26D90075ED0F /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A5FDBDDC2F5C26D90075ED0F /* SwiftNothingEar */; };
+		A5FDBDE02F5C39E60075ED0F /* SwiftNothingEar in Frameworks */ = {isa = PBXBuildFile; productRef = A5FDBDDF2F5C39E60075ED0F /* SwiftNothingEar */; };
 		A6F1E6C12F8A7B1E00A1B2C3 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = A6F1E6C22F8A7B1E00A1B2C3 /* Sparkle */; };
 /* End PBXBuildFile section */
 
@@ -60,11 +61,12 @@
 				A5755E002F24CADD00527021 /* SwiftNothingEar in Frameworks */,
 				A5755DEE2F240CA500527021 /* SwiftNothingEar in Frameworks */,
 				A5B386C12E884267005F3C89 /* SwiftNothingEar in Frameworks */,
+				A5FDBDE02F5C39E60075ED0F /* SwiftNothingEar in Frameworks */,
 				A50261272F24CF0E00FCE6E1 /* SwiftNothingEar in Frameworks */,
 				A514A7EC2F4B19DE00D059AD /* SwiftNothingEar in Frameworks */,
 				A5D397A12EF2F8AE004B10E4 /* SwiftNothingEar in Frameworks */,
 				A5755DF82F24B33300527021 /* SwiftNothingEar in Frameworks */,
-				A514A7EF2F4B3ECB00D059AD /* SwiftNothingEar in Frameworks */,
+				A5FDBDDD2F5C26D90075ED0F /* SwiftNothingEar in Frameworks */,
 				A561D1862E4CF190003F01E1 /* SwiftNothingEar in Frameworks */,
 				A6F1E6C12F8A7B1E00A1B2C3 /* Sparkle in Frameworks */,
 			);
@@ -122,7 +124,8 @@
 				A5755DFF2F24CADD00527021 /* SwiftNothingEar */,
 				A50261262F24CF0E00FCE6E1 /* SwiftNothingEar */,
 				A514A7EB2F4B19DE00D059AD /* SwiftNothingEar */,
-				A514A7EE2F4B3ECB00D059AD /* SwiftNothingEar */,
+				A5FDBDDC2F5C26D90075ED0F /* SwiftNothingEar */,
+				A5FDBDDF2F5C39E60075ED0F /* SwiftNothingEar */,
 			);
 			productName = NothingBar;
 			productReference = A53E4AB12E3BBA36003D6D2A /* NothingBar.app */;
@@ -154,7 +157,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				A6F1E6C32F8A7B1E00A1B2C3 /* XCRemoteSwiftPackageReference "Sparkle" */,
-				A514A7ED2F4B3ECB00D059AD /* XCRemoteSwiftPackageReference "swift-nothing-ear" */,
+				A5FDBDDE2F5C39E60075ED0F /* XCRemoteSwiftPackageReference "swift-nothing-ear" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A53E4AB22E3BBA36003D6D2A /* Products */;
@@ -318,7 +321,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 19;
-				DEVELOPMENT_TEAM = CT884K7983;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
@@ -369,7 +372,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 19;
-				DEVELOPMENT_TEAM = CT884K7983;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -432,12 +435,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		A514A7ED2F4B3ECB00D059AD /* XCRemoteSwiftPackageReference "swift-nothing-ear" */ = {
+		A5FDBDDE2F5C39E60075ED0F /* XCRemoteSwiftPackageReference "swift-nothing-ear" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/bestK1ngArthur/swift-nothing-ear.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.7.0;
+				minimumVersion = 1.8.0;
 			};
 		};
 		A6F1E6C32F8A7B1E00A1B2C3 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
@@ -457,11 +460,6 @@
 		};
 		A514A7EB2F4B19DE00D059AD /* SwiftNothingEar */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = SwiftNothingEar;
-		};
-		A514A7EE2F4B3ECB00D059AD /* SwiftNothingEar */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A514A7ED2F4B3ECB00D059AD /* XCRemoteSwiftPackageReference "swift-nothing-ear" */;
 			productName = SwiftNothingEar;
 		};
 		A52A50902EF7E5A6009908D6 /* SwiftNothingEar */ = {
@@ -502,6 +500,15 @@
 		};
 		A5D397A02EF2F8AE004B10E4 /* SwiftNothingEar */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = SwiftNothingEar;
+		};
+		A5FDBDDC2F5C26D90075ED0F /* SwiftNothingEar */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftNothingEar;
+		};
+		A5FDBDDF2F5C39E60075ED0F /* SwiftNothingEar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5FDBDDE2F5C39E60075ED0F /* XCRemoteSwiftPackageReference "swift-nothing-ear" */;
 			productName = SwiftNothingEar;
 		};
 		A6F1E6C22F8A7B1E00A1B2C3 /* Sparkle */ = {
