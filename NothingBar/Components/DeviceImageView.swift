@@ -71,6 +71,14 @@ extension DeviceModel {
                 .single(.headphone1Black)
             case .headphone1(.grey):
                 .single(.headphone1Grey)
+            case .headphoneA(.black):
+                .single(.headphoneABlack)
+            case .headphoneA(.white):
+                .single(.headphoneAWhite)
+            case .headphoneA(.yellow):
+                .single(.headphoneAYellow)
+            case .headphoneA(.pink):
+                .single(.headphoneAPink)
             case .cmfBudsPro(.black):
                 .buds(left: .cmfBudsProBlackLeft, right: .cmfBudsProBlackRight)
             case .cmfBudsPro(.orange):

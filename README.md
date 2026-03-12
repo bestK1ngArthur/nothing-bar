@@ -43,6 +43,7 @@ Download .zip archive from [releases](https://github.com/bestK1ngArthur/nothing-
 - 🟡 Nothing Ear
 - 🟢 Nothing Ear (a)
 - 🟢 Nothing Headphone (1)
+- 🟡 Nothing Headphone (a)
 - 🟡 CMF Buds Pro
 - 🟢 CMF Buds Pro 2
 - 🟡 CMF Buds
