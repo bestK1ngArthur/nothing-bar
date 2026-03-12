@@ -15,6 +15,7 @@ class AppData {
         static let showConnectNotifications = "showNotifications"
         static let showBatteryNotifications = "showBatteryNotifications"
         static let notificationStyle = "notificationStyle"
+        static let hideMenuBarWhenDisconnected = "hideMenuBarWhenDisconnected"
     }
 
     var deviceState: DeviceState
@@ -23,6 +24,19 @@ class AppData {
     var showConnectNotifications: Bool = true
     var showBatteryNotifications: Bool = true
     var notificationStyle: NotificationStyle = .defaultValue
+    var hideMenuBarWhenDisconnected: Bool = false {
+        didSet {
+            UserDefaults.standard.set(hideMenuBarWhenDisconnected, forKey: Keys.hideMenuBarWhenDisconnected)
+            onHideMenuPreferenceChanged?(hideMenuBarWhenDisconnected)
+        }
+    }
+
+    @ObservationIgnored
+    var onConnectionStateChanged: ((Bool) -> Void)?
+    @ObservationIgnored
+    var onHideMenuPreferenceChanged: ((Bool) -> Void)?
+    @ObservationIgnored
+    var onOpenSettingsRequested: (() -> Void)?
 
     var nothing: Device!
 
@@ -38,6 +52,7 @@ class AppData {
         self.notificationStyle = NotificationStyle(
             rawValue: defaults.string(forKey: Keys.notificationStyle) ?? ""
         ) ?? .defaultValue
+        self.hideMenuBarWhenDisconnected = defaults.object(forKey: Keys.hideMenuBarWhenDisconnected) as? Bool ?? false
         self.nothing = Device(
             .init(
                 onDiscover: { device in
@@ -45,6 +60,9 @@ class AppData {
                 },
                 onConnect: { [weak self] result in
                     self?.deviceState.isConnected = true
+                    Task { @MainActor in
+                        self?.onConnectionStateChanged?(true)
+                    }
 
                     if case let .success(deviceInfo) = result {
                         self?.deviceState.bluetoothError = nil
@@ -60,6 +78,9 @@ class AppData {
                 },
                 onDisconnect: { [weak self] result in
                     self?.deviceState.isConnected = false
+                    Task { @MainActor in
+                        self?.onConnectionStateChanged?(false)
+                    }
                     self?.showNotification()
 
                     AppLogger.connection.connectionChanged(false, result: "\(result)")

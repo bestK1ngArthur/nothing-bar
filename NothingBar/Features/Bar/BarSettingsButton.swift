@@ -10,8 +10,6 @@ import SwiftUI
 
 struct BarSettingsButton: View {
 
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.openWindow) private var openWindow
     @Environment(AppData.self) private var appData
 
     var body: some View {
@@ -51,18 +49,7 @@ struct BarSettingsButton: View {
     }
 
     private func openFocusedSettings() {
-        dismiss()
-        openWindow(id: "settings")
-
-        guard let window = NSApp.windows.first(where: { $0.title == "Settings" }) else {
-            return
-        }
-
-        window.collectionBehavior.insert(.moveToActiveSpace)
-        window.makeKeyAndOrderFront(nil)
-
-        NSApp.setActivationPolicy(.regular)
-        NSApp.activate(ignoringOtherApps: true)
+        appData.onOpenSettingsRequested?()
     }
 
     private func quitApp() {

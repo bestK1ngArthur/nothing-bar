@@ -13,6 +13,7 @@ struct SettingsAppSettingsView: View {
     @Environment(AppData.self) private var appData
 
     @AppStorage("launchAtLogin") private var launchAtLogin = false
+    @AppStorage("hideMenuBarWhenDisconnected") private var hideMenuBarWhenDisconnected = false
 
     var body: some View {
         Group {
@@ -40,6 +41,16 @@ struct SettingsAppSettingsView: View {
             }
 
             SettingsRow(
+                title: "Hide bar item when disconnected",
+                description: "Hide app icon from menu bar when no headphones are connected"
+            ) {
+                Toggle("", isOn: $hideMenuBarWhenDisconnected)
+                    .onChange(of: hideMenuBarWhenDisconnected) { _, newValue in
+                        appData.hideMenuBarWhenDisconnected = newValue
+                    }
+            }
+
+            SettingsRow(
                 title: appData.appVersion.isUpdateAvailable ? "Update available" : "Check for updates",
                 description: "Current version: \(appData.appVersion.currentVersion)"
             ) {
@@ -50,6 +61,7 @@ struct SettingsAppSettingsView: View {
         }
         .onAppear {
             updateLaunchAtLoginState()
+            appData.hideMenuBarWhenDisconnected = hideMenuBarWhenDisconnected
         }
     }
 
