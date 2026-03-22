@@ -2,7 +2,7 @@
 
 > It's unofficial software and not affilated with Nothing ([legal](#legal-disclaimer))
 
-Native macOS menu bar app to control Nothing headphones.
+Native macOS menu bar app to control Nothing headphones.</br>Completely local, fully native, no analytics, entirely free. Feel free to contribute.
 
 Special credits to:
 
@@ -10,7 +10,7 @@ Special credits to:
 
 ## Installation
 
-Download .zip archive from [releases](https://github.com/bestK1ngArthur/nothing-bar/releases) and drag `NothingBar.app` to `/Applications` folder.
+Download .zip archive from [releases](https://github.com/bestK1ngArthur/nothing-bar/releases) and drag `NothingBar.app` to `/Applications` folder. The app updates automatically through the [Sparkle](https://sparkle-project.org/), you can manage this in the app settings.
 
 ## Screenshots
 
@@ -52,6 +52,22 @@ Download .zip archive from [releases](https://github.com/bestK1ngArthur/nothing-
 - 🟡 CMF Buds 2 Plus
 - 🟡 CMF Neckband Pro
 - 🟡 CMF Headphone Pro
+
+> [!TIP]
+> If nothing happens when connecting the headphones, please check the **Bluetooth device name**. It's better if it matches the factory name (or a suitable model from the list above). Some models can be automatically detected by serial number, but not all.
+
+## How to Contribute
+
+1. Fork the repository.
+2. Implement a new feature, fix a bug, or make any changes you'd like. You can use AI agents or any tools you prefer to help with coding, but please review and test your code manually before submitting.
+3. Create a pull request describing what you've done and why it should be merged into the app. I'll review the changes, which may take some time. I may also ask you to make some modifications. In rare cases, I might decline the pull request with an explanation.
+4. After merging, once enough changes have accumulated for a release, I'll build an update and make it available to all users.
+5. Thank you for your contribution — you're awesome!
+
+> [!NOTE]
+> If you want to modify the headphone interaction functionality, you should make those changes in the [swift-nothing-ear](https://github.com/bestK1ngArthur/swift-nothing-ear) package.
+
+If you can't code but have ideas on how to improve the app, please [create an issue](https://github.com/bestK1ngArthur/nothing-bar/issues/new/choose) and describe your idea, bug report, or any other needed change. I'll do my best to implement the necessary functionality in my spare time.
 
 ## Future Features
 
