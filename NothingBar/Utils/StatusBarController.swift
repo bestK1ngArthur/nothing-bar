@@ -194,6 +194,7 @@ final class StatusBarController: NSObject {
         guard statusItem == nil else { return }
 
         let newStatusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+        newStatusItem.autosaveName = "NothingBarStatusItem"
         newStatusItem.button?.target = self
         newStatusItem.button?.action = #selector(togglePopover(_:))
         newStatusItem.button?.imagePosition = .imageOnly
