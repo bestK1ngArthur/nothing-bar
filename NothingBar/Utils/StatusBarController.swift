@@ -13,6 +13,10 @@ final class StatusBarController: NSObject {
     private var localEventMonitor: Any?
     private var globalEventMonitor: Any?
 
+    private static let autosaveName = "NothingBarStatusItem"
+    private static let positionKey = "NSStatusItem Preferred Position \(autosaveName)"
+    private static let savedPositionKey = "NothingBarStatusItemSavedPosition"
+
     var isInserted: Bool {
         statusItem != nil
     }
@@ -40,17 +44,37 @@ final class StatusBarController: NSObject {
     }
 
     func sync(isConnected: Bool, hideWhenDisconnected: Bool) {
-        let shouldInsert = !hideWhenDisconnected || isConnected
+        let shouldShow = !hideWhenDisconnected || isConnected
 
-        guard shouldInsert else {
+        guard shouldShow else {
             closePopover()
+            saveStatusItemPosition()
             removeStatusItem()
             return
         }
 
+        restoreStatusItemPosition()
         insertStatusItemIfNeeded()
         updateStatusImage(isConnected: isConnected)
         updatePanelFrame()
+    }
+
+    private func saveStatusItemPosition() {
+        let position = UserDefaults.standard.double(forKey: Self.positionKey)
+        guard position > 0 else { return }
+        UserDefaults.standard.set(position, forKey: Self.savedPositionKey)
+    }
+
+    private func restoreStatusItemPosition() {
+        let saved = UserDefaults.standard.double(forKey: Self.savedPositionKey)
+        guard saved > 0 else { return }
+        UserDefaults.standard.set(saved, forKey: Self.positionKey)
+    }
+
+    private func removeStatusItem() {
+        guard let statusItem else { return }
+        NSStatusBar.system.removeStatusItem(statusItem)
+        self.statusItem = nil
     }
 
     func showPopover() {
@@ -200,13 +224,6 @@ final class StatusBarController: NSObject {
         newStatusItem.button?.imagePosition = .imageOnly
 
         statusItem = newStatusItem
-    }
-
-    private func removeStatusItem() {
-        guard let statusItem else { return }
-
-        NSStatusBar.system.removeStatusItem(statusItem)
-        self.statusItem = nil
     }
 
     private func updateStatusImage(isConnected: Bool) {
