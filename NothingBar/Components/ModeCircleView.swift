@@ -50,6 +50,7 @@ struct ModeCircleView<Overlay: View>: View {
             .frame(width: 70)
         }
         .buttonStyle(PlainButtonStyle())
+        .focusable(false)
     }
 
     private var circleView: some View {

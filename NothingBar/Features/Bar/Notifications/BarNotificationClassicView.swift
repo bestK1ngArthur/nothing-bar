@@ -20,7 +20,7 @@ struct BarNotificationClassicView: View {
         HStack(spacing: 12) {
             if let deviceImage = deviceState.model?.deviceImage {
                 DeviceImageView(deviceImage: deviceImage)
-                    .frame(height: 32)
+                    .frame(height: 42)
             }
 
             VStack(alignment: .leading, spacing: 2) {

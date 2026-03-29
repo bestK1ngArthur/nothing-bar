@@ -20,6 +20,7 @@ class AppData {
 
     var deviceState: DeviceState
     var appVersion: AppVersion
+    var systemVolumeController: SystemVolumeController
 
     var showConnectNotifications: Bool = true
     var showBatteryNotifications: Bool = true
@@ -41,12 +42,15 @@ class AppData {
     var nothing: Device!
 
     private let batteryLowLevels = [20, 10, 5]
+    private var lastNotificationTime: Date = Date(timeIntervalSince1970: 0)
+    private let notificationDebounceInterval: TimeInterval = 0.3
 
     @MainActor
     init() {
         let defaults = UserDefaults.standard
         self.deviceState = DeviceState()
         self.appVersion = AppVersion()
+        self.systemVolumeController = SystemVolumeController()
         self.showConnectNotifications = defaults.object(forKey: Keys.showConnectNotifications) as? Bool ?? true
         self.showBatteryNotifications = defaults.object(forKey: Keys.showBatteryNotifications) as? Bool ?? true
         self.notificationStyle = NotificationStyle(
@@ -151,6 +155,8 @@ class AppData {
 
     @MainActor
     private func showBatteryLevelNotification(_ battery: Battery?) {
+        // Don't show battery notifications if device is disconnected
+        guard deviceState.isConnected else { return }
         guard showBatteryNotifications, let battery else { return }
 
         let needNotification = if let oldLevel = deviceState.battery?.level {
@@ -162,6 +168,10 @@ class AppData {
         }
 
         if needNotification {
+            let now = Date()
+            guard now.timeIntervalSince(lastNotificationTime) >= notificationDebounceInterval else { return }
+            
+            lastNotificationTime = now
             BarNotificationCenter.shared.show(with: self)
         }
     }
@@ -169,7 +179,11 @@ class AppData {
     @MainActor
     private func showNotification() {
         guard showConnectNotifications else { return }
-
+        
+        let now = Date()
+        guard now.timeIntervalSince(lastNotificationTime) >= notificationDebounceInterval else { return }
+        
+        lastNotificationTime = now
         BarNotificationCenter.shared.show(with: self)
     }
 }

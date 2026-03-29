@@ -50,8 +50,8 @@ final class BarNotificationCenter {
     private var entries: [NotificationEntry] = []
 
     private let hMargin: CGFloat = 16
-    private let classicTopMargin: CGFloat = 40
-    private let appleTopMargin: CGFloat = 8
+    private let classicTopMargin: CGFloat = 60
+    private let appleTopMargin: CGFloat = 24
     private let spacing: CGFloat = 10
 
     func show(with appData: AppData, duration: TimeInterval = 3.0, screen: NSScreen? = nil) {
@@ -60,7 +60,7 @@ final class BarNotificationCenter {
         let host = NSHostingView(rootView: view)
         host.translatesAutoresizingMaskIntoConstraints = false
         let panel = BarNotificationWindow(host: host)
-        panel.alphaValue = 0
+        panel.alphaValue = 1
 
         host.layoutSubtreeIfNeeded()
         let size = host.fittingSize
@@ -73,17 +73,20 @@ final class BarNotificationCenter {
             stackHeight: currentStackHeight(on: scr, style: style)
         )
 
+        // Start slightly higher than final position
+        let startOrigin = NSPoint(x: origin.x, y: origin.y + 20)
         panel.setFrame(
-            NSRect(x: origin.x, y: origin.y, width: size.width, height: size.height),
+            NSRect(x: startOrigin.x, y: startOrigin.y, width: size.width, height: size.height),
             display: true
         )
         panel.orderFrontRegardless()
 
+        // Animate sliding down from top with fade in
         NSAnimationContext.runAnimationGroup { ctx in
-            ctx.duration = 0.18
+            ctx.duration = 0.3
             ctx.timingFunction = .init(name: .easeOut)
             panel.animator().alphaValue = 1
-            panel.setFrameOrigin(origin)
+            panel.animator().setFrameOrigin(origin)
         }
 
         entries.append(.init(panel: panel, style: style))
@@ -102,11 +105,14 @@ final class BarNotificationCenter {
 
     private func dismiss(_ panel: BarNotificationWindow) {
         guard let idx = entries.firstIndex(where: { $0.panel === panel }) else { return }
+        
+        let exitOrigin = NSPoint(x: panel.frame.origin.x, y: panel.frame.origin.y + 20)
+        
         NSAnimationContext.runAnimationGroup { ctx in
-            ctx.duration = 0.18
+            ctx.duration = 0.3
             ctx.timingFunction = .init(name: .easeIn)
-            panel.animator().alphaValue = 0
-            panel.setFrameOrigin(NSPoint(x: panel.frame.origin.x, y: panel.frame.origin.y))
+            panel.animator().alphaValue = 0.7
+            panel.animator().setFrameOrigin(exitOrigin)
         } completionHandler: {
             panel.orderOut(nil)
             panel.close()

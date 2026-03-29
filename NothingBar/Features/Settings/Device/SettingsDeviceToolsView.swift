@@ -39,13 +39,13 @@ struct SettingsDeviceToolsView: View {
             }
 
             SettingsRow(
-                title: "Over-ear detection",
+                title: detectionTitle,
                 description: "Automatically play audio when headphones are in and pause when removed"
             ) {
                 Toggle("", isOn: $bindableAppData.deviceState.inEarDetection)
                     .onChange(of: deviceState.inEarDetection) { _, isEnabled in
                         nothing.setInEarDetection(isEnabled)
-                        AppLogger.settings.uiSettingChanged("Over-ear Detection", value: isEnabled)
+                        AppLogger.settings.uiSettingChanged(detectionTitle, value: isEnabled)
                     }
                     .disabled(!deviceState.isConnected)
             }
@@ -113,6 +113,20 @@ struct SettingsDeviceToolsView: View {
     private func setRingBuds(_ ringBuds: RingBuds) {
         deviceState.ringBuds = ringBuds
         nothing.setRingBuds(ringBuds)
+    }
+
+    private var detectionTitle: String {
+        guard let model = deviceState.model else {
+            return "Detection"
+        }
+        
+        // Check if it's a headphone (over-ear) or earbuds (in-ear)
+        switch model {
+            case .headphone1, .headphoneA:
+                return "Over-ear detection"
+            default:
+                return "In-ear detection"
+        }
     }
 }
 

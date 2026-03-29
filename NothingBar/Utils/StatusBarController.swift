@@ -1,4 +1,5 @@
 import AppKit
+import SwiftNothingEar
 import SwiftUI
 
 @MainActor
@@ -55,7 +56,7 @@ final class StatusBarController: NSObject {
 
         restoreStatusItemPosition()
         insertStatusItemIfNeeded()
-        updateStatusImage(isConnected: isConnected)
+        updateStatusImage(isConnected: isConnected, model: appData.deviceState.model)
         updatePanelFrame()
     }
 
@@ -226,13 +227,74 @@ final class StatusBarController: NSObject {
         statusItem = newStatusItem
     }
 
-    private func updateStatusImage(isConnected: Bool) {
+    private func updateStatusImage(isConnected: Bool, model: DeviceModel?) {
         guard let button = statusItem?.button else { return }
 
-        let symbolName = isConnected ? "headphones" : "headphones.slash"
-        let image = NSImage(systemSymbolName: symbolName, accessibilityDescription: "Nothing Headphones")
-        image?.isTemplate = true
-        button.image = image
+        if isConnected, let deviceImage = model?.deviceImage {
+            let size = NSSize(width: 36, height: 18)
+            if let nsImage = renderDeviceImageToNSImage(deviceImage, size: size) {
+                button.image = nsImage
+                return
+            }
+        }
+        
+        if isConnected {
+            let symbolName = "headphones"
+            let image = NSImage(systemSymbolName: symbolName, accessibilityDescription: "Nothing Headphones")
+            image?.isTemplate = true
+            button.image = image
+        } else {
+            let symbolName = "headphones.slash"
+            let image = NSImage(systemSymbolName: symbolName, accessibilityDescription: "Nothing Headphones Disconnected")
+            image?.isTemplate = true
+            button.image = image
+        }
+    }
+
+    private func renderDeviceImageToNSImage(_ deviceImage: DeviceModel.DeviceImage, size: NSSize) -> NSImage? {
+        let contentView: AnyView = switch deviceImage {
+            case .buds(let left, let right):
+                AnyView(
+                    HStack(spacing: 0) {
+                        Image(left)
+                            .resizable()
+                            .interpolation(.high)
+                            .aspectRatio(contentMode: .fit)
+                        Image(right)
+                            .resizable()
+                            .interpolation(.high)
+                            .aspectRatio(contentMode: .fit)
+                    }
+                )
+            case .single(let image):
+                AnyView(
+                    Image(image)
+                        .resizable()
+                        .interpolation(.high)
+                        .aspectRatio(contentMode: .fit)
+                )
+        }
+        
+        return renderSwiftUIImageToNSImage(contentView, size: size)
+    }
+
+    private func renderSwiftUIImageToNSImage(_ view: AnyView, size: NSSize) -> NSImage? {
+        let hostingController = NSHostingController(rootView: view
+            .frame(width: size.width, height: size.height)
+        )
+        
+        let nsView = hostingController.view
+        nsView.frame.size = size
+        
+        guard let bitmapImage = nsView.bitmapImageRepForCachingDisplay(in: nsView.bounds) else {
+            return nil
+        }
+        
+        nsView.cacheDisplay(in: nsView.bounds, to: bitmapImage)
+        
+        let nsImage = NSImage(size: size)
+        nsImage.addRepresentation(bitmapImage)
+        return nsImage
     }
 }
 

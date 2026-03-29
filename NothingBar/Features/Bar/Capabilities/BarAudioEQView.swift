@@ -54,18 +54,6 @@ struct BarAudioEQView: View {
         .animation(.easeInOut, value: deviceState.eqPresetCustom)
     }
 
-    private var header: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("Equalizer")
-                .font(.subheadline)
-                .foregroundColor(.primary)
-
-            eqPresetMenu(currentPreset: deviceState.eqPreset ?? .balanced)
-                .fixedSize()
-                .padding(.leading, -4)
-        }
-    }
-
     private var eqCustomControls: some View {
         VStack(alignment: .trailing, spacing: 8) {
             HStack(spacing: 8) {
@@ -182,6 +170,7 @@ struct BarAudioEQView: View {
                 } label: {
                     Text(preset.displayName) + (currentPreset == preset ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
                 }
+                .focusable(false)
             }
         } label: {
             Text(deviceState.eqPreset?.displayName ?? "Unknown")
@@ -189,6 +178,7 @@ struct BarAudioEQView: View {
                 .foregroundColor(.secondary)
         }
         .menuStyle(BorderlessButtonMenuStyle())
+        .focusable(false)
     }
 
     private var supportedEqPresets: [EQPreset] {

@@ -30,6 +30,7 @@ struct BarSettingsButton: View {
             }
         }
         .buttonStyle(HoverButtonStyle())
+        .focusable(false)
         .help("Settings")
         .contextMenu {
             Button {

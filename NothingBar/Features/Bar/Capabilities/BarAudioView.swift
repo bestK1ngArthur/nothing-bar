@@ -22,6 +22,8 @@ struct BarAudioView: View {
 
     var body: some View {
         VStack(spacing: 12) {
+            volumeView
+            
             if let model = deviceState.model, model.supportsEnhancedBass {
                 enhancedBassView
                     .disabled(deviceState.enhancedBass == nil)
@@ -32,66 +34,85 @@ struct BarAudioView: View {
         }
     }
 
-    // MARK: Enhanced Bass
+    // MARK: Volume Control
+
+    private var volumeView: some View {
+        BarSectionView(
+            title: "Volume",
+            value: volumeValue
+        ) {
+            HStack(spacing: 8) {
+                Image(systemName: "speaker.fill")
+                    .font(.system(size: 12))
+                    .foregroundColor(.secondary)
+                
+                Slider(
+                    value: Binding(
+                        get: { appData.systemVolumeController.volume },
+                        set: { appData.systemVolumeController.volume = $0 }
+                    ),
+                    in: 0...1,
+                    step: 0.01
+                )
+                .tint(.accentColor)
+                
+                Image(systemName: "speaker.wave.3")
+                    .font(.system(size: 12))
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+    
+    private var volumeValue: String {
+        "\(Int(appData.systemVolumeController.volume * 100))%"
+    }
 
     private var enhancedBassView: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Bass Enhancement")
-                    .font(.subheadline)
-                    .foregroundColor(.primary)
-
-                if let enhancedBass = deviceState.enhancedBass, enhancedBass.isEnabled {
-                    enhancedBassMenu(currentLevel: enhancedBass.level)
-                        .fixedSize()
-                        .padding(.leading, -4)
-                } else {
+        BarSectionView(
+            title: bassTitle,
+            value: enhancedBassValue
+        ) {
+            VStack(alignment: .center, spacing: 8) {
+                HStack(spacing: 8) {
                     Text("Off")
-                        .font(.footnote)
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                    
+                    Slider(
+                        value: .init(
+                            get: {
+                                Double(deviceState.enhancedBass?.isEnabled ?? false ? deviceState.enhancedBass?.level ?? 1 : 0)
+                            },
+                            set: { newValue in
+                                let level = Int(newValue)
+                                if level == 0 {
+                                    let settings = EnhancedBass(isEnabled: false, level: 1)
+                                    setEnhancedBassSettings(settings)
+                                } else {
+                                    let settings = EnhancedBass(isEnabled: true, level: level)
+                                    setEnhancedBassSettings(settings)
+                                }
+                            }
+                        ),
+                        in: 0...5,
+                        step: 1
+                    )
+                    .tint(.accentColor)
+                    
+                    Text("Lv5")
+                        .font(.caption2)
                         .foregroundColor(.secondary)
                 }
             }
-
-            Spacer()
-
-            Toggle(
-                "",
-                isOn: .init(
-                    get: {
-                        deviceState.enhancedBass?.isEnabled ?? false
-                    },
-                    set: { isEnabled in
-                        let settings = EnhancedBass(
-                            isEnabled: isEnabled,
-                            level: deviceState.enhancedBass?.level ?? 1
-                        )
-                        setEnhancedBassSettings(settings)
-                    }
-                )
-            )
-            .toggleStyle(.switch)
-            .padding(.trailing, -8)
-            .scaleEffect(0.8)
+            .disabled(deviceState.enhancedBass == nil)
         }
-        .padding(.horizontal, 4)
     }
-
-    private func enhancedBassMenu(currentLevel: Int) -> some View {
-        Menu {
-            ForEach(1...5, id: \.self) { level in
-                Button {
-                    let settings = EnhancedBass(isEnabled: true, level: level)
-                    setEnhancedBassSettings(settings)
-                } label: {
-                    Text("Level \(level)") + (currentLevel == level ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
-                }
-            }
-        } label: {
-            Text(deviceState.enhancedBass?.displayValue ?? "Unknown")
-                .font(.footnote)
-                .foregroundColor(.secondary)
+    
+    private var enhancedBassValue: String {
+        guard let enhancedBass = deviceState.enhancedBass else {
+            return "N/A"
         }
-        .menuStyle(BorderlessButtonMenuStyle())
+        return enhancedBass.isEnabled ? "Level \(enhancedBass.level)" : "Off"
     }
 
     private var isCompatibleWithSpatialAudio: Bool {
@@ -115,6 +136,20 @@ struct BarAudioView: View {
         deviceState.enhancedBass = settings
 
         AppLogger.audio.uiSettingChanged("Enhanced Bass", value: settings.displayValue)
+    }
+
+    private var bassTitle: String {
+        guard let model = deviceState.model else {
+            return "Bass Enhancement"
+        }
+        
+        // Check if it's a headphone (over-ear) or earbuds (in-ear)
+        switch model {
+            case .headphone1, .headphoneA:
+                return "Bass Enhancement"
+            default:
+                return "Ultra Bass"
+        }
     }
 
 }

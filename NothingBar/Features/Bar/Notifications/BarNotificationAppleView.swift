@@ -12,7 +12,7 @@ struct BarNotificationAppleView: View {
 
     @Environment(AppData.self) private var appData
 
-    private let iconSize = 28.0
+    private let iconSize = 36.0
 
     private var deviceState: DeviceState {
         appData.deviceState

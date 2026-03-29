@@ -25,9 +25,28 @@ struct BarNoiseCancellationView: View {
             title: "Noise Cancellation",
             value: value
         ) {
-            HStack(alignment: .top, spacing: 8) {
-                ForEach(NoiseCancellationMode.allCases, id: \.self) { mode in
-                    noiseCancellationItem(mode)
+            VStack(alignment: .center, spacing: 12) {
+                // Main ANC modes as circles
+                HStack(alignment: .top, spacing: 8) {
+                    ForEach(NoiseCancellationMode.allCases, id: \.self) { mode in
+                        noiseCancellationItem(mode)
+                    }
+                }
+                
+                // Sub-levels for active mode with labels
+                if case .active(let activeMode) = currentMode {
+                    VStack(alignment: .center, spacing: 6) {
+                        HStack(spacing: 12) {
+                            ForEach(NoiseCancellationMode.Active.allCases, id: \.self) { level in
+                                VStack(spacing: 4) {
+                                    levelPill(level, isSelected: activeMode == level)
+                                    Text(level.displayName)
+                                        .font(.caption2)
+                                        .foregroundColor(.secondary)
+                                }
+                            }
+                        }
+                    }
                 }
             }
             .disabled(deviceState.noiseCancellationMode == nil)
@@ -40,40 +59,23 @@ struct BarNoiseCancellationView: View {
         ModeCircleView(
             image: mode.imageName,
             name: mode.displayName,
-            isActive: isActive
-        ) {
-            nothing.setNoiseCancellationMode(mode)
-            AppLogger.audio.uiSettingChanged("Noise Cancellation", value: mode)
-        } overlay: {
-            if case .active(let activeMode) = currentMode, isActive {
-                AnyView(noiseCancellationMenu(currentMode: activeMode))
-            } else {
-                AnyView(EmptyView())
-            }
-        }
+            isActive: isActive,
+            onTap: {
+                nothing.setNoiseCancellationMode(mode)
+                AppLogger.audio.uiSettingChanged("Noise Cancellation", value: mode)
+            },
+            overlay: { EmptyView() }
+        )
     }
-
-    private func noiseCancellationMenu(currentMode: NoiseCancellationMode.Active) -> some View {
-        Menu {
-            ForEach(NoiseCancellationMode.Active.allCases, id: \.self) { mode in
-                Button {
-                    nothing.setNoiseCancellationMode(.active(mode))
-                } label: {
-                    Text(mode.displayName) + (currentMode == mode ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
-                }
+    
+    @ViewBuilder
+    private func levelPill(_ level: NoiseCancellationMode.Active, isSelected: Bool) -> some View {
+        RoundedRectangle(cornerRadius: 3)
+            .fill(isSelected ? Color.accentColor : Color.white.opacity(0.3))
+            .frame(height: 6)
+            .onTapGesture {
+                nothing.setNoiseCancellationMode(.active(level))
             }
-        } label: {
-            ZStack {
-                Circle()
-                    .fill(Color.gray)
-                    .frame(width: 20, height: 20)
-
-                Image(systemName: "chevron.down")
-                    .font(.caption)
-                    .foregroundColor(.white)
-                    .padding(8)
-            }
-        }
     }
 
     private var value: String {
