@@ -60,7 +60,7 @@ final class BarNotificationCenter {
         let host = NSHostingView(rootView: view)
         host.translatesAutoresizingMaskIntoConstraints = false
         let panel = BarNotificationWindow(host: host)
-        panel.alphaValue = 1
+        panel.alphaValue = 0
 
         host.layoutSubtreeIfNeeded()
         let size = host.fittingSize
@@ -111,7 +111,7 @@ final class BarNotificationCenter {
         NSAnimationContext.runAnimationGroup { ctx in
             ctx.duration = 0.3
             ctx.timingFunction = .init(name: .easeIn)
-            panel.animator().alphaValue = 0.7
+            panel.animator().alphaValue = 0
             panel.animator().setFrameOrigin(exitOrigin)
         } completionHandler: {
             panel.orderOut(nil)

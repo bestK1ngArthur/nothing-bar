@@ -70,12 +70,14 @@ struct BarNoiseCancellationView: View {
     
     @ViewBuilder
     private func levelPill(_ level: NoiseCancellationMode.Active, isSelected: Bool) -> some View {
-        RoundedRectangle(cornerRadius: 3)
-            .fill(isSelected ? Color.accentColor : Color.white.opacity(0.3))
-            .frame(height: 6)
-            .onTapGesture {
-                nothing.setNoiseCancellationMode(.active(level))
-            }
+        Button {
+            nothing.setNoiseCancellationMode(.active(level))
+        } label: {
+            RoundedRectangle(cornerRadius: 3)
+                .fill(isSelected ? Color.accentColor : Color.white.opacity(0.3))
+                .frame(height: 6)
+        }
+        .buttonStyle(.plain)
     }
 
     private var value: String {
