@@ -11,6 +11,7 @@ import SwiftUI
 struct BarNotificationClassicView: View {
 
     @Environment(AppData.self) private var appData
+    private let iconSize = 36.0
 
     private var deviceState: DeviceState {
         appData.deviceState
@@ -20,37 +21,48 @@ struct BarNotificationClassicView: View {
         HStack(spacing: 12) {
             if let deviceImage = deviceState.model?.deviceImage {
                 DeviceImageView(deviceImage: deviceImage)
-                    .frame(height: 32)
+                    .frame(width: iconSize, height: iconSize)
             }
 
             VStack(alignment: .leading, spacing: 2) {
                 if let displayName = deviceState.model?.displayName {
                     Text(displayName)
-                        .font(.headline)
+                        .font(.system(size: 12, weight: .medium))
                         .foregroundColor(.primary)
+                        .multilineTextAlignment(.leading)
                 }
 
                 Text(deviceState.isConnected ? "Connected" : "Disconnected")
-                    .font(.body)
+                    .font(.system(size: 11, weight: .regular))
                     .foregroundColor(.secondary)
             }
-            .frame(maxWidth: 200)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .layoutPriority(1)
 
             BarNotificationRingView(
                 progress: batteryProgress,
                 isConnected: deviceState.isConnected,
-                size: .medium
+                size: .small
             )
         }
-        .padding(16)
+        .frame(maxWidth: 300)
+        .padding(10)
         .background {
             if #available(macOS 26.0, *) {
                 Capsule()
                     .fill(.regularMaterial.opacity(0.3))
+                    .overlay {
+                        Capsule()
+                            .strokeBorder(.white.opacity(0.12), lineWidth: 1)
+                    }
                     .glassEffect(.regular)
             } else {
                 Capsule()
                     .fill(.regularMaterial)
+                    .overlay {
+                        Capsule()
+                            .strokeBorder(.white.opacity(0.12), lineWidth: 1)
+                    }
             }
         }
     }
