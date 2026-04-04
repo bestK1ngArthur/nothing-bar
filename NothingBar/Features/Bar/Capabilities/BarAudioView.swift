@@ -22,12 +22,13 @@ struct BarAudioView: View {
 
     var body: some View {
         VStack(spacing: 12) {
-            BarAudioEQView()
-                .disabled(deviceState.eqPreset == nil)
             if let model = deviceState.model, model.supportsEnhancedBass {
                 enhancedBassView
                     .disabled(deviceState.enhancedBass == nil)
             }
+
+            BarAudioEQView()
+                .disabled(deviceState.eqPreset == nil)
         }
     }
 
@@ -107,7 +108,7 @@ struct BarAudioView: View {
         guard let model = deviceState.model else {
             return "Bass Enhancement"
         }
-        
+
         // Check if it's a headphone (over-ear) or earbuds (in-ear)
         switch model {
             case .headphone1, .headphoneA, .cmfHeadphonePro:

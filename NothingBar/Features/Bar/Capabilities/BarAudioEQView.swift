@@ -24,15 +24,7 @@ struct BarAudioEQView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Equalizer")
-                        .font(.subheadline)
-                        .foregroundColor(.primary)
-
-                    eqPresetMenu(currentPreset: deviceState.eqPreset ?? .balanced)
-                        .fixedSize()
-                        .padding(.leading, -4)
-                }
+                header
 
                 Spacer()
 

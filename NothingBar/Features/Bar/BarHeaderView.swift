@@ -69,6 +69,7 @@ struct BarHeaderView: View {
                 .foregroundColor(.primary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
             if deviceState.isConnected, let battery = deviceState.battery {
                 batterySummaryView(battery)

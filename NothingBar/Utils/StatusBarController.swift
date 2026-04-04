@@ -121,7 +121,7 @@ final class StatusBarController: NSObject {
             hostingController.view.leadingAnchor.constraint(equalTo: backgroundView.contentView.leadingAnchor),
             hostingController.view.trailingAnchor.constraint(equalTo: backgroundView.contentView.trailingAnchor),
             hostingController.view.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor),
-            hostingController.view.bottomAnchor.constraint(equalTo: backgroundView.contentView.bottomAnchor),
+            hostingController.view.bottomAnchor.constraint(equalTo: backgroundView.contentView.bottomAnchor)
         ])
     }
 
@@ -306,7 +306,7 @@ private final class StatusBarBackgroundView: NSView {
                 glassView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 glassView.trailingAnchor.constraint(equalTo: trailingAnchor),
                 glassView.topAnchor.constraint(equalTo: topAnchor),
-                glassView.bottomAnchor.constraint(equalTo: bottomAnchor),
+                glassView.bottomAnchor.constraint(equalTo: bottomAnchor)
             ])
         } else {
             let effectView = NSVisualEffectView()
@@ -325,7 +325,7 @@ private final class StatusBarBackgroundView: NSView {
                 effectView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 effectView.trailingAnchor.constraint(equalTo: trailingAnchor),
                 effectView.topAnchor.constraint(equalTo: topAnchor),
-                effectView.bottomAnchor.constraint(equalTo: bottomAnchor),
+                effectView.bottomAnchor.constraint(equalTo: bottomAnchor)
             ])
         }
 
@@ -337,7 +337,7 @@ private final class StatusBarBackgroundView: NSView {
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentView.topAnchor.constraint(equalTo: topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            contentView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 

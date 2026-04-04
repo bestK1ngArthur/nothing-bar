@@ -55,6 +55,8 @@ struct SettingsDeviceHeaderView: View {
                 .font(.subheadline)
                 .foregroundColor(.secondary)
 
+            Divider()
+
             if let battery = deviceState.battery, deviceState.isConnected {
                 batterySummaryView(battery)
             }

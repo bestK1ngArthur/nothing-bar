@@ -32,19 +32,8 @@ struct BarNoiseCancellationView: View {
                     }
                 }
 
-                if case .active(let activeMode) = currentMode {
-                    VStack(alignment: .center, spacing: 6) {
-                        HStack(spacing: 12) {
-                            ForEach(NoiseCancellationMode.Active.allCases, id: \.self) { level in
-                                VStack(spacing: 4) {
-                                    levelPill(level, isSelected: activeMode == level)
-                                    Text(level.displayName)
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
-                        }
-                    }
+                if case .active(let currentLevel) = currentMode {
+                    activeLevelsStack(currentLevel: currentLevel)
                 }
             }
             .disabled(deviceState.noiseCancellationMode == nil)
@@ -66,14 +55,31 @@ struct BarNoiseCancellationView: View {
         )
     }
 
+    private func activeLevelsStack(currentLevel: NoiseCancellationMode.Active) -> some View {
+        VStack(alignment: .center, spacing: 6) {
+            HStack(spacing: 12) {
+                ForEach(NoiseCancellationMode.Active.allCases, id: \.self) { level in
+                    activeLevelView(level, isSelected: currentLevel == level)
+                }
+            }
+        }
+    }
+
     @ViewBuilder
-    private func levelPill(_ level: NoiseCancellationMode.Active, isSelected: Bool) -> some View {
+    private func activeLevelView(_ level: NoiseCancellationMode.Active, isSelected: Bool) -> some View {
         Button {
             nothing.setNoiseCancellationMode(.active(level))
         } label: {
+            VStack(spacing: 4) {
+
             RoundedRectangle(cornerRadius: 3)
                 .fill(isSelected ? Color.accentColor : Color.secondary)
                 .frame(height: 6)
+
+                Text(level.displayName)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
         }
         .buttonStyle(.plain)
     }
