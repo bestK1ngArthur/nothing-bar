@@ -22,72 +22,58 @@ struct BarAudioView: View {
 
     var body: some View {
         VStack(spacing: 12) {
+            BarAudioEQView()
+                .disabled(deviceState.eqPreset == nil)
             if let model = deviceState.model, model.supportsEnhancedBass {
                 enhancedBassView
                     .disabled(deviceState.enhancedBass == nil)
             }
-
-            BarAudioEQView()
-                .disabled(deviceState.eqPreset == nil)
         }
     }
-
-    // MARK: Enhanced Bass
 
     private var enhancedBassView: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Bass Enhancement")
+                Text(bassTitle)
                     .font(.subheadline)
                     .foregroundColor(.primary)
 
-                if let enhancedBass = deviceState.enhancedBass, enhancedBass.isEnabled {
-                    enhancedBassMenu(currentLevel: enhancedBass.level)
-                        .fixedSize()
-                        .padding(.leading, -4)
-                } else {
-                    Text("Off")
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                }
+                enhancedBassMenu
+                    .fixedSize()
+                    .padding(.leading, -4)
             }
 
             Spacer()
-
-            Toggle(
-                "",
-                isOn: .init(
-                    get: {
-                        deviceState.enhancedBass?.isEnabled ?? false
-                    },
-                    set: { isEnabled in
-                        let settings = EnhancedBass(
-                            isEnabled: isEnabled,
-                            level: deviceState.enhancedBass?.level ?? 1
-                        )
-                        setEnhancedBassSettings(settings)
-                    }
-                )
-            )
-            .toggleStyle(.switch)
-            .padding(.trailing, -8)
-            .scaleEffect(0.8)
         }
         .padding(.horizontal, 4)
     }
 
-    private func enhancedBassMenu(currentLevel: Int) -> some View {
+    private var enhancedBassValue: String {
+        guard let enhancedBass = deviceState.enhancedBass else {
+            return "N/A"
+        }
+
+        return enhancedBass.isEnabled ? "Level \(enhancedBass.level)" : "Off"
+    }
+
+    private var enhancedBassMenu: some View {
         Menu {
+            Button {
+                setEnhancedBassSettings(.init(isEnabled: false, level: 1))
+            } label: {
+                Text("Off") + (enhancedBassValue == "Off" ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
+            }
+
             ForEach(1...5, id: \.self) { level in
                 Button {
-                    let settings = EnhancedBass(isEnabled: true, level: level)
-                    setEnhancedBassSettings(settings)
+                    setEnhancedBassSettings(.init(isEnabled: true, level: level))
                 } label: {
-                    Text("Level \(level)") + (currentLevel == level ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
+                    let isSelected = deviceState.enhancedBass?.isEnabled == true && deviceState.enhancedBass?.level == level
+                    Text("Level \(level)") + (isSelected ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
                 }
             }
         } label: {
-            Text(deviceState.enhancedBass?.displayValue ?? "Unknown")
+            Text(enhancedBassValue)
                 .font(.footnote)
                 .foregroundColor(.secondary)
         }
@@ -117,6 +103,19 @@ struct BarAudioView: View {
         AppLogger.audio.uiSettingChanged("Enhanced Bass", value: settings.displayValue)
     }
 
+    private var bassTitle: String {
+        guard let model = deviceState.model else {
+            return "Bass Enhancement"
+        }
+        
+        // Check if it's a headphone (over-ear) or earbuds (in-ear)
+        switch model {
+            case .headphone1, .headphoneA, .cmfHeadphonePro:
+                return "Bass Enhancement"
+            default:
+                return "Ultra Bass"
+        }
+    }
 }
 
 private extension EnhancedBass {
