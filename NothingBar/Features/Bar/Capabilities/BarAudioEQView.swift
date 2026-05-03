@@ -5,6 +5,7 @@
 //  Created by Artem Belkov on 24.01.2026.
 //
 
+import Perception
 import SwiftNothingEar
 import SwiftUI
 
@@ -22,28 +23,30 @@ struct BarAudioEQView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                header
+        WithPerceptionTracking {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    header
 
-                Spacer()
+                    Spacer()
 
-                if deviceState.eqPreset == .custom {
-                    eqCustomControls
+                    if deviceState.eqPreset == .custom {
+                        eqCustomControls
+                    }
+                }
+
+                if deviceState.eqPreset == .custom, isEditingCustomEQ {
+                    eqCustomSliders
                 }
             }
-
-            if deviceState.eqPreset == .custom, isEditingCustomEQ {
-                eqCustomSliders
+            .padding(.horizontal, 4)
+            .onChange(of: deviceState.eqPreset) { newValue in
+                if newValue != .custom {
+                    isEditingCustomEQ = false
+                }
             }
+            .animation(.easeInOut, value: deviceState.eqPresetCustom)
         }
-        .padding(.horizontal, 4)
-        .onChange(of: deviceState.eqPreset) { _, newValue in
-            if newValue != .custom {
-                isEditingCustomEQ = false
-            }
-        }
-        .animation(.easeInOut, value: deviceState.eqPresetCustom)
     }
 
     private var header: some View {

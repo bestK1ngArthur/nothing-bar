@@ -5,6 +5,7 @@
 //  Created by Artem Belkov on 31.07.2025.
 //
 
+import Perception
 import SwiftNothingEar
 import SwiftUI
 
@@ -17,9 +18,11 @@ struct SettingsDeviceHeaderView: View {
     }
 
     var body: some View {
-        connectedView
-            .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.vertical, 16)
+        WithPerceptionTracking {
+            connectedView
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.vertical, 16)
+        }
     }
 
     private var connectedView: some View {

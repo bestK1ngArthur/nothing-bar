@@ -60,22 +60,23 @@ struct NothingBarApp: App {
 
     var body: some Scene {
         let _ = configureRuntimeCallbacks()
-
         Window("Settings", id: "settings") {
-            SettingsView()
-                .environment(appData)
-                .onAppear {
-                    isSettingsWindowOpen = true
-                    updateDockVisibility()
-                }
-                .onDisappear {
-                    isSettingsWindowOpen = false
-                    updateDockVisibility()
-                }
+            settingsContent
         }
-        .defaultLaunchBehavior(.suppressed)
         .windowResizability(.contentSize)
-        .windowBackgroundDragBehavior(.enabled)
+    }
+
+    private var settingsContent: some View {
+        SettingsView()
+            .environment(appData)
+            .onAppear {
+                isSettingsWindowOpen = true
+                updateDockVisibility()
+            }
+            .onDisappear {
+                isSettingsWindowOpen = false
+                updateDockVisibility()
+            }
     }
 
     private func updateDockVisibility() {

@@ -1,4 +1,5 @@
 import AppKit
+import Perception
 import SwiftUI
 
 @MainActor
@@ -352,7 +353,9 @@ private struct StatusBarPanelView: View {
     @Environment(AppData.self) private var appData
 
     var body: some View {
-        BarView()
-            .environment(appData)
+        WithPerceptionTracking {
+            BarView()
+                .environment(appData)
+        }
     }
 }

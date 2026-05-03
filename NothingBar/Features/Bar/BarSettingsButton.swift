@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import Perception
 import SwiftUI
 
 struct BarSettingsButton: View {
@@ -13,37 +14,39 @@ struct BarSettingsButton: View {
     @Environment(AppData.self) private var appData
 
     var body: some View {
-        Button {
-            openFocusedSettings()
-        } label: {
-            ZStack(alignment: .topTrailing) {
-                Image(systemName: "gearshape.fill")
-                    .font(.system(size: 14))
-                    .foregroundColor(.primary)
-
-                if appData.appVersion.isUpdateAvailable {
-                    Circle()
-                        .fill(Color.red)
-                        .frame(width: 6, height: 6)
-                        .offset(x: 4, y: -3)
-                }
-            }
-        }
-        .buttonStyle(HoverButtonStyle())
-        .help("Settings")
-        .contextMenu {
+        WithPerceptionTracking {
             Button {
                 openFocusedSettings()
             } label: {
-                Text("Open Settings")
-                Image(systemName: "gearshape.fill")
-            }
+                ZStack(alignment: .topTrailing) {
+                    Image(systemName: "gearshape.fill")
+                        .font(.system(size: 14))
+                        .foregroundColor(.primary)
 
-            Button(role: .destructive) {
-                quitApp()
-            } label: {
-                Text("Quit App")
-                Image(systemName: "xmark.circle.fill")
+                    if appData.appVersion.isUpdateAvailable {
+                        Circle()
+                            .fill(Color.red)
+                            .frame(width: 6, height: 6)
+                            .offset(x: 4, y: -3)
+                    }
+                }
+            }
+            .buttonStyle(HoverButtonStyle())
+            .help("Settings")
+            .contextMenu {
+                Button {
+                    openFocusedSettings()
+                } label: {
+                    Text("Open Settings")
+                    Image(systemName: "gearshape.fill")
+                }
+
+                Button(role: .destructive) {
+                    quitApp()
+                } label: {
+                    Text("Quit App")
+                    Image(systemName: "xmark.circle.fill")
+                }
             }
         }
     }

@@ -5,6 +5,7 @@
 //  Created by Artem Belkov on 31.07.2025.
 //
 
+import Perception
 import SwiftUI
 
 struct SettingsDeviceInfoView: View {
@@ -16,10 +17,14 @@ struct SettingsDeviceInfoView: View {
     }
 
     var body: some View {
-        InfoRow(title: "Model", value: deviceState.model?.displayName ?? "Unknown")
-        InfoRow(title: "Serial number", value: deviceState.serialNumber ?? "Unknown")
-        InfoRow(title: "Bluetooth address", value: deviceState.bluetoothAddress ?? "Unknown")
-        InfoRow(title: "Firmware version", value: deviceState.firmwareVersion ?? "Unknown")
+        WithPerceptionTracking {
+            Group {
+                InfoRow(title: "Model", value: deviceState.model?.displayName ?? "Unknown")
+                InfoRow(title: "Serial number", value: deviceState.serialNumber ?? "Unknown")
+                InfoRow(title: "Bluetooth address", value: deviceState.bluetoothAddress ?? "Unknown")
+                InfoRow(title: "Firmware version", value: deviceState.firmwareVersion ?? "Unknown")
+            }
+        }
     }
 }
 

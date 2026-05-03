@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import Perception
 import SwiftUI
 
 struct SettingsView: View {
@@ -16,14 +17,16 @@ struct SettingsView: View {
     @State private var didPresentUpdate = false
 
     var body: some View {
-        NavigationSplitView(
-            preferredCompactColumn: .constant(.detail),
-            sidebar: { sidebar },
-            detail: { detail }
-        )
-        .frame(width: 715, height: 470)
-        .onAppear {
-            presentUpdateIfNeeded()
+        WithPerceptionTracking {
+            NavigationSplitView {
+                sidebar
+            } detail: {
+                detail
+            }
+            .frame(width: 715, height: 470)
+            .onAppear {
+                presentUpdateIfNeeded()
+            }
         }
     }
 
@@ -63,7 +66,6 @@ struct SettingsView: View {
                     SettingsAppView()
             }
         }
-        .toolbar(removing: .title)
         .frame(maxHeight: .infinity, alignment: .top)
     }
 

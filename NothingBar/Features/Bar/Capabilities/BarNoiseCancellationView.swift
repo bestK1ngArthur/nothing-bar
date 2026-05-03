@@ -5,6 +5,7 @@
 //  Created by Artem Belkov on 31.07.2025.
 //
 
+import Perception
 import SwiftNothingEar
 import SwiftUI
 
@@ -21,22 +22,24 @@ struct BarNoiseCancellationView: View {
     }
 
     var body: some View {
-        BarSectionView(
-            title: "Noise Cancellation",
-            value: value
-        ) {
-            VStack(alignment: .center, spacing: 12) {
-                HStack(alignment: .top, spacing: 8) {
-                    ForEach(NoiseCancellationMode.allCases, id: \.self) { mode in
-                        noiseCancellationItem(mode)
+        WithPerceptionTracking {
+            BarSectionView(
+                title: "Noise Cancellation",
+                value: value
+            ) {
+                VStack(alignment: .center, spacing: 12) {
+                    HStack(alignment: .top, spacing: 8) {
+                        ForEach(NoiseCancellationMode.allCases, id: \.self) { mode in
+                            noiseCancellationItem(mode)
+                        }
+                    }
+
+                    if case .active(let currentLevel) = currentMode {
+                        activeLevelsStack(currentLevel: currentLevel)
                     }
                 }
-
-                if case .active(let currentLevel) = currentMode {
-                    activeLevelsStack(currentLevel: currentLevel)
-                }
+                .disabled(deviceState.noiseCancellationMode == nil)
             }
-            .disabled(deviceState.noiseCancellationMode == nil)
         }
     }
 

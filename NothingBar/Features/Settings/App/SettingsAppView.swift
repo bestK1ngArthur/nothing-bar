@@ -5,47 +5,49 @@
 //  Created by Artem Belkov on 31.07.2025.
 //
 
+import Perception
 import SwiftUI
 
 struct SettingsAppView: View {
 
     @AppStorage("launchAtLogin") private var launchAtLogin = false
-    @Environment(AppData.self) private var appData
     @State private var showDeviceLogs = false
 
     var body: some View {
-        Form {
-            Section {
-                header
-            }
+        WithPerceptionTracking {
+            Form {
+                Section {
+                    header
+                }
 
-            Section("Notifications") {
-                SettingsAppNotificationsView()
-            }
+                Section("Notifications") {
+                    SettingsAppNotificationsView()
+                }
 
-            Section("App") {
-                SettingsAppSettingsView()
-            }
+                Section("App") {
+                    SettingsAppSettingsView()
+                }
 
-            Section("Developer") {
-                SettingsRow(
-                    title: "Stream device logs",
-                    description: "Open live logs from the library"
-                ) {
-                    Button("Show") {
-                        showDeviceLogs = true
+                Section("Developer") {
+                    SettingsRow(
+                        title: "Stream device logs",
+                        description: "Open live logs from the library"
+                    ) {
+                        Button("Show") {
+                            showDeviceLogs = true
+                        }
                     }
                 }
-            }
 
-            Section("About") {
-                SettingsAppInfoView()
+                Section("About") {
+                    SettingsAppInfoView()
+                }
             }
-        }
-        .formStyle(.grouped)
-        .padding(.top, -20)
-        .sheet(isPresented: $showDeviceLogs) {
-            SettingsDeviceLogsView()
+            .formStyle(.grouped)
+            .padding(.top, -20)
+            .sheet(isPresented: $showDeviceLogs) {
+                SettingsDeviceLogsView()
+            }
         }
     }
 

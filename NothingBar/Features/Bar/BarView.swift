@@ -5,6 +5,7 @@
 //  Created by Artem Belkov on 31.07.2025.
 //
 
+import Perception
 import SwiftNothingEar
 import SwiftUI
 
@@ -17,17 +18,19 @@ struct BarView: View {
     }
 
     var body: some View {
-        Group {
-            if let bluetoothError = appData.deviceState.bluetoothError, bluetoothError == .unauthorized {
-                BarNoPermissionsView()
-            } else if let model = deviceState.model {
-                deviceView(model: model)
-            } else {
-                noDeviceView
+        WithPerceptionTracking {
+            Group {
+                if let bluetoothError = appData.deviceState.bluetoothError, bluetoothError == .unauthorized {
+                    BarNoPermissionsView()
+                } else if let model = deviceState.model {
+                    deviceView(model: model)
+                } else {
+                    noDeviceView
+                }
             }
+            .frame(width: 320)
+            .cornerRadius(12)
         }
-        .frame(width: 320)
-        .cornerRadius(12)
     }
 
     private func deviceView(model: DeviceModel) -> some View {

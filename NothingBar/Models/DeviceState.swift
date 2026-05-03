@@ -5,10 +5,11 @@
 //  Created by Artem Belkov on 31.07.2025.
 //
 
+import Perception
 import SwiftNothingEar
 import SwiftUI
 
-@Observable
+@Perceptible
 class DeviceState {
 
     var isConnected: Bool = false

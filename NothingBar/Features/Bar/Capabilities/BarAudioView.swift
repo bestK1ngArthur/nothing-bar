@@ -5,6 +5,7 @@
 //  Created by Artem Belkov on 31.07.2025.
 //
 
+import Perception
 import SwiftNothingEar
 import SwiftUI
 
@@ -21,14 +22,16 @@ struct BarAudioView: View {
     }
 
     var body: some View {
-        VStack(spacing: 12) {
-            if let model = deviceState.model, model.supportsEnhancedBass {
-                enhancedBassView
-                    .disabled(deviceState.enhancedBass == nil)
-            }
+        WithPerceptionTracking {
+            VStack(spacing: 12) {
+                if let model = deviceState.model, model.supportsEnhancedBass {
+                    enhancedBassView
+                        .disabled(deviceState.enhancedBass == nil)
+                }
 
-            BarAudioEQView()
-                .disabled(deviceState.eqPreset == nil)
+                BarAudioEQView()
+                    .disabled(deviceState.eqPreset == nil)
+            }
         }
     }
 

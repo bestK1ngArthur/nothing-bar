@@ -5,6 +5,7 @@
 //  Created by Artem Belkov on 31.07.2025.
 //
 
+import Perception
 import SwiftUI
 
 struct SettingsDeviceView: View {
@@ -16,23 +17,25 @@ struct SettingsDeviceView: View {
     }
 
     var body: some View {
-        Form {
-            Section {
-                header
-            }
+        WithPerceptionTracking {
+            Form {
+                Section {
+                    header
+                }
 
-            Section("Settings") {
-                SettingsDeviceToolsView()
-            }
-            .disabled(!deviceState.isConnected)
+                Section("Settings") {
+                    SettingsDeviceToolsView()
+                }
+                .disabled(!deviceState.isConnected)
 
-            Section("Information") {
-                SettingsDeviceInfoView()
+                Section("Information") {
+                    SettingsDeviceInfoView()
+                }
+                .disabled(!deviceState.isConnected)
             }
-            .disabled(!deviceState.isConnected)
+            .formStyle(.grouped)
+            .padding(.top, -20)
         }
-        .formStyle(.grouped)
-        .padding(.top, -20)
     }
 
     @ViewBuilder

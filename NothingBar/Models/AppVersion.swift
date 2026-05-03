@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import Perception
 import Sparkle
 import SwiftUI
 
-@Observable
+@Perceptible
 final class AppVersion {
 
     private let updaterController: SPUStandardUpdaterController

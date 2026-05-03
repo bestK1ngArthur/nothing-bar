@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import Perception
 import SwiftNothingEar
 
-@Observable
+@Perceptible
 class AppData {
 
     private enum Keys {
@@ -31,11 +32,11 @@ class AppData {
         }
     }
 
-    @ObservationIgnored
+    @PerceptionIgnored
     var onConnectionStateChanged: ((Bool) -> Void)?
-    @ObservationIgnored
+    @PerceptionIgnored
     var onHideMenuPreferenceChanged: ((Bool) -> Void)?
-    @ObservationIgnored
+    @PerceptionIgnored
     var onOpenSettingsRequested: (() -> Void)?
 
     var nothing: Device!

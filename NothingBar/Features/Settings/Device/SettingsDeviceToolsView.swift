@@ -5,6 +5,7 @@
 //  Created by Artem Belkov on 31.07.2025.
 //
 
+import Perception
 import SwiftNothingEar
 import SwiftUI
 
@@ -24,44 +25,45 @@ struct SettingsDeviceToolsView: View {
     }
 
     var body: some View {
-        @Bindable var bindableAppData = appData
-        Group {
-            SettingsRow(
-                title: "Low lag mode",
-                description: "Minimise latency for an improved gaming experience"
-            ) {
-                Toggle("", isOn: $bindableAppData.deviceState.lowLatency)
-                    .onChange(of: deviceState.lowLatency) { _, isEnabled in
-                        nothing.setLowLatency(isEnabled)
-                        AppLogger.settings.uiSettingChanged("Low Latency Mode", value: isEnabled)
-                    }
-                    .disabled(!deviceState.isConnected)
-            }
-
-            SettingsRow(
-                title: "Over-ear detection",
-                description: "Automatically play audio when headphones are in and pause when removed"
-            ) {
-                Toggle("", isOn: $bindableAppData.deviceState.inEarDetection)
-                    .onChange(of: deviceState.inEarDetection) { _, isEnabled in
-                        nothing.setInEarDetection(isEnabled)
-                        AppLogger.settings.uiSettingChanged("Over-ear Detection", value: isEnabled)
-                    }
-                    .disabled(!deviceState.isConnected)
-            }
-
-            if let model = deviceState.model,
-               model.supportsRingBuds,
-               let ringBuds = deviceState.ringBuds {
+        WithPerceptionTracking {
+            @Perception.Bindable var bindableAppData = appData
+            Group {
                 SettingsRow(
-                    title: "Find my headphones",
-                    description: "Trigger a loud sound to find your headphones"
+                    title: "Low lag mode",
+                    description: "Minimise latency for an improved gaming experience"
                 ) {
-                    ringButtons(current: ringBuds)
+                    Toggle("", isOn: $bindableAppData.deviceState.lowLatency)
+                        .onChange(of: deviceState.lowLatency) { isEnabled in
+                            nothing.setLowLatency(isEnabled)
+                            AppLogger.settings.uiSettingChanged("Low Latency Mode", value: isEnabled)
+                        }
                         .disabled(!deviceState.isConnected)
                 }
-            }
 
+                SettingsRow(
+                    title: "Over-ear detection",
+                    description: "Automatically play audio when headphones are in and pause when removed"
+                ) {
+                    Toggle("", isOn: $bindableAppData.deviceState.inEarDetection)
+                        .onChange(of: deviceState.inEarDetection) { isEnabled in
+                            nothing.setInEarDetection(isEnabled)
+                            AppLogger.settings.uiSettingChanged("Over-ear Detection", value: isEnabled)
+                        }
+                        .disabled(!deviceState.isConnected)
+                }
+
+                if let model = deviceState.model,
+                   model.supportsRingBuds,
+                   let ringBuds = deviceState.ringBuds {
+                    SettingsRow(
+                        title: "Find my headphones",
+                        description: "Trigger a loud sound to find your headphones"
+                    ) {
+                        ringButtons(current: ringBuds)
+                            .disabled(!deviceState.isConnected)
+                    }
+                }
+            }
         }
         .alert(isPresented: $showRingBudsAlert) {
             Alert(

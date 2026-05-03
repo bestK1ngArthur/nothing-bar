@@ -1,5 +1,5 @@
 {
-  "originHash" : "5b6cb6da8849b11dc2247df8f5616fe7c8595890b8584774a319c61a9dc537e0",
+  "originHash" : "c4bfb2822911b81bf76135ded5daf8c0928b10fcf46e5e6234f03fd870a072af",
   "pins" : [
     {
       "identity" : "sparkle",
@@ -17,6 +17,33 @@
       "state" : {
         "revision" : "5a2b417ee14fee1142af5d2e0f082a0e9bdf99c9",
         "version" : "1.8.0"
+      }
+    },
+    {
+      "identity" : "swift-perception",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-perception",
+      "state" : {
+        "revision" : "25ac73741c3436605d61eceb5207e896973918e7",
+        "version" : "2.0.10"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-syntax",
+      "state" : {
+        "revision" : "2b59c0c741e9184ab057fd22950b491076d42e91",
+        "version" : "603.0.0"
+      }
+    },
+    {
+      "identity" : "xctest-dynamic-overlay",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
+      "state" : {
+        "revision" : "dfd70507def84cb5fb821278448a262c6ff2bbad",
+        "version" : "1.9.0"
       }
     }
   ],

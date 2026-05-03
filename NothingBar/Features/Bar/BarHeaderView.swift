@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import Perception
 import SwiftNothingEar
 import SwiftUI
 
@@ -18,20 +19,22 @@ struct BarHeaderView: View {
     }
 
     var body: some View {
-        HStack(spacing: 8) {
-            if let deviceImage = deviceState.model?.deviceImage {
-                deviceImageView(deviceImage)
-            } else {
-                Image(systemName: "headphones")
-                    .font(.system(size: 20))
-                    .foregroundColor(.primary)
+        WithPerceptionTracking {
+            HStack(spacing: 8) {
+                if let deviceImage = deviceState.model?.deviceImage {
+                    deviceImageView(deviceImage)
+                } else {
+                    Image(systemName: "headphones")
+                        .font(.system(size: 20))
+                        .foregroundColor(.primary)
+                }
+
+                titleView
+
+                BarSettingsButton()
             }
-
-            titleView
-
-            BarSettingsButton()
+            .padding(.horizontal, 4)
         }
-        .padding(.horizontal, 4)
     }
 
     @ViewBuilder

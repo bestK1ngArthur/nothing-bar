@@ -5,6 +5,7 @@
 //  Created by Artem Belkov on 31.07.2025.
 //
 
+import Perception
 import SwiftNothingEar
 import SwiftUI
 
@@ -21,22 +22,24 @@ struct BarSpatialAudioView: View {
     }
 
     var body: some View {
-        BarSectionView(
-            title: "Spatial Audio",
-            value: currentMode.displayName
-        ) {
-            HStack(alignment: .top, spacing: 8) {
-                ForEach(supportedModes.reversed(), id: \.self) { mode in
-                    ModeCircleView<EmptyView>(
-                        image: mode.imageName,
-                        name: mode.displayName,
-                        isActive: currentMode == mode
-                    ) {
-                        setMode(mode)
+        WithPerceptionTracking {
+            BarSectionView(
+                title: "Spatial Audio",
+                value: currentMode.displayName
+            ) {
+                HStack(alignment: .top, spacing: 8) {
+                    ForEach(supportedModes.reversed(), id: \.self) { mode in
+                        ModeCircleView<EmptyView>(
+                            image: mode.imageName,
+                            name: mode.displayName,
+                            isActive: currentMode == mode
+                        ) {
+                            setMode(mode)
+                        }
                     }
                 }
+                .disabled(deviceState.spatialAudioMode == nil)
             }
-            .disabled(deviceState.spatialAudioMode == nil)
         }
     }
 

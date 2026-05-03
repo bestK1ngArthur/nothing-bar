@@ -6,6 +6,7 @@
 //
 
 import ServiceManagement
+import Perception
 import SwiftUI
 
 struct SettingsAppSettingsView: View {
@@ -16,52 +17,54 @@ struct SettingsAppSettingsView: View {
     @AppStorage("hideMenuBarWhenDisconnected") private var hideMenuBarWhenDisconnected = false
 
     var body: some View {
-        Group {
-            SettingsRow(
-                title: "Launch at login",
-                description: "Automatically start app when you log in to your Mac"
-            ) {
-                Toggle("", isOn: $launchAtLogin)
-                    .onChange(of: launchAtLogin) { _, newValue in
-                        setLaunchAtLogin(enabled: newValue)
-                    }
-            }
+        WithPerceptionTracking {
+            Group {
+                SettingsRow(
+                    title: "Launch at login",
+                    description: "Automatically start app when you log in to your Mac"
+                ) {
+                    Toggle("", isOn: $launchAtLogin)
+                        .onChange(of: launchAtLogin) { newValue in
+                            setLaunchAtLogin(enabled: newValue)
+                        }
+                }
 
-            SettingsRow(
-                title: "Automatic updates",
-                description: "Automatically download and install app updates in the background"
-            ) {
-                Toggle(
-                    "",
-                    isOn: .init(
-                        get: { appData.appVersion.isAutoUpdateEnabled },
-                        set: { appData.appVersion.setAutoUpdateEnabled($0) }
+                SettingsRow(
+                    title: "Automatic updates",
+                    description: "Automatically download and install app updates in the background"
+                ) {
+                    Toggle(
+                        "",
+                        isOn: .init(
+                            get: { appData.appVersion.isAutoUpdateEnabled },
+                            set: { appData.appVersion.setAutoUpdateEnabled($0) }
+                        )
                     )
-                )
-            }
+                }
 
-            SettingsRow(
-                title: "Hide bar item when disconnected",
-                description: "Hide app icon from menu bar when no headphones are connected"
-            ) {
-                Toggle("", isOn: $hideMenuBarWhenDisconnected)
-                    .onChange(of: hideMenuBarWhenDisconnected) { _, newValue in
-                        appData.hideMenuBarWhenDisconnected = newValue
+                SettingsRow(
+                    title: "Hide bar item when disconnected",
+                    description: "Hide app icon from menu bar when no headphones are connected"
+                ) {
+                    Toggle("", isOn: $hideMenuBarWhenDisconnected)
+                        .onChange(of: hideMenuBarWhenDisconnected) { newValue in
+                            appData.hideMenuBarWhenDisconnected = newValue
+                        }
+                }
+
+                SettingsRow(
+                    title: appData.appVersion.isUpdateAvailable ? "Update available" : "Check for updates",
+                    description: "Current version: \(appData.appVersion.currentVersion)"
+                ) {
+                    Button(appData.appVersion.isUpdateAvailable ? "Update" : "Check Now") {
+                        appData.appVersion.checkForUpdatesManually()
                     }
-            }
-
-            SettingsRow(
-                title: appData.appVersion.isUpdateAvailable ? "Update available" : "Check for updates",
-                description: "Current version: \(appData.appVersion.currentVersion)"
-            ) {
-                Button(appData.appVersion.isUpdateAvailable ? "Update" : "Check Now") {
-                    appData.appVersion.checkForUpdatesManually()
                 }
             }
-        }
-        .onAppear {
-            updateLaunchAtLoginState()
-            appData.hideMenuBarWhenDisconnected = hideMenuBarWhenDisconnected
+            .onAppear {
+                updateLaunchAtLoginState()
+                appData.hideMenuBarWhenDisconnected = hideMenuBarWhenDisconnected
+            }
         }
     }
 

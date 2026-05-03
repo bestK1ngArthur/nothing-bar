@@ -5,6 +5,7 @@
 //  Created by Artem Belkov on 29.09.2025.
 //
 
+import Perception
 import SwiftUI
 
 struct BarNotificationView: View {
@@ -13,14 +14,16 @@ struct BarNotificationView: View {
     let style: NotificationStyle
 
     var body: some View {
-        switch style {
-            case .classic:
-                BarNotificationClassicView()
-                    .environment(appData)
+        WithPerceptionTracking {
+            switch style {
+                case .classic:
+                    BarNotificationClassicView()
+                        .environment(appData)
 
-            case .apple:
-                BarNotificationAppleView()
-                    .environment(appData)
+                case .apple:
+                    BarNotificationAppleView()
+                        .environment(appData)
+            }
         }
     }
 }

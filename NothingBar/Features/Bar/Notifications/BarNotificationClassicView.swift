@@ -5,6 +5,7 @@
 //  Created by Artem Belkov on 21.02.2026.
 //
 
+import Perception
 import SwiftNothingEar
 import SwiftUI
 
@@ -18,51 +19,53 @@ struct BarNotificationClassicView: View {
     }
 
     var body: some View {
-        HStack(spacing: 12) {
-            if let deviceImage = deviceState.model?.deviceImage {
-                DeviceImageView(deviceImage: deviceImage)
-                    .frame(width: iconSize, height: iconSize)
-            }
-
-            VStack(alignment: .leading, spacing: 2) {
-                if let displayName = deviceState.model?.displayName {
-                    Text(displayName)
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(.primary)
-                        .multilineTextAlignment(.leading)
+        WithPerceptionTracking {
+            HStack(spacing: 12) {
+                if let deviceImage = deviceState.model?.deviceImage {
+                    DeviceImageView(deviceImage: deviceImage)
+                        .frame(width: iconSize, height: iconSize)
                 }
 
-                Text(deviceState.isConnected ? "Connected" : "Disconnected")
-                    .font(.system(size: 11, weight: .regular))
-                    .foregroundColor(.secondary)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .layoutPriority(1)
+                VStack(alignment: .leading, spacing: 2) {
+                    if let displayName = deviceState.model?.displayName {
+                        Text(displayName)
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.primary)
+                            .multilineTextAlignment(.leading)
+                    }
 
-            BarNotificationRingView(
-                progress: batteryProgress,
-                isConnected: deviceState.isConnected,
-                size: .small
-            )
-        }
-        .frame(maxWidth: 300)
-        .padding(10)
-        .background {
-            if #available(macOS 26.0, *) {
-                Capsule()
-                    .fill(.regularMaterial.opacity(0.3))
-                    .overlay {
-                        Capsule()
-                            .strokeBorder(.white.opacity(0.12), lineWidth: 1)
-                    }
-                    .glassEffect(.regular)
-            } else {
-                Capsule()
-                    .fill(.regularMaterial)
-                    .overlay {
-                        Capsule()
-                            .strokeBorder(.white.opacity(0.12), lineWidth: 1)
-                    }
+                    Text(deviceState.isConnected ? "Connected" : "Disconnected")
+                        .font(.system(size: 11, weight: .regular))
+                        .foregroundColor(.secondary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .layoutPriority(1)
+
+                BarNotificationRingView(
+                    progress: batteryProgress,
+                    isConnected: deviceState.isConnected,
+                    size: .small
+                )
+            }
+            .frame(maxWidth: 300)
+            .padding(10)
+            .background {
+                if #available(macOS 26.0, *) {
+                    Capsule()
+                        .fill(.regularMaterial.opacity(0.3))
+                        .overlay {
+                            Capsule()
+                                .strokeBorder(.white.opacity(0.12), lineWidth: 1)
+                        }
+                        .glassEffect(.regular)
+                } else {
+                    Capsule()
+                        .fill(.regularMaterial)
+                        .overlay {
+                            Capsule()
+                                .strokeBorder(.white.opacity(0.12), lineWidth: 1)
+                        }
+                }
             }
         }
     }
