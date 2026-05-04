@@ -3,11 +3,21 @@
     <channel>
         <title>NothingBar</title>
         <item>
+            <title>2.8.0</title>
+            <pubDate>Mon, 04 May 2026 08:48:42 +0300</pubDate>
+            <sparkle:version>23</sparkle:version>
+            <sparkle:shortVersionString>2.8.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://nothingbar.bestk1ng.com/releases/2.8.0.html</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/bestK1ngArthur/nothing-bar/releases/download/2.8.0/nothing-bar-2.8.0.zip" length="4500141" type="application/octet-stream" sparkle:edSignature="4DzSORSV1O78o0npVLyI7Z/2Yev+jMm3ssZqk9h/KtD8qGLWKQbW2QwCCDCPchrHKFS4CKHX09reDqds8HXYDQ=="/>
+        </item>
+        <item>
             <title>2.7.0</title>
             <pubDate>Sat, 04 Apr 2026 16:00:32 +0300</pubDate>
             <sparkle:version>22</sparkle:version>
             <sparkle:shortVersionString>2.7.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://nothingbar.bestk1ng.com/releases/2.7.0.html</sparkle:releaseNotesLink>
             <enclosure url="https://github.com/bestK1ngArthur/nothing-bar/releases/download/2.7.0/nothing-bar-2.7.0.zip" length="4312378" type="application/octet-stream" sparkle:edSignature="SA1iwxOTBItvEq39EhAm6rBoCr47ewDOVKcQY5tCixjtUgM523HbMJsb8oXhEDHmTgTQW8qRbOKrgT5V3//WDw=="/>
         </item>
         <item>
@@ -16,6 +26,7 @@
             <sparkle:version>21</sparkle:version>
             <sparkle:shortVersionString>2.6.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://nothingbar.bestk1ng.com/releases/2.6.1.html</sparkle:releaseNotesLink>
             <enclosure url="https://github.com/bestK1ngArthur/nothing-bar/releases/download/2.6.1/nothing-bar-2.6.1.zip" length="4212666" type="application/octet-stream" sparkle:edSignature="Yd8G1PWckqVCqJJGFkWSvQHPKwWEVviAzP3V2Zgle4/VF2EWm7JlzFaCf3PSz3JKfAI5FTHKVLXcPkv9qvRhAw=="/>
         </item>
         <item>
