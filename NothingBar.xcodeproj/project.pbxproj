@@ -444,7 +444,7 @@
 			repositoryURL = "https://github.com/bestK1ngArthur/swift-nothing-ear.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.8.0;
+				minimumVersion = 1.8.1;
 			};
 		};
 		A6F1E6C32F8A7B1E00A1B2C3 /* XCRemoteSwiftPackageReference "Sparkle" */ = {

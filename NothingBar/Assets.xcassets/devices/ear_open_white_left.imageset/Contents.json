@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ear_open_left.png",
+      "filename" : "ear_open_white_left.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "ear_open_left@2x.png",
+      "filename" : "ear_open_white_left@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "ear_open_left@3x.png",
+      "filename" : "ear_open_white_left@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

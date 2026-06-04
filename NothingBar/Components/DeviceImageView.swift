@@ -55,8 +55,10 @@ extension DeviceModel {
                 .buds(left: .ear3WhiteLeft, right: .ear3WhiteRight)
             case .earStick:
                 .buds(left: .earStickLeft, right: .earStickRight)
-            case .earOpen:
-                .buds(left: .earOpenLeft, right: .earOpenRight)
+            case .earOpen(.white):
+                .buds(left: .earOpenWhiteLeft, right: .earOpenWhiteRight)
+            case .earOpen(.blue):
+                .buds(left: .earOpenBlueLeft, right: .earOpenBlueRight)
             case .ear(.black):
                 .buds(left: .earBlackLeft, right: .earBlackRight)
             case .ear(.white):
