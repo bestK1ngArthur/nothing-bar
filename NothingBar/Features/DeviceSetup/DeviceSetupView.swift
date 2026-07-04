@@ -24,8 +24,9 @@ struct DeviceSetupView: View {
             VStack(alignment: .leading, spacing: 0) {
                 header
                 selectionGrid
-                Divider()
-                footer
+                    .safeAreaInset(edge: .bottom, spacing: 0) {
+                        footerBar
+                    }
             }
             .frame(width: 620, height: 560)
             .onAppear {
@@ -76,6 +77,13 @@ struct DeviceSetupView: View {
             .padding(.horizontal, 20)
             .padding(.top, 2)
             .padding(.bottom, 16)
+        }
+    }
+
+    private var footerBar: some View {
+        VStack(spacing: 0) {
+            Divider()
+            footer
         }
     }
 
