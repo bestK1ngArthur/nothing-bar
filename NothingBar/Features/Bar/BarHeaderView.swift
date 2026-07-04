@@ -49,7 +49,7 @@ struct BarHeaderView: View {
     private func deviceImageView(_ deviceImage: DeviceModel.DeviceImage) -> some View {
         switch deviceImage {
             case let .buds(left, right):
-                HStack(spacing: 2) {
+                HStack(spacing: -6) {
                     Image(left)
                         .resizable()
                         .interpolation(.high)

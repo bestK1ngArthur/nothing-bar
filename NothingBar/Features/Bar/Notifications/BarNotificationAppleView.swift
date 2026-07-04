@@ -27,7 +27,7 @@ struct BarNotificationAppleView: View {
 
             HStack(spacing: 12) {
                 if let deviceImage = model?.deviceImage {
-                    DeviceImageView(deviceImage: deviceImage)
+                    DeviceImageView(deviceImage: deviceImage, budsOverlapRatio: 0.15)
                         .frame(width: iconSize, height: iconSize)
                 }
 
