@@ -15,7 +15,7 @@ struct DeviceImageView: View {
     var body: some View {
         switch deviceImage {
             case let .buds(left, right):
-                HStack(spacing: 6) {
+                HStack(spacing: -16) {
                     imageView(left)
                     imageView(right)
                 }
