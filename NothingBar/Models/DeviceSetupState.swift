@@ -20,8 +20,8 @@ final class DeviceSetupState {
     private var shouldOpenWhenReady = false
 
     @MainActor
-    func present(identity: String, detectedModel: DeviceModel) {
-        context = .init(identity: identity, detectedModel: detectedModel)
+    func present(identity: String, detectedModel: DeviceModel, mode: DeviceSetupMode) {
+        context = .init(identity: identity, detectedModel: detectedModel, mode: mode)
 
         guard let onOpenRequested else {
             shouldOpenWhenReady = true

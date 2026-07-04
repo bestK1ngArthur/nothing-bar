@@ -140,12 +140,10 @@ class AppData {
 
     @MainActor
     func requestCurrentDeviceSetup() {
-        guard let identity = deviceState.deviceIdentity,
-              let detectedModel = deviceState.detectedModel ?? deviceState.model else {
-            return
-        }
+        let identity = deviceState.deviceIdentity ?? "preview-device-setup"
+        let detectedModel = deviceState.detectedModel ?? deviceState.model ?? .ear(.black)
 
-        presentDeviceSetup(identity: identity, detectedModel: detectedModel)
+        presentDeviceSetup(identity: identity, detectedModel: detectedModel, mode: .editSelection)
     }
 
     @MainActor
@@ -207,13 +205,13 @@ class AppData {
         if let selection = deviceModelSelectionStore.selection(for: identity) {
             applyEffectiveDeviceModel(selection.model)
         } else {
-            presentDeviceSetup(identity: identity, detectedModel: deviceInfo.model)
+            presentDeviceSetup(identity: identity, detectedModel: deviceInfo.model, mode: .newDevice)
         }
     }
 
     @MainActor
-    private func presentDeviceSetup(identity: String, detectedModel: DeviceModel) {
-        deviceSetupState.present(identity: identity, detectedModel: detectedModel)
+    private func presentDeviceSetup(identity: String, detectedModel: DeviceModel, mode: DeviceSetupMode) {
+        deviceSetupState.present(identity: identity, detectedModel: detectedModel, mode: mode)
     }
 
     @MainActor

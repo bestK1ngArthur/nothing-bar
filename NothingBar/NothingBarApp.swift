@@ -88,6 +88,13 @@ struct NothingBarApp: App {
     private var deviceSetupContent: some View {
         DeviceSetupView()
             .environment(appData)
+            .background {
+                WindowConfigurator { window in
+                    window.titleVisibility = .hidden
+                    window.titlebarAppearsTransparent = true
+                    window.styleMask.insert(.fullSizeContentView)
+                }
+            }
             .onAppear {
                 isDeviceSetupWindowOpen = true
                 updateDockVisibility()
@@ -145,6 +152,9 @@ struct NothingBarApp: App {
                 return
             }
 
+            window.titleVisibility = .hidden
+            window.titlebarAppearsTransparent = true
+            window.styleMask.insert(.fullSizeContentView)
             window.collectionBehavior.insert(.moveToActiveSpace)
             window.makeKeyAndOrderFront(nil)
 
@@ -166,6 +176,29 @@ struct NothingBarApp: App {
 
             NSApp.setActivationPolicy(.regular)
             NSApp.activate(ignoringOtherApps: true)
+        }
+    }
+}
+
+private struct WindowConfigurator: NSViewRepresentable {
+
+    let configure: (NSWindow) -> Void
+
+    func makeNSView(context: Context) -> NSView {
+        let view = NSView()
+        configureWindow(for: view)
+        return view
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {
+        configureWindow(for: nsView)
+    }
+
+    private func configureWindow(for view: NSView) {
+        DispatchQueue.main.async {
+            guard let window = view.window else { return }
+
+            configure(window)
         }
     }
 }

@@ -26,7 +26,6 @@ struct SettingsDeviceView: View {
                 Section("Settings") {
                     SettingsDeviceToolsView()
                 }
-                .disabled(!deviceState.isConnected)
 
                 Section("Information") {
                     SettingsDeviceInfoView()

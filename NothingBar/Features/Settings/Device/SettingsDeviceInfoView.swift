@@ -23,15 +23,6 @@ struct SettingsDeviceInfoView: View {
                 InfoRow(title: "Serial number", value: deviceState.serialNumber ?? "Unknown")
                 InfoRow(title: "Bluetooth address", value: deviceState.bluetoothAddress ?? "Unknown")
                 InfoRow(title: "Firmware version", value: deviceState.firmwareVersion ?? "Unknown")
-                SettingsRow(
-                    title: "Model and color",
-                    description: "Change the saved model selection for this device"
-                ) {
-                    Button("Change") {
-                        appData.requestCurrentDeviceSetup()
-                    }
-                    .disabled(deviceState.deviceIdentity == nil)
-                }
             }
         }
     }

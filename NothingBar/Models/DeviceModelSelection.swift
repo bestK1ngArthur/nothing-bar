@@ -42,6 +42,12 @@ struct DeviceSetupContext: Equatable {
 
     let identity: String
     let detectedModel: DeviceModel
+    let mode: DeviceSetupMode
+}
+
+enum DeviceSetupMode: Equatable {
+    case newDevice
+    case editSelection
 }
 
 enum DeviceModelCatalog {

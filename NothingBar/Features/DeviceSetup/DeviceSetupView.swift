@@ -21,12 +21,12 @@ struct DeviceSetupView: View {
 
     var body: some View {
         WithPerceptionTracking {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: 0) {
                 header
                 selectionGrid
+                Divider()
                 footer
             }
-            .padding(20)
             .frame(width: 620, height: 560)
             .onAppear {
                 selectedID = initialSelectionID
@@ -42,20 +42,23 @@ struct DeviceSetupView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text("New Nothing headphones connected")
+            Text(headerTitle)
                 .font(.title2)
                 .fontWeight(.semibold)
 
             if let detectedModel = appData.deviceSetupState.context?.detectedModel {
-                Text("Detected as \(detectedModel.displayName). Confirm the exact model and color.")
+                Text("Detected as \(detectedModel.displayName). This choice is saved for this device.")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             } else {
-                Text("Confirm the exact model and color.")
+                Text("Choose the exact model and color for this device.")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
         }
+        .padding(.horizontal, 20)
+        .padding(.top, 16)
+        .padding(.bottom, 16)
     }
 
     private var selectionGrid: some View {
@@ -70,17 +73,16 @@ struct DeviceSetupView: View {
                     }
                 }
             }
-            .padding(.vertical, 2)
+            .padding(.horizontal, 20)
+            .padding(.top, 2)
+            .padding(.bottom, 16)
         }
     }
 
     private var footer: some View {
-        HStack {
+        HStack(spacing: 12) {
             if let selectedSelection {
-                Text("\(selectedSelection.displayName), \(selectedSelection.colorName)")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
+                selectedSummary(for: selectedSelection)
             }
 
             Spacer()
@@ -99,6 +101,40 @@ struct DeviceSetupView: View {
             }
             .keyboardShortcut(.defaultAction)
             .disabled(selectedSelection == nil)
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 14)
+        .background(.bar)
+    }
+
+    private var headerTitle: String {
+        switch appData.deviceSetupState.context?.mode {
+            case .editSelection:
+                "Change model and color"
+            case .newDevice, .none:
+                "New Nothing headphones connected"
+        }
+    }
+
+    private func selectedSummary(for selection: DeviceModelSelection) -> some View {
+        HStack(spacing: 8) {
+            Text("Selected:")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+
+            Circle()
+                .fill(selection.swatchColor)
+                .overlay {
+                    Circle()
+                        .stroke(.quaternary, lineWidth: 1)
+                }
+                .frame(width: 11, height: 11)
+
+            Text("\(selection.displayName) · \(selection.colorName)")
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundColor(.primary)
+                .lineLimit(1)
         }
     }
 

@@ -29,6 +29,15 @@ struct SettingsDeviceToolsView: View {
             @Perception.Bindable var bindableAppData = appData
             Group {
                 SettingsRow(
+                    title: "Model and color",
+                    description: "Change the saved model selection for this device"
+                ) {
+                    Button("Change") {
+                        appData.requestCurrentDeviceSetup()
+                    }
+                }
+
+                SettingsRow(
                     title: "Low lag mode",
                     description: "Minimise latency for an improved gaming experience"
                 ) {
