@@ -6,6 +6,7 @@
 //
 
 import Perception
+import SwiftNothingEar
 import SwiftUI
 
 struct DeviceSetupView: View {
@@ -21,11 +22,23 @@ struct DeviceSetupView: View {
 
     var body: some View {
         WithPerceptionTracking {
+            let context = appData.deviceSetupState.context
+            let detectedModel = context?.detectedModel
+            let initialSelectionID = initialSelectionID(
+                currentModel: appData.deviceState.model,
+                detectedModel: detectedModel
+            )
+            let currentSelectionID = selectedID ?? initialSelectionID
+            let selectedSelection = currentSelectionID.flatMap(DeviceModelSelection.selection(for:))
+
             VStack(alignment: .leading, spacing: 0) {
-                header
-                selectionGrid
+                header(title: headerTitle(for: context?.mode), detectedModel: detectedModel)
+                selectionGrid(
+                    currentSelectionID: currentSelectionID,
+                    initialSelectionID: initialSelectionID
+                )
                     .safeAreaInset(edge: .bottom, spacing: 0) {
-                        footerBar
+                        footerBar(selectedSelection: selectedSelection)
                     }
             }
             .frame(width: 620, height: 560)
@@ -41,13 +54,13 @@ struct DeviceSetupView: View {
         }
     }
 
-    private var header: some View {
+    private func header(title: String, detectedModel: DeviceModel?) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(headerTitle)
+            Text(title)
                 .font(.title2)
                 .fontWeight(.semibold)
 
-            if let detectedModel = appData.deviceSetupState.context?.detectedModel {
+            if let detectedModel {
                 Text("Detected as \(detectedModel.displayName). This choice is saved for this device.")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
@@ -62,41 +75,46 @@ struct DeviceSetupView: View {
         .padding(.bottom, 16)
     }
 
-    private var selectionGrid: some View {
+    private func selectionGrid(
+        currentSelectionID: String?,
+        initialSelectionID: String?
+    ) -> some View {
         ScrollViewReader { proxy in
-            ScrollView {
-                LazyVGrid(columns: columns, alignment: .leading, spacing: 10) {
-                    ForEach(DeviceModelCatalog.all) { selection in
-                        DeviceModelSelectionCard(
-                            selection: selection,
-                            isSelected: currentSelectionID == selection.id
-                        ) {
-                            selectedID = selection.id
+            WithPerceptionTracking {
+                ScrollView {
+                    LazyVGrid(columns: columns, alignment: .leading, spacing: 10) {
+                        ForEach(DeviceModelCatalog.all) { selection in
+                            DeviceModelSelectionCard(
+                                selection: selection,
+                                isSelected: currentSelectionID == selection.id
+                            ) {
+                                selectedID = selection.id
+                            }
+                            .id(selection.id)
                         }
-                        .id(selection.id)
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 2)
+                    .padding(.bottom, 16)
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 2)
-                .padding(.bottom, 16)
-            }
-            .onAppear {
-                scrollToInitialSelection(using: proxy)
-            }
-            .onChange(of: initialSelectionID) { _ in
-                scrollToInitialSelection(using: proxy)
+                .onAppear {
+                    scrollToInitialSelection(initialSelectionID, using: proxy)
+                }
+                .onChange(of: initialSelectionID) { newValue in
+                    scrollToInitialSelection(newValue, using: proxy)
+                }
             }
         }
     }
 
-    private var footerBar: some View {
+    private func footerBar(selectedSelection: DeviceModelSelection?) -> some View {
         VStack(spacing: 0) {
             Divider()
-            footer
+            footer(selectedSelection: selectedSelection)
         }
     }
 
-    private var footer: some View {
+    private func footer(selectedSelection: DeviceModelSelection?) -> some View {
         HStack(spacing: 12) {
             if let selectedSelection {
                 selectedSummary(for: selectedSelection)
@@ -124,8 +142,8 @@ struct DeviceSetupView: View {
         .background(.bar)
     }
 
-    private var headerTitle: String {
-        switch appData.deviceSetupState.context?.mode {
+    private func headerTitle(for mode: DeviceSetupMode?) -> String {
+        switch mode {
             case .editSelection:
                 "Change model and color"
             case .newDevice, .none:
@@ -155,35 +173,25 @@ struct DeviceSetupView: View {
         }
     }
 
-    private var initialSelectionID: String? {
-        if let model = appData.deviceState.model,
-           let selection = DeviceModelSelection.selection(for: model) {
+    private func initialSelectionID(currentModel: DeviceModel?, detectedModel: DeviceModel?) -> String? {
+        if let currentModel,
+           let selection = DeviceModelSelection.selection(for: currentModel) {
             return selection.id
         }
 
-        if let model = appData.deviceSetupState.context?.detectedModel,
-           let selection = DeviceModelSelection.selection(for: model) {
+        if let detectedModel,
+           let selection = DeviceModelSelection.selection(for: detectedModel) {
             return selection.id
         }
 
         return DeviceModelCatalog.all.first?.id
     }
 
-    private var selectedSelection: DeviceModelSelection? {
-        guard let selectedID = currentSelectionID else { return nil }
-
-        return DeviceModelSelection.selection(for: selectedID)
-    }
-
-    private var currentSelectionID: String? {
-        selectedID ?? initialSelectionID
-    }
-
-    private func scrollToInitialSelection(using proxy: ScrollViewProxy) {
-        guard let initialSelectionID else { return }
+    private func scrollToInitialSelection(_ id: String?, using proxy: ScrollViewProxy) {
+        guard let id else { return }
 
         Task { @MainActor in
-            proxy.scrollTo(initialSelectionID, anchor: .center)
+            proxy.scrollTo(id, anchor: .center)
         }
     }
 }

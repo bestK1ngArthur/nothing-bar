@@ -14,6 +14,8 @@ struct BarAudioEQView: View {
     @Environment(AppData.self) var appData
     @State private var isEditingCustomEQ: Bool = false
 
+    let supportedEqPresets: [EQPreset]
+
     private var deviceState: DeviceState {
         appData.deviceState
     }
@@ -27,7 +29,6 @@ struct BarAudioEQView: View {
             let eqPreset = deviceState.eqPreset
             let eqPresetCustom = deviceState.eqPresetCustom
             let customEQ = eqPresetCustom ?? EQPresetCustom(bass: 0, mid: 0, treble: 0)
-            let supportedEqPresets = deviceState.model.map(EQPreset.allSupported(by:)) ?? []
 
             VStack(alignment: .leading, spacing: 12) {
                 HStack {

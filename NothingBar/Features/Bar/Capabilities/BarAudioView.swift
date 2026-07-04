@@ -27,6 +27,7 @@ struct BarAudioView: View {
             let enhancedBass = deviceState.enhancedBass
             let eqPreset = deviceState.eqPreset
             let spatialAudioMode = deviceState.spatialAudioMode
+            let supportedEqPresets = model.map(EQPreset.allSupported(by:)) ?? []
 
             VStack(spacing: 12) {
                 if let model, model.supportsEnhancedBass {
@@ -38,7 +39,7 @@ struct BarAudioView: View {
                         .disabled(enhancedBass == nil)
                 }
 
-                BarAudioEQView()
+                BarAudioEQView(supportedEqPresets: supportedEqPresets)
                     .disabled(eqPreset == nil)
             }
         }
