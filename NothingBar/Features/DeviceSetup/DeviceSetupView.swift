@@ -31,7 +31,7 @@ struct DeviceSetupView: View {
             .onAppear {
                 selectedID = initialSelectionID
             }
-            .onChange(of: appData.deviceSetupContext) { _ in
+            .onChange(of: appData.deviceSetupState.context) { _ in
                 selectedID = initialSelectionID
             }
             .onDisappear {
@@ -46,7 +46,7 @@ struct DeviceSetupView: View {
                 .font(.title2)
                 .fontWeight(.semibold)
 
-            if let detectedModel = appData.deviceSetupContext?.detectedModel {
+            if let detectedModel = appData.deviceSetupState.context?.detectedModel {
                 Text("Detected as \(detectedModel.displayName). Confirm the exact model and color.")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
@@ -61,7 +61,7 @@ struct DeviceSetupView: View {
     private var selectionGrid: some View {
         ScrollView {
             LazyVGrid(columns: columns, alignment: .leading, spacing: 10) {
-                ForEach(DeviceModelSelection.all) { selection in
+                ForEach(DeviceModelCatalog.all) { selection in
                     DeviceModelSelectionCard(
                         selection: selection,
                         isSelected: selectedID == selection.id
@@ -108,12 +108,12 @@ struct DeviceSetupView: View {
             return selection.id
         }
 
-        if let model = appData.deviceSetupContext?.detectedModel,
+        if let model = appData.deviceSetupState.context?.detectedModel,
            let selection = DeviceModelSelection.selection(for: model) {
             return selection.id
         }
 
-        return DeviceModelSelection.all.first?.id
+        return DeviceModelCatalog.all.first?.id
     }
 
     private var selectedSelection: DeviceModelSelection? {
@@ -184,13 +184,7 @@ private struct DeviceModelSelectionCard: View {
 
     @ViewBuilder
     private var deviceImage: some View {
-        if let deviceImage = selection.model.deviceImage {
-            DeviceImageView(deviceImage: deviceImage)
-        } else {
-            Image(systemName: "headphones")
-                .font(.system(size: 40))
-                .foregroundColor(.accentColor)
-        }
+        DeviceImageView(deviceImage: selection.deviceImage)
     }
 }
 

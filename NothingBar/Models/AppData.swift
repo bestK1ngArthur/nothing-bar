@@ -17,12 +17,11 @@ class AppData {
         static let showBatteryNotifications = "showBatteryNotifications"
         static let notificationStyle = "notificationStyle"
         static let hideMenuBarWhenDisconnected = "hideMenuBarWhenDisconnected"
-        static let deviceModelOverrides = "deviceModelOverrides"
     }
 
     var deviceState: DeviceState
     var appVersion: AppVersion
-    var deviceSetupContext: DeviceSetupContext?
+    var deviceSetupState: DeviceSetupState
 
     var showConnectNotifications: Bool = true
     var showBatteryNotifications: Bool = true
@@ -40,28 +39,25 @@ class AppData {
     var onHideMenuPreferenceChanged: ((Bool) -> Void)?
     @PerceptionIgnored
     var onOpenSettingsRequested: (() -> Void)?
-    @PerceptionIgnored
-    var onOpenDeviceSetupRequested: (() -> Void)?
 
     var nothing: Device!
 
     private let batteryLowLevels = [20, 10, 5]
-    private var deviceModelOverrides: [String: String]
-    @PerceptionIgnored
-    private var shouldOpenDeviceSetupWhenReady = false
+    private let deviceModelSelectionStore: DeviceModelSelectionStore
 
     @MainActor
     init() {
         let defaults = UserDefaults.standard
         self.deviceState = DeviceState()
         self.appVersion = AppVersion()
+        self.deviceSetupState = DeviceSetupState()
+        self.deviceModelSelectionStore = DeviceModelSelectionStore(defaults: defaults)
         self.showConnectNotifications = defaults.object(forKey: Keys.showConnectNotifications) as? Bool ?? true
         self.showBatteryNotifications = defaults.object(forKey: Keys.showBatteryNotifications) as? Bool ?? true
         self.notificationStyle = NotificationStyle(
             rawValue: defaults.string(forKey: Keys.notificationStyle) ?? ""
         ) ?? .defaultValue
         self.hideMenuBarWhenDisconnected = defaults.object(forKey: Keys.hideMenuBarWhenDisconnected) as? Bool ?? false
-        self.deviceModelOverrides = defaults.dictionary(forKey: Keys.deviceModelOverrides) as? [String: String] ?? [:]
         self.nothing = Device(
             .init(
                 onDiscover: { device in
@@ -154,27 +150,27 @@ class AppData {
 
     @MainActor
     func applyDeviceModelSelection(_ selection: DeviceModelSelection) {
-        guard let identity = deviceSetupContext?.identity ?? deviceState.deviceIdentity else {
+        guard let identity = deviceSetupState.context?.identity ?? deviceState.deviceIdentity else {
             return
         }
 
-        deviceModelOverrides[identity] = selection.id
-        persistDeviceModelOverrides()
+        deviceModelSelectionStore.save(
+            selection: selection,
+            identity: identity,
+            detectedModel: deviceSetupState.context?.detectedModel ?? deviceState.detectedModel
+        )
         applyEffectiveDeviceModel(selection.model)
-        deviceSetupContext = nil
+        deviceSetupState.cancel()
     }
 
     @MainActor
     func cancelDeviceSetup() {
-        deviceSetupContext = nil
+        deviceSetupState.cancel()
     }
 
     @MainActor
     func openPendingDeviceSetupIfNeeded() {
-        guard shouldOpenDeviceSetupWhenReady else { return }
-
-        shouldOpenDeviceSetupWhenReady = false
-        onOpenDeviceSetupRequested?()
+        deviceSetupState.openPendingIfNeeded()
     }
 
     private func handleError(_ error: Error) {
@@ -194,10 +190,7 @@ class AppData {
 
     @MainActor
     private func handleSuccessfulConnection(_ deviceInfo: DeviceInfo) {
-        let identity = deviceIdentity(
-            bluetoothAddress: deviceInfo.bluetoothAddress,
-            serialNumber: deviceInfo.serialNumber
-        )
+        let identity = deviceModelSelectionStore.identity(for: deviceInfo)
 
         deviceState.bluetoothError = nil
         deviceState.detectedModel = deviceInfo.model
@@ -211,8 +204,7 @@ class AppData {
             return
         }
 
-        if let overrideID = deviceModelOverrides[identity],
-           let selection = DeviceModelSelection.selection(for: overrideID) {
+        if let selection = deviceModelSelectionStore.selection(for: identity) {
             applyEffectiveDeviceModel(selection.model)
         } else {
             presentDeviceSetup(identity: identity, detectedModel: deviceInfo.model)
@@ -221,43 +213,13 @@ class AppData {
 
     @MainActor
     private func presentDeviceSetup(identity: String, detectedModel: DeviceModel) {
-        deviceSetupContext = .init(identity: identity, detectedModel: detectedModel)
-
-        guard let onOpenDeviceSetupRequested else {
-            shouldOpenDeviceSetupWhenReady = true
-            return
-        }
-
-        onOpenDeviceSetupRequested()
+        deviceSetupState.present(identity: identity, detectedModel: detectedModel)
     }
 
     @MainActor
     private func applyEffectiveDeviceModel(_ model: DeviceModel) {
         deviceState.model = model
         nothing.overrideDeviceModel(model)
-    }
-
-    private func persistDeviceModelOverrides() {
-        UserDefaults.standard.set(deviceModelOverrides, forKey: Keys.deviceModelOverrides)
-    }
-
-    private func deviceIdentity(bluetoothAddress: String?, serialNumber: String) -> String? {
-        if let bluetoothAddress = normalizedIdentityValue(bluetoothAddress) {
-            return bluetoothAddress
-        }
-
-        return normalizedIdentityValue(serialNumber)
-    }
-
-    private func normalizedIdentityValue(_ value: String?) -> String? {
-        guard let value else { return nil }
-
-        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty, trimmed != "Unknown" else {
-            return nil
-        }
-
-        return trimmed
     }
 
     @MainActor

@@ -127,8 +127,8 @@ struct NothingBarApp: App {
             }
         }
 
-        if appData.onOpenDeviceSetupRequested == nil {
-            appData.onOpenDeviceSetupRequested = {
+        if appData.deviceSetupState.onOpenRequested == nil {
+            appData.deviceSetupState.onOpenRequested = {
                 statusController.closePopover()
                 Self.openDeviceSetupWindow(using: openWindow)
             }
