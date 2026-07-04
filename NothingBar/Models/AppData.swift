@@ -76,10 +76,11 @@ class AppData {
                     if case let .success(deviceInfo) = result {
                         Task { @MainActor in
                             self?.handleSuccessfulConnection(deviceInfo)
+                            self?.showNotification()
                         }
+                    } else {
+                        self?.showNotification()
                     }
-
-                    self?.showNotification()
 
                     AppLogger.connection.connectionChanged(true, result: "\(result)")
                 },
@@ -143,8 +144,10 @@ class AppData {
 
     @MainActor
     func requestCurrentDeviceSetup() {
-        let identity = deviceState.deviceIdentity ?? "preview-device-setup"
-        let detectedModel = deviceState.detectedModel ?? deviceState.model ?? .ear(.black)
+        guard let identity = deviceState.deviceIdentity,
+              let detectedModel = deviceState.detectedModel ?? deviceState.model else {
+            return
+        }
 
         presentDeviceSetup(identity: identity, detectedModel: detectedModel)
     }
