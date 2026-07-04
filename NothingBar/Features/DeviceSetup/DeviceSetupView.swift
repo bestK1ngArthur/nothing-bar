@@ -63,20 +63,29 @@ struct DeviceSetupView: View {
     }
 
     private var selectionGrid: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, alignment: .leading, spacing: 10) {
-                ForEach(DeviceModelCatalog.all) { selection in
-                    DeviceModelSelectionCard(
-                        selection: selection,
-                        isSelected: currentSelectionID == selection.id
-                    ) {
-                        selectedID = selection.id
+        ScrollViewReader { proxy in
+            ScrollView {
+                LazyVGrid(columns: columns, alignment: .leading, spacing: 10) {
+                    ForEach(DeviceModelCatalog.all) { selection in
+                        DeviceModelSelectionCard(
+                            selection: selection,
+                            isSelected: currentSelectionID == selection.id
+                        ) {
+                            selectedID = selection.id
+                        }
+                        .id(selection.id)
                     }
                 }
+                .padding(.horizontal, 20)
+                .padding(.top, 2)
+                .padding(.bottom, 16)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 2)
-            .padding(.bottom, 16)
+            .onAppear {
+                scrollToInitialSelection(using: proxy)
+            }
+            .onChange(of: initialSelectionID) { _ in
+                scrollToInitialSelection(using: proxy)
+            }
         }
     }
 
@@ -168,6 +177,14 @@ struct DeviceSetupView: View {
 
     private var currentSelectionID: String? {
         selectedID ?? initialSelectionID
+    }
+
+    private func scrollToInitialSelection(using proxy: ScrollViewProxy) {
+        guard let initialSelectionID else { return }
+
+        Task { @MainActor in
+            proxy.scrollTo(initialSelectionID, anchor: .center)
+        }
     }
 }
 
