@@ -30,10 +30,10 @@ struct DeviceSetupView: View {
             }
             .frame(width: 620, height: 560)
             .onAppear {
-                selectedID = initialSelectionID
+                selectedID = nil
             }
-            .onChange(of: appData.deviceSetupState.context) { _ in
-                selectedID = initialSelectionID
+            .onChange(of: initialSelectionID) { newValue in
+                selectedID = newValue
             }
             .onDisappear {
                 appData.cancelDeviceSetup()
@@ -68,7 +68,7 @@ struct DeviceSetupView: View {
                 ForEach(DeviceModelCatalog.all) { selection in
                     DeviceModelSelectionCard(
                         selection: selection,
-                        isSelected: selectedID == selection.id
+                        isSelected: currentSelectionID == selection.id
                     ) {
                         selectedID = selection.id
                     }
@@ -161,9 +161,13 @@ struct DeviceSetupView: View {
     }
 
     private var selectedSelection: DeviceModelSelection? {
-        guard let selectedID else { return nil }
+        guard let selectedID = currentSelectionID else { return nil }
 
         return DeviceModelSelection.selection(for: selectedID)
+    }
+
+    private var currentSelectionID: String? {
+        selectedID ?? initialSelectionID
     }
 }
 

@@ -26,7 +26,7 @@ struct SettingsDeviceToolsView: View {
 
     var body: some View {
         WithPerceptionTracking {
-            @Perception.Bindable var bindableAppData = appData
+            @Perception.Bindable var bindableDeviceState = deviceState
             Group {
                 SettingsRow(
                     title: "Model and color",
@@ -42,7 +42,7 @@ struct SettingsDeviceToolsView: View {
                     title: "Low lag mode",
                     description: "Minimise latency for an improved gaming experience"
                 ) {
-                    Toggle("", isOn: $bindableAppData.deviceState.lowLatency)
+                    Toggle("", isOn: $bindableDeviceState.lowLatency)
                         .onChange(of: deviceState.lowLatency) { isEnabled in
                             nothing.setLowLatency(isEnabled)
                             AppLogger.settings.uiSettingChanged("Low Latency Mode", value: isEnabled)
@@ -54,7 +54,7 @@ struct SettingsDeviceToolsView: View {
                     title: "Over-ear detection",
                     description: "Automatically play audio when headphones are in and pause when removed"
                 ) {
-                    Toggle("", isOn: $bindableAppData.deviceState.inEarDetection)
+                    Toggle("", isOn: $bindableDeviceState.inEarDetection)
                         .onChange(of: deviceState.inEarDetection) { isEnabled in
                             nothing.setInEarDetection(isEnabled)
                             AppLogger.settings.uiSettingChanged("Over-ear Detection", value: isEnabled)

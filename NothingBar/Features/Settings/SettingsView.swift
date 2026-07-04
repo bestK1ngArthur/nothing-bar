@@ -33,13 +33,15 @@ struct SettingsView: View {
     private var sidebar: some View {
         List(SettingsTab.allCases, id: \.self, selection: $selectedTab) { tab in
             NavigationLink(value: tab) {
-                HStack(spacing: 6) {
-                    Label(tab.title, systemImage: tab.icon)
+                WithPerceptionTracking {
+                    HStack(spacing: 6) {
+                        Label(tab.title, systemImage: tab.icon)
 
-                    Spacer()
+                        Spacer()
 
-                    if tab == .app && appData.appVersion.isUpdateAvailable {
-                        updateBadge
+                        if tab == .app && appData.appVersion.isUpdateAvailable {
+                            updateBadge
+                        }
                     }
                 }
             }
@@ -77,7 +79,12 @@ struct SettingsView: View {
     }
 
     private func presentUpdateIfNeeded() {
-        guard !didPresentUpdate, appData.appVersion.isUpdateAvailable else { return }
+        guard !didPresentUpdate else { return }
+        let isUpdateAvailable = withPerceptionTracking {
+            appData.appVersion.isUpdateAvailable
+        } onChange: {
+        }
+        guard isUpdateAvailable else { return }
 
         didPresentUpdate = true
         appData.appVersion.checkForUpdatesManually()

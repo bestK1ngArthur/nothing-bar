@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Perception
 
 struct SettingsRow<Value: View>: View {
 
@@ -28,7 +29,9 @@ struct SettingsRow<Value: View>: View {
 
             Spacer()
 
-            value()
+            WithPerceptionTracking {
+                value()
+            }
         }
     }
 }
