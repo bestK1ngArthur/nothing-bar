@@ -222,7 +222,7 @@ class AppData {
     @MainActor
     private func applyEffectiveDeviceModel(_ model: DeviceModel) {
         deviceState.model = model
-        nothing.overrideDeviceModel(model)
+        nothing.setEffectiveModelOverride(model)
     }
 
     @MainActor
