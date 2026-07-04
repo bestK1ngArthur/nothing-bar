@@ -17,10 +17,12 @@ class AppData {
         static let showBatteryNotifications = "showBatteryNotifications"
         static let notificationStyle = "notificationStyle"
         static let hideMenuBarWhenDisconnected = "hideMenuBarWhenDisconnected"
+        static let deviceModelOverrides = "deviceModelOverrides"
     }
 
     var deviceState: DeviceState
     var appVersion: AppVersion
+    var deviceSetupContext: DeviceSetupContext?
 
     var showConnectNotifications: Bool = true
     var showBatteryNotifications: Bool = true
@@ -38,10 +40,15 @@ class AppData {
     var onHideMenuPreferenceChanged: ((Bool) -> Void)?
     @PerceptionIgnored
     var onOpenSettingsRequested: (() -> Void)?
+    @PerceptionIgnored
+    var onOpenDeviceSetupRequested: (() -> Void)?
 
     var nothing: Device!
 
     private let batteryLowLevels = [20, 10, 5]
+    private var deviceModelOverrides: [String: String]
+    @PerceptionIgnored
+    private var shouldOpenDeviceSetupWhenReady = false
 
     @MainActor
     init() {
@@ -54,6 +61,7 @@ class AppData {
             rawValue: defaults.string(forKey: Keys.notificationStyle) ?? ""
         ) ?? .defaultValue
         self.hideMenuBarWhenDisconnected = defaults.object(forKey: Keys.hideMenuBarWhenDisconnected) as? Bool ?? false
+        self.deviceModelOverrides = defaults.dictionary(forKey: Keys.deviceModelOverrides) as? [String: String] ?? [:]
         self.nothing = Device(
             .init(
                 onDiscover: { device in
@@ -66,11 +74,9 @@ class AppData {
                     }
 
                     if case let .success(deviceInfo) = result {
-                        self?.deviceState.bluetoothError = nil
-                        self?.deviceState.model = deviceInfo.model
-                        self?.deviceState.serialNumber = deviceInfo.serialNumber
-                        self?.deviceState.bluetoothAddress = deviceInfo.bluetoothAddress ?? "Unknown"
-                        self?.deviceState.firmwareVersion = deviceInfo.firmwareVersion ?? "Unknown"
+                        Task { @MainActor in
+                            self?.handleSuccessfulConnection(deviceInfo)
+                        }
                     }
 
                     self?.showNotification()
@@ -135,6 +141,39 @@ class AppData {
         )
     }
 
+    @MainActor
+    func requestCurrentDeviceSetup() {
+        let identity = deviceState.deviceIdentity ?? "preview-device-setup"
+        let detectedModel = deviceState.detectedModel ?? deviceState.model ?? .ear(.black)
+
+        presentDeviceSetup(identity: identity, detectedModel: detectedModel)
+    }
+
+    @MainActor
+    func applyDeviceModelSelection(_ selection: DeviceModelSelection) {
+        guard let identity = deviceSetupContext?.identity ?? deviceState.deviceIdentity else {
+            return
+        }
+
+        deviceModelOverrides[identity] = selection.id
+        persistDeviceModelOverrides()
+        applyEffectiveDeviceModel(selection.model)
+        deviceSetupContext = nil
+    }
+
+    @MainActor
+    func cancelDeviceSetup() {
+        deviceSetupContext = nil
+    }
+
+    @MainActor
+    func openPendingDeviceSetupIfNeeded() {
+        guard shouldOpenDeviceSetupWhenReady else { return }
+
+        shouldOpenDeviceSetupWhenReady = false
+        onOpenDeviceSetupRequested?()
+    }
+
     private func handleError(_ error: Error) {
         guard let connectionError = error as? ConnectionError else {
             return
@@ -148,6 +187,74 @@ class AppData {
                 deviceState.bluetoothError = nil
                 AppLogger.connection.connectionError("Other connection error: \(connectionError)")
         }
+    }
+
+    @MainActor
+    private func handleSuccessfulConnection(_ deviceInfo: DeviceInfo) {
+        let identity = deviceIdentity(
+            bluetoothAddress: deviceInfo.bluetoothAddress,
+            serialNumber: deviceInfo.serialNumber
+        )
+
+        deviceState.bluetoothError = nil
+        deviceState.detectedModel = deviceInfo.model
+        deviceState.model = deviceInfo.model
+        deviceState.deviceIdentity = identity
+        deviceState.serialNumber = deviceInfo.serialNumber
+        deviceState.bluetoothAddress = deviceInfo.bluetoothAddress ?? "Unknown"
+        deviceState.firmwareVersion = deviceInfo.firmwareVersion ?? "Unknown"
+
+        guard let identity else {
+            return
+        }
+
+        if let overrideID = deviceModelOverrides[identity],
+           let selection = DeviceModelSelection.selection(for: overrideID) {
+            applyEffectiveDeviceModel(selection.model)
+        } else {
+            presentDeviceSetup(identity: identity, detectedModel: deviceInfo.model)
+        }
+    }
+
+    @MainActor
+    private func presentDeviceSetup(identity: String, detectedModel: DeviceModel) {
+        deviceSetupContext = .init(identity: identity, detectedModel: detectedModel)
+
+        guard let onOpenDeviceSetupRequested else {
+            shouldOpenDeviceSetupWhenReady = true
+            return
+        }
+
+        onOpenDeviceSetupRequested()
+    }
+
+    @MainActor
+    private func applyEffectiveDeviceModel(_ model: DeviceModel) {
+        deviceState.model = model
+        nothing.overrideDeviceModel(model)
+    }
+
+    private func persistDeviceModelOverrides() {
+        UserDefaults.standard.set(deviceModelOverrides, forKey: Keys.deviceModelOverrides)
+    }
+
+    private func deviceIdentity(bluetoothAddress: String?, serialNumber: String) -> String? {
+        if let bluetoothAddress = normalizedIdentityValue(bluetoothAddress) {
+            return bluetoothAddress
+        }
+
+        return normalizedIdentityValue(serialNumber)
+    }
+
+    private func normalizedIdentityValue(_ value: String?) -> String? {
+        guard let value else { return nil }
+
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty, trimmed != "Unknown" else {
+            return nil
+        }
+
+        return trimmed
     }
 
     @MainActor

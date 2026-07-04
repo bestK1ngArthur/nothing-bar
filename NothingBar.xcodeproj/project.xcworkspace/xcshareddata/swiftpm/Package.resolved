@@ -1,5 +1,5 @@
 {
-  "originHash" : "c4bfb2822911b81bf76135ded5daf8c0928b10fcf46e5e6234f03fd870a072af",
+  "originHash" : "3afc0bc6d574e267326b0d19621023b56ea29dbe8cdab37d61ef51ca53efa8f7",
   "pins" : [
     {
       "identity" : "sparkle",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "066e75a8b3e99962685d6a90cdd5293ebffd9261",
         "version" : "2.9.1"
-      }
-    },
-    {
-      "identity" : "swift-nothing-ear",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/bestK1ngArthur/swift-nothing-ear.git",
-      "state" : {
-        "revision" : "a064ddb714a2efb1016998f593fcd2e060e7ddb7",
-        "version" : "1.8.1"
       }
     },
     {

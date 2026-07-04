@@ -19,6 +19,7 @@ struct NothingBarApp: App {
     @State private var statusController: StatusBarController
     @State private var deviceSearchController: DeviceSearchController
     @State private var isSettingsWindowOpen = false
+    @State private var isDeviceSetupWindowOpen = false
 
     init() {
         let appData = AppData()
@@ -64,6 +65,11 @@ struct NothingBarApp: App {
             settingsContent
         }
         .windowResizability(.contentSize)
+
+        Window("Device Setup", id: "device-setup") {
+            deviceSetupContent
+        }
+        .windowResizability(.contentSize)
     }
 
     private var settingsContent: some View {
@@ -79,8 +85,21 @@ struct NothingBarApp: App {
             }
     }
 
+    private var deviceSetupContent: some View {
+        DeviceSetupView()
+            .environment(appData)
+            .onAppear {
+                isDeviceSetupWindowOpen = true
+                updateDockVisibility()
+            }
+            .onDisappear {
+                isDeviceSetupWindowOpen = false
+                updateDockVisibility()
+            }
+    }
+
     private func updateDockVisibility() {
-        if isSettingsWindowOpen {
+        if isSettingsWindowOpen || isDeviceSetupWindowOpen {
             NSApp.setActivationPolicy(.regular)
         } else {
             NSApp.setActivationPolicy(.accessory)
@@ -107,6 +126,15 @@ struct NothingBarApp: App {
                 Self.openSettingsWindow(using: openWindow)
             }
         }
+
+        if appData.onOpenDeviceSetupRequested == nil {
+            appData.onOpenDeviceSetupRequested = {
+                statusController.closePopover()
+                Self.openDeviceSetupWindow(using: openWindow)
+            }
+
+            appData.openPendingDeviceSetupIfNeeded()
+        }
     }
 
     private static func openSettingsWindow(using openWindow: OpenWindowAction) {
@@ -114,6 +142,22 @@ struct NothingBarApp: App {
 
         DispatchQueue.main.async {
             guard let window = NSApp.windows.first(where: { $0.title == "Settings" }) else {
+                return
+            }
+
+            window.collectionBehavior.insert(.moveToActiveSpace)
+            window.makeKeyAndOrderFront(nil)
+
+            NSApp.setActivationPolicy(.regular)
+            NSApp.activate(ignoringOtherApps: true)
+        }
+    }
+
+    private static func openDeviceSetupWindow(using openWindow: OpenWindowAction) {
+        openWindow(id: "device-setup")
+
+        DispatchQueue.main.async {
+            guard let window = NSApp.windows.first(where: { $0.title == "Device Setup" }) else {
                 return
             }
 

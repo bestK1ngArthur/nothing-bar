@@ -161,7 +161,7 @@
 			packageReferences = (
 				A6F1E6C32F8A7B1E00A1B2C3 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				A7B60C632F8A7B1E00A1B2C3 /* XCRemoteSwiftPackageReference "swift-perception" */,
-				A5FDBDDE2F5C39E60075ED0F /* XCRemoteSwiftPackageReference "swift-nothing-ear" */,
+				A5FDBDDE2F5C39E60075ED0F /* XCLocalSwiftPackageReference "../../Libraries/swift-nothing-ear" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A53E4AB22E3BBA36003D6D2A /* Products */;
@@ -325,7 +325,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 23;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CT884K7983;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
@@ -376,7 +376,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 23;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CT884K7983;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -438,15 +438,14 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		A5FDBDDE2F5C39E60075ED0F /* XCRemoteSwiftPackageReference "swift-nothing-ear" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bestK1ngArthur/swift-nothing-ear.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.8.1;
-			};
+/* Begin XCLocalSwiftPackageReference section */
+		A5FDBDDE2F5C39E60075ED0F /* XCLocalSwiftPackageReference "../../Libraries/swift-nothing-ear" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../../Libraries/swift-nothing-ear";
 		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
 		A6F1E6C32F8A7B1E00A1B2C3 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sparkle-project/Sparkle";
@@ -520,7 +519,7 @@
 		};
 		A5FDBDDF2F5C39E60075ED0F /* SwiftNothingEar */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A5FDBDDE2F5C39E60075ED0F /* XCRemoteSwiftPackageReference "swift-nothing-ear" */;
+			package = A5FDBDDE2F5C39E60075ED0F /* XCLocalSwiftPackageReference "../../Libraries/swift-nothing-ear" */;
 			productName = SwiftNothingEar;
 		};
 		A6F1E6C22F8A7B1E00A1B2C3 /* Sparkle */ = {
