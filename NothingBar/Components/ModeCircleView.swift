@@ -5,6 +5,7 @@
 //  Created by Artem Belkov on 28.09.2025.
 //
 
+import Perception
 import SwiftUI
 
 struct ModeCircleView<Overlay: View>: View {
@@ -32,22 +33,26 @@ struct ModeCircleView<Overlay: View>: View {
 
     var body: some View {
         Button(action: onTap) {
-            VStack(spacing: 0) {
-                circleView
-                    .frame(width: 60, height: 60)
-                    .overlay(alignment: .topTrailing) {
-                        if let overlay {
-                            overlay()
+            WithPerceptionTracking {
+                VStack(spacing: 0) {
+                    circleView
+                        .frame(width: 60, height: 60)
+                        .overlay(alignment: .topTrailing) {
+                            WithPerceptionTracking {
+                                if let overlay {
+                                    overlay()
+                                }
+                            }
                         }
-                    }
 
-                Text(name)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
+                    Text(name)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(width: 70)
             }
-            .frame(width: 70)
         }
         .buttonStyle(PlainButtonStyle())
     }

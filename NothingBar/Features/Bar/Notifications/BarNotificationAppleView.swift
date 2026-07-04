@@ -21,21 +21,25 @@ struct BarNotificationAppleView: View {
 
     var body: some View {
         WithPerceptionTracking {
+            let model = deviceState.model
+            let isConnected = deviceState.isConnected
+            let battery = deviceState.battery
+
             HStack(spacing: 12) {
-                if let deviceImage = deviceState.model?.deviceImage {
+                if let deviceImage = model?.deviceImage {
                     DeviceImageView(deviceImage: deviceImage)
                         .frame(width: iconSize, height: iconSize)
                 }
 
                 VStack(spacing: 2) {
-                    if let displayName = deviceState.model?.displayName {
+                    if let displayName = model?.displayName {
                         Text(displayName)
                             .font(.system(size: 12, weight: .medium))
                             .foregroundColor(.primary)
                             .multilineTextAlignment(.leading)
                     }
 
-                    Text(deviceState.isConnected ? "Connected" : "Off")
+                    Text(isConnected ? "Connected" : "Off")
                         .font(.system(size: 11, weight: .regular))
                         .foregroundColor(.secondary)
                 }
@@ -43,8 +47,8 @@ struct BarNotificationAppleView: View {
                 .layoutPriority(1)
 
                 BarNotificationRingView(
-                    progress: batteryProgress,
-                    isConnected: deviceState.isConnected,
+                    progress: batteryProgress(for: battery),
+                    isConnected: isConnected,
                     size: .small
                 )
             }
@@ -71,8 +75,8 @@ struct BarNotificationAppleView: View {
         }
     }
 
-    private var batteryProgress: Double {
-        guard let battery = deviceState.battery else {
+    private func batteryProgress(for battery: Battery?) -> Double {
+        guard let battery else {
             return 0
         }
 

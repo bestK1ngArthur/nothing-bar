@@ -5,6 +5,7 @@
 //  Created by Artem Belkov on 02.08.2025.
 //
 
+import Perception
 import SwiftUI
 
 struct BarSectionView<Content: View>: View {
@@ -32,7 +33,9 @@ struct BarSectionView<Content: View>: View {
                 titleView
             }
 
-            content()
+            WithPerceptionTracking {
+                content()
+            }
         }
         .padding(.horizontal, 4)
     }

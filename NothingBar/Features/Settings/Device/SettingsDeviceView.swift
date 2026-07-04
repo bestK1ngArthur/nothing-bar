@@ -6,6 +6,7 @@
 //
 
 import Perception
+import SwiftNothingEar
 import SwiftUI
 
 struct SettingsDeviceView: View {
@@ -18,9 +19,12 @@ struct SettingsDeviceView: View {
 
     var body: some View {
         WithPerceptionTracking {
+            let model = deviceState.model
+            let isConnected = deviceState.isConnected
+
             Form {
                 Section {
-                    header
+                    header(model: model)
                 }
 
                 Section("Settings") {
@@ -30,7 +34,7 @@ struct SettingsDeviceView: View {
                 Section("Information") {
                     SettingsDeviceInfoView()
                 }
-                .disabled(!deviceState.isConnected)
+                .disabled(!isConnected)
             }
             .formStyle(.grouped)
             .padding(.top, -20)
@@ -38,8 +42,8 @@ struct SettingsDeviceView: View {
     }
 
     @ViewBuilder
-    private var header: some View {
-        if deviceState.model != nil {
+    private func header(model: DeviceModel?) -> some View {
+        if model != nil {
             SettingsDeviceHeaderView()
         } else {
             NoDeviceView()

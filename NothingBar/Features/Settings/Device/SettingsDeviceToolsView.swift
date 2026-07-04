@@ -27,6 +27,13 @@ struct SettingsDeviceToolsView: View {
     var body: some View {
         WithPerceptionTracking {
             @Perception.Bindable var bindableDeviceState = deviceState
+            let deviceIdentity = deviceState.deviceIdentity
+            let isConnected = deviceState.isConnected
+            let lowLatency = deviceState.lowLatency
+            let inEarDetection = deviceState.inEarDetection
+            let model = deviceState.model
+            let ringBuds = deviceState.ringBuds
+
             Group {
                 SettingsRow(
                     title: "Model and color",
@@ -35,7 +42,7 @@ struct SettingsDeviceToolsView: View {
                     Button("Change") {
                         appData.requestCurrentDeviceSetup()
                     }
-                    .disabled(deviceState.deviceIdentity == nil)
+                    .disabled(deviceIdentity == nil)
                 }
 
                 SettingsRow(
@@ -43,11 +50,11 @@ struct SettingsDeviceToolsView: View {
                     description: "Minimise latency for an improved gaming experience"
                 ) {
                     Toggle("", isOn: $bindableDeviceState.lowLatency)
-                        .onChange(of: deviceState.lowLatency) { isEnabled in
+                        .onChange(of: lowLatency) { isEnabled in
                             nothing.setLowLatency(isEnabled)
                             AppLogger.settings.uiSettingChanged("Low Latency Mode", value: isEnabled)
                         }
-                        .disabled(!deviceState.isConnected)
+                        .disabled(!isConnected)
                 }
 
                 SettingsRow(
@@ -55,22 +62,22 @@ struct SettingsDeviceToolsView: View {
                     description: "Automatically play audio when headphones are in and pause when removed"
                 ) {
                     Toggle("", isOn: $bindableDeviceState.inEarDetection)
-                        .onChange(of: deviceState.inEarDetection) { isEnabled in
+                        .onChange(of: inEarDetection) { isEnabled in
                             nothing.setInEarDetection(isEnabled)
                             AppLogger.settings.uiSettingChanged("Over-ear Detection", value: isEnabled)
                         }
-                        .disabled(!deviceState.isConnected)
+                        .disabled(!isConnected)
                 }
 
-                if let model = deviceState.model,
+                if let model,
                    model.supportsRingBuds,
-                   let ringBuds = deviceState.ringBuds {
+                   let ringBuds {
                     SettingsRow(
                         title: "Find my headphones",
                         description: "Trigger a loud sound to find your headphones"
                     ) {
                         ringButtons(current: ringBuds)
-                            .disabled(!deviceState.isConnected)
+                            .disabled(!isConnected)
                     }
                 }
             }

@@ -19,11 +19,15 @@ struct BarView: View {
 
     var body: some View {
         WithPerceptionTracking {
+            let bluetoothError = deviceState.bluetoothError
+            let model = deviceState.model
+            let isConnected = deviceState.isConnected
+
             Group {
-                if let bluetoothError = appData.deviceState.bluetoothError, bluetoothError == .unauthorized {
+                if bluetoothError == .unauthorized {
                     BarNoPermissionsView()
-                } else if let model = deviceState.model {
-                    deviceView(model: model)
+                } else if let model {
+                    deviceView(model: model, isConnected: isConnected)
                 } else {
                     noDeviceView
                 }
@@ -33,11 +37,11 @@ struct BarView: View {
         }
     }
 
-    private func deviceView(model: DeviceModel) -> some View {
+    private func deviceView(model: DeviceModel, isConnected: Bool) -> some View {
         VStack(spacing: 16) {
             BarHeaderView()
 
-            if deviceState.isConnected {
+            if isConnected {
                 connectedView(model: model)
             }
         }

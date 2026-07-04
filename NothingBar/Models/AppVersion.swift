@@ -34,9 +34,9 @@ final class AppVersion {
         let updaterDelegate = AppUpdateDelegate()
         self.updaterDelegate = updaterDelegate
         self.updaterController = SPUStandardUpdaterController(
-            startingUpdater: true,
+            startingUpdater: false,
             updaterDelegate: updaterDelegate,
-            userDriverDelegate: nil
+            userDriverDelegate: updaterDelegate
         )
         updaterDelegate.appVersion = self
 
@@ -67,7 +67,7 @@ final class AppVersion {
     }
 }
 
-private final class AppUpdateDelegate: NSObject, SPUUpdaterDelegate {
+private final class AppUpdateDelegate: NSObject, SPUUpdaterDelegate, SPUStandardUserDriverDelegate {
 
     weak var appVersion: AppVersion?
 
@@ -80,6 +80,29 @@ private final class AppUpdateDelegate: NSObject, SPUUpdaterDelegate {
     func updater(_ updater: SPUUpdater, didNotFindUpdate error: Error) {
         DispatchQueue.main.async { [weak self] in
             self?.appVersion?.isUpdateAvailable = false
+        }
+    }
+
+    var supportsGentleScheduledUpdateReminders: Bool {
+        true
+    }
+
+    func standardUserDriverShouldHandleShowingScheduledUpdate(
+        _ update: SUAppcastItem,
+        andInImmediateFocus immediateFocus: Bool
+    ) -> Bool {
+        immediateFocus
+    }
+
+    func standardUserDriverWillHandleShowingUpdate(
+        _ handleShowingUpdate: Bool,
+        forUpdate update: SUAppcastItem,
+        state: SPUUserUpdateState
+    ) {
+        guard !handleShowingUpdate else { return }
+
+        DispatchQueue.main.async { [weak self] in
+            self?.appVersion?.isUpdateAvailable = true
         }
     }
 }

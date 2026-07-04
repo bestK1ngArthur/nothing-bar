@@ -23,14 +23,17 @@ struct BarNoiseCancellationView: View {
 
     var body: some View {
         WithPerceptionTracking {
+            let currentMode = deviceState.noiseCancellationMode ?? .off
+            let isDisabled = deviceState.noiseCancellationMode == nil
+
             BarSectionView(
                 title: "Noise Cancellation",
-                value: value
+                value: displayValue(for: currentMode)
             ) {
                 VStack(alignment: .center, spacing: 12) {
                     HStack(alignment: .top, spacing: 8) {
                         ForEach(NoiseCancellationMode.allCases, id: \.self) { mode in
-                            noiseCancellationItem(mode)
+                            noiseCancellationItem(mode, currentMode: currentMode)
                         }
                     }
 
@@ -38,13 +41,16 @@ struct BarNoiseCancellationView: View {
                         activeLevelsStack(currentLevel: currentLevel)
                     }
                 }
-                .disabled(deviceState.noiseCancellationMode == nil)
+                .disabled(isDisabled)
             }
         }
     }
 
     @ViewBuilder
-    private func noiseCancellationItem(_ mode: NoiseCancellationMode) -> some View {
+    private func noiseCancellationItem(
+        _ mode: NoiseCancellationMode,
+        currentMode: NoiseCancellationMode
+    ) -> some View {
         let isActive = modeIsEquivalent(mode, currentMode)
         ModeCircleView(
             image: mode.imageName,
@@ -87,17 +93,13 @@ struct BarNoiseCancellationView: View {
         .buttonStyle(.plain)
     }
 
-    private var value: String {
-        switch currentMode {
+    private func displayValue(for mode: NoiseCancellationMode) -> String {
+        switch mode {
             case .active(let mode):
                 return mode.displayName
             default:
-                return currentMode.displayName
+                return mode.displayName
         }
-    }
-
-    private var currentMode: NoiseCancellationMode {
-        deviceState.noiseCancellationMode ?? .off
     }
 
     private func modeIsEquivalent(_ mode1: NoiseCancellationMode, _ mode2: NoiseCancellationMode) -> Bool {
