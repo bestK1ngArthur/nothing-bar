@@ -14,6 +14,8 @@ struct BarAudioEQView: View {
     @Environment(AppData.self) var appData
     @State private var isEditingCustomEQ: Bool = false
 
+    let supportedEqPresets: [EQPreset]
+
     private var deviceState: DeviceState {
         appData.deviceState
     }
@@ -24,48 +26,61 @@ struct BarAudioEQView: View {
 
     var body: some View {
         WithPerceptionTracking {
+            let eqPreset = deviceState.eqPreset
+            let eqPresetCustom = deviceState.eqPresetCustom
+            let customEQ = eqPresetCustom ?? EQPresetCustom(bass: 0, mid: 0, treble: 0)
+
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    header
+                    header(
+                        currentPreset: eqPreset ?? .balanced,
+                        supportedEqPresets: supportedEqPresets
+                    )
 
                     Spacer()
 
-                    if deviceState.eqPreset == .custom {
-                        eqCustomControls
+                    if eqPreset == .custom {
+                        eqCustomControls(customEQ: customEQ)
                     }
                 }
 
-                if deviceState.eqPreset == .custom, isEditingCustomEQ {
-                    eqCustomSliders
+                if eqPreset == .custom, isEditingCustomEQ {
+                    eqCustomSliders(customEQ: customEQ)
                 }
             }
             .padding(.horizontal, 4)
-            .onChange(of: deviceState.eqPreset) { newValue in
+            .onChange(of: eqPreset) { newValue in
                 if newValue != .custom {
                     isEditingCustomEQ = false
                 }
             }
-            .animation(.easeInOut, value: deviceState.eqPresetCustom)
+            .animation(.easeInOut, value: eqPresetCustom)
         }
     }
 
-    private var header: some View {
+    private func header(
+        currentPreset: EQPreset,
+        supportedEqPresets: [EQPreset]
+    ) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Equalizer")
                 .font(.subheadline)
                 .foregroundColor(.primary)
 
-            eqPresetMenu(currentPreset: deviceState.eqPreset ?? .balanced)
+            eqPresetMenu(
+                currentPreset: currentPreset,
+                supportedEqPresets: supportedEqPresets
+            )
                 .fixedSize()
                 .padding(.leading, -4)
         }
     }
 
-    private var eqCustomControls: some View {
+    private func eqCustomControls(customEQ: EQPresetCustom) -> some View {
         VStack(alignment: .trailing, spacing: 8) {
             HStack(spacing: 8) {
                 if !isEditingCustomEQ {
-                    eqCustomValues
+                    eqCustomValues(customEQ: customEQ)
                 }
 
                 Button(isEditingCustomEQ ? "Done" : "Edit") {
@@ -76,7 +91,7 @@ struct BarAudioEQView: View {
         }
     }
 
-    private var eqCustomSliders: some View {
+    private func eqCustomSliders(customEQ: EQPresetCustom) -> some View {
         VStack(alignment: .trailing, spacing: 8) {
             eqSlider(
                 title: "Bass",
@@ -111,7 +126,7 @@ struct BarAudioEQView: View {
         .frame(maxWidth: .infinity, alignment: .trailing)
     }
 
-    private var eqCustomValues: some View {
+    private func eqCustomValues(customEQ: EQPresetCustom) -> some View {
         HStack(spacing: 6) {
             Text("Bass \(formatEQValue(customEQ.bass))")
             Text("Mid \(formatEQValue(customEQ.mid))")
@@ -148,12 +163,8 @@ struct BarAudioEQView: View {
         }
     }
 
-    private var customEQ: EQPresetCustom {
-        deviceState.eqPresetCustom ?? EQPresetCustom(bass: 0, mid: 0, treble: 0)
-    }
-
     private func setCustomEQPreset(bass: Int? = nil, mid: Int? = nil, treble: Int? = nil) {
-        let current = customEQ
+        let current = deviceState.eqPresetCustom ?? EQPresetCustom(bass: 0, mid: 0, treble: 0)
         let updated = EQPresetCustom(
             bass: bass ?? current.bass,
             mid: mid ?? current.mid,
@@ -168,7 +179,10 @@ struct BarAudioEQView: View {
         value > 0 ? "+\(value)" : "\(value)"
     }
 
-    private func eqPresetMenu(currentPreset: EQPreset) -> some View {
+    private func eqPresetMenu(
+        currentPreset: EQPreset,
+        supportedEqPresets: [EQPreset]
+    ) -> some View {
         Menu {
             ForEach(supportedEqPresets, id: \.self) { preset in
                 Button {
@@ -179,18 +193,10 @@ struct BarAudioEQView: View {
                 }
             }
         } label: {
-            Text(deviceState.eqPreset?.displayName ?? "Unknown")
+            Text(currentPreset.displayName)
                 .font(.footnote)
                 .foregroundColor(.secondary)
         }
         .menuStyle(BorderlessButtonMenuStyle())
-    }
-
-    private var supportedEqPresets: [EQPreset] {
-        guard let model = deviceState.model else {
-            return []
-        }
-
-        return EQPreset.allSupported(by: model)
     }
 }

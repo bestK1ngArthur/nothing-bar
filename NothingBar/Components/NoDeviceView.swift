@@ -53,8 +53,8 @@ struct NoDeviceView: View {
 
                 HStack(spacing: 6) {
                     ProgressView()
-                        .scaleEffect(0.6)
                         .controlSize(.small)
+                        .frame(width: 16, height: 16)
                     Text("Waiting for devices...")
                         .font(.caption)
                         .foregroundColor(.secondary)

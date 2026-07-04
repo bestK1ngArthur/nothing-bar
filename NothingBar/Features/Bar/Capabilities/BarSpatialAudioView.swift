@@ -23,6 +23,12 @@ struct BarSpatialAudioView: View {
 
     var body: some View {
         WithPerceptionTracking {
+            let model = deviceState.model
+            let currentMode = deviceState.spatialAudioMode ?? .off
+            let enhancedBass = deviceState.enhancedBass
+            let supportedModes = model.map(SpatialAudioMode.allSupported(by:)) ?? []
+            let isDisabled = deviceState.spatialAudioMode == nil
+
             BarSectionView(
                 title: "Spatial Audio",
                 value: currentMode.displayName
@@ -34,40 +40,32 @@ struct BarSpatialAudioView: View {
                             name: mode.displayName,
                             isActive: currentMode == mode
                         ) {
-                            setMode(mode)
+                            setMode(mode, model: model, enhancedBass: enhancedBass)
                         }
                     }
                 }
-                .disabled(deviceState.spatialAudioMode == nil)
+                .disabled(isDisabled)
             }
         }
     }
 
-    private var currentMode: SpatialAudioMode {
-        deviceState.spatialAudioMode ?? .off
-    }
-
-    private var supportedModes: [SpatialAudioMode] {
-        guard let model = deviceState.model else {
-            return []
-        }
-
-        return SpatialAudioMode.allSupported(by: model)
-    }
-
-    private var isCompatibleWithEnhancedBass: Bool {
-        guard let model = deviceState.model else {
+    private func isCompatibleWithEnhancedBass(model: DeviceModel?) -> Bool {
+        guard let model else {
             return false
         }
 
         return SpatialAudioMode.isCompatibleWithEnhancedBass(by: model)
     }
 
-    private func setMode(_ mode: SpatialAudioMode) {
+    private func setMode(
+        _ mode: SpatialAudioMode,
+        model: DeviceModel?,
+        enhancedBass: EnhancedBass?
+    ) {
         // Enhanced bass and spatial audio can't work simultaneously for some devices
-        if !isCompatibleWithEnhancedBass,
+        if !isCompatibleWithEnhancedBass(model: model),
             mode != .off,
-            let bass = deviceState.enhancedBass,
+            let bass = enhancedBass,
             bass.isEnabled {
             let newBass = EnhancedBass(isEnabled: false, level: bass.level)
             nothing.setEnhancedBass(newBass)

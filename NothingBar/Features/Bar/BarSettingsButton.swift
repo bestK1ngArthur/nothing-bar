@@ -15,6 +15,8 @@ struct BarSettingsButton: View {
 
     var body: some View {
         WithPerceptionTracking {
+            let isUpdateAvailable = appData.appVersion.isUpdateAvailable
+
             Button {
                 openFocusedSettings()
             } label: {
@@ -23,7 +25,7 @@ struct BarSettingsButton: View {
                         .font(.system(size: 14))
                         .foregroundColor(.primary)
 
-                    if appData.appVersion.isUpdateAvailable {
+                    if isUpdateAvailable {
                         Circle()
                             .fill(Color.red)
                             .frame(width: 6, height: 6)

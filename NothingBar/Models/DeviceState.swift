@@ -15,7 +15,9 @@ class DeviceState {
     var isConnected: Bool = false
     var bluetoothError: ConnectionError.Bluetooth?
 
+    var detectedModel: DeviceModel?
     var model: DeviceModel?
+    var deviceIdentity: String?
     var firmwareVersion: String?
     var serialNumber: String?
     var bluetoothAddress: String?

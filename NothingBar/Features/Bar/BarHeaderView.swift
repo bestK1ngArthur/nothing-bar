@@ -20,8 +20,12 @@ struct BarHeaderView: View {
 
     var body: some View {
         WithPerceptionTracking {
+            let model = deviceState.model
+            let isConnected = deviceState.isConnected
+            let battery = deviceState.battery
+
             HStack(spacing: 8) {
-                if let deviceImage = deviceState.model?.deviceImage {
+                if let deviceImage = model?.deviceImage {
                     deviceImageView(deviceImage)
                 } else {
                     Image(systemName: "headphones")
@@ -29,7 +33,11 @@ struct BarHeaderView: View {
                         .foregroundColor(.primary)
                 }
 
-                titleView
+                titleView(
+                    model: model,
+                    isConnected: isConnected,
+                    battery: battery
+                )
 
                 BarSettingsButton()
             }
@@ -41,7 +49,7 @@ struct BarHeaderView: View {
     private func deviceImageView(_ deviceImage: DeviceModel.DeviceImage) -> some View {
         switch deviceImage {
             case let .buds(left, right):
-                HStack(spacing: 2) {
+                HStack(spacing: -6) {
                     Image(left)
                         .resizable()
                         .interpolation(.high)
@@ -65,18 +73,22 @@ struct BarHeaderView: View {
         }
     }
 
-    private var titleView: some View {
+    private func titleView(
+        model: DeviceModel?,
+        isConnected: Bool,
+        battery: Battery?
+    ) -> some View {
         VStack(alignment: .leading, spacing: 3) {
-            Text(deviceState.model?.displayName ?? "Unknown")
+            Text(model?.displayName ?? "Unknown")
                 .font(.headline)
                 .foregroundColor(.primary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            if deviceState.isConnected, let battery = deviceState.battery {
+            if isConnected, let battery {
                 batterySummaryView(battery)
-            } else if !deviceState.isConnected {
+            } else if !isConnected {
                 Text("Disconnected")
                     .font(.caption)
                     .foregroundColor(.secondary)

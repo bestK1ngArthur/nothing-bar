@@ -19,6 +19,7 @@ struct NothingBarApp: App {
     @State private var statusController: StatusBarController
     @State private var deviceSearchController: DeviceSearchController
     @State private var isSettingsWindowOpen = false
+    @State private var isDeviceSetupWindowOpen = false
 
     init() {
         let appData = AppData()
@@ -64,6 +65,11 @@ struct NothingBarApp: App {
             settingsContent
         }
         .windowResizability(.contentSize)
+
+        Window("Device Setup", id: "device-setup") {
+            deviceSetupContent
+        }
+        .windowResizability(.contentSize)
     }
 
     private var settingsContent: some View {
@@ -79,8 +85,28 @@ struct NothingBarApp: App {
             }
     }
 
+    private var deviceSetupContent: some View {
+        DeviceSetupView()
+            .environment(appData)
+            .background {
+                WindowConfigurator { window in
+                    window.titleVisibility = .hidden
+                    window.titlebarAppearsTransparent = true
+                    window.styleMask.insert(.fullSizeContentView)
+                }
+            }
+            .onAppear {
+                isDeviceSetupWindowOpen = true
+                updateDockVisibility()
+            }
+            .onDisappear {
+                isDeviceSetupWindowOpen = false
+                updateDockVisibility()
+            }
+    }
+
     private func updateDockVisibility() {
-        if isSettingsWindowOpen {
+        if isSettingsWindowOpen || isDeviceSetupWindowOpen {
             NSApp.setActivationPolicy(.regular)
         } else {
             NSApp.setActivationPolicy(.accessory)
@@ -107,6 +133,15 @@ struct NothingBarApp: App {
                 Self.openSettingsWindow(using: openWindow)
             }
         }
+
+        if appData.deviceSetupState.onOpenRequested == nil {
+            appData.deviceSetupState.onOpenRequested = {
+                statusController.closePopover()
+                Self.openDeviceSetupWindow(using: openWindow)
+            }
+
+            appData.openPendingDeviceSetupIfNeeded()
+        }
     }
 
     private static func openSettingsWindow(using openWindow: OpenWindowAction) {
@@ -117,11 +152,53 @@ struct NothingBarApp: App {
                 return
             }
 
+            window.titleVisibility = .hidden
+            window.titlebarAppearsTransparent = true
+            window.styleMask.insert(.fullSizeContentView)
             window.collectionBehavior.insert(.moveToActiveSpace)
             window.makeKeyAndOrderFront(nil)
 
             NSApp.setActivationPolicy(.regular)
             NSApp.activate(ignoringOtherApps: true)
+        }
+    }
+
+    private static func openDeviceSetupWindow(using openWindow: OpenWindowAction) {
+        openWindow(id: "device-setup")
+
+        DispatchQueue.main.async {
+            guard let window = NSApp.windows.first(where: { $0.title == "Device Setup" }) else {
+                return
+            }
+
+            window.collectionBehavior.insert(.moveToActiveSpace)
+            window.makeKeyAndOrderFront(nil)
+
+            NSApp.setActivationPolicy(.regular)
+            NSApp.activate(ignoringOtherApps: true)
+        }
+    }
+}
+
+private struct WindowConfigurator: NSViewRepresentable {
+
+    let configure: (NSWindow) -> Void
+
+    func makeNSView(context: Context) -> NSView {
+        let view = NSView()
+        configureWindow(for: view)
+        return view
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {
+        configureWindow(for: nsView)
+    }
+
+    private func configureWindow(for view: NSView) {
+        DispatchQueue.main.async {
+            guard let window = view.window else { return }
+
+            configure(window)
         }
     }
 }

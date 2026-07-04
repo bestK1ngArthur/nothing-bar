@@ -19,15 +19,23 @@ struct SettingsDeviceHeaderView: View {
 
     var body: some View {
         WithPerceptionTracking {
-            connectedView
+            connectedView(
+                model: deviceState.model,
+                isConnected: deviceState.isConnected,
+                battery: deviceState.battery
+            )
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.vertical, 16)
         }
     }
 
-    private var connectedView: some View {
+    private func connectedView(
+        model: DeviceModel?,
+        isConnected: Bool,
+        battery: Battery?
+    ) -> some View {
         VStack(spacing: 16) {
-            if let deviceImage = deviceState.model?.deviceImage {
+            if let deviceImage = model?.deviceImage {
                 DeviceImageView(deviceImage: deviceImage)
                     .frame(height: 64)
             } else {
@@ -37,30 +45,30 @@ struct SettingsDeviceHeaderView: View {
             }
 
             VStack(spacing: 8) {
-                Text(deviceState.model?.displayName ?? "Unknown")
+                Text(model?.displayName ?? "Unknown")
                     .font(.title)
                     .fontWeight(.semibold)
 
-                subtitleView
+                subtitleView(isConnected: isConnected, battery: battery)
             }
         }
     }
 
-    private var subtitleView: some View {
+    private func subtitleView(isConnected: Bool, battery: Battery?) -> some View {
         HStack(spacing: 6) {
-            if deviceState.isConnected {
+            if isConnected {
                 Circle()
                     .fill(.green)
                     .frame(width: 7, height: 7)
             }
 
-            Text(deviceState.isConnected ? "Connected" : "Disconnected")
+            Text(isConnected ? "Connected" : "Disconnected")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
 
             Divider()
 
-            if let battery = deviceState.battery, deviceState.isConnected {
+            if let battery, isConnected {
                 batterySummaryView(battery)
             }
         }

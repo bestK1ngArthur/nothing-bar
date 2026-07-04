@@ -441,10 +441,10 @@
 /* Begin XCRemoteSwiftPackageReference section */
 		A5FDBDDE2F5C39E60075ED0F /* XCRemoteSwiftPackageReference "swift-nothing-ear" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bestK1ngArthur/swift-nothing-ear.git";
+			repositoryURL = "https://github.com/bestK1ngArthur/swift-nothing-ear";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.8.1;
+				kind = exactVersion;
+				version = 1.9.0;
 			};
 		};
 		A6F1E6C32F8A7B1E00A1B2C3 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
