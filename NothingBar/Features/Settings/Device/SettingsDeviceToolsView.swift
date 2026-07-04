@@ -35,6 +35,7 @@ struct SettingsDeviceToolsView: View {
                     Button("Change") {
                         appData.requestCurrentDeviceSetup()
                     }
+                    .disabled(deviceState.deviceIdentity == nil)
                 }
 
                 SettingsRow(

@@ -140,8 +140,10 @@ class AppData {
 
     @MainActor
     func requestCurrentDeviceSetup() {
-        let identity = deviceState.deviceIdentity ?? "preview-device-setup"
-        let detectedModel = deviceState.detectedModel ?? deviceState.model ?? .ear(.black)
+        guard let identity = deviceState.deviceIdentity,
+              let detectedModel = deviceState.detectedModel ?? deviceState.model else {
+            return
+        }
 
         presentDeviceSetup(identity: identity, detectedModel: detectedModel, mode: .editSelection)
     }
