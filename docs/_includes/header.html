@@ -1,0 +1,15 @@
+{% assign s = site.data.strings %}
+<header class="nav">
+	<a class="nav__brand" href="{{ site.baseurl }}/" target="_self">
+		<span class="nav__icon">
+			<img src="{{ site.baseurl }}/{{ site.app_icon }}" alt="{{ s.images.app_icon_alt }}">
+		</span>
+		<span class="nav__name">{{ site.header_title }}</span>
+	</a>
+
+	<nav class="nav__links">
+		<a class="nav__link" href="{{ site.baseurl }}/#features" target="_self">{{ s.nav.features }}</a>
+		<a class="nav__link" href="{{ site.baseurl }}/#devices" target="_self">{{ s.nav.devices }}</a>
+		<a class="nav__link nav__link--pill" href="{{ site.github_repo }}">{{ s.nav.github }}</a>
+	</nav>
+</header>

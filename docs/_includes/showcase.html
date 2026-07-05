@@ -1,0 +1,15 @@
+{% assign s = site.data.strings %}
+<section class="showcase">
+	<div class="showcase__stage">
+		<div class="showcase__glow" aria-hidden="true"></div>
+		<div class="showcase__panel">
+			<img class="showcase__img" src="{{ site.baseurl }}/assets/screenshot-bar.png" alt="{{ s.images.screenshot_alt }}" width="654" height="1018">
+		</div>
+	</div>
+
+	<a class="scroll-hint" href="#features" target="_self" aria-label="scroll down">
+		<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+			<path d="M12 4v15M5 13l7 7 7-7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+		</svg>
+	</a>
+</section>

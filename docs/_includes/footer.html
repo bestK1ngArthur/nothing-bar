@@ -1,0 +1,18 @@
+{% assign f = site.data.strings.footer %}
+<footer class="footer">
+	<div class="footer__top">
+		<div class="footer__brand">
+			<span class="footer__icon">
+				<img src="{{ site.baseurl }}/{{ site.app_icon }}" alt="{{ site.data.strings.images.app_icon_alt }}">
+			</span>
+			<span class="footer__copy">&copy; {{ 'now' | date: "%Y" }} {{ f.copy }}</span>
+		</div>
+
+		<nav class="footer__links">
+			<a href="{{ site.github_repo }}">{{ f.github }}</a>
+			<a href="{{ site.releases_link }}">{{ f.releases }}</a>
+			<a href="{{ site.issues_link }}">{{ f.issues }}</a>
+		</nav>
+	</div>
+	<p class="footer__disclaimer">{{ f.disclaimer }}</p>
+</footer>

@@ -1,0 +1,99 @@
+site:
+  title: "NothingBar — Control your Nothing headphones from the Mac menu bar"
+  description: "A native macOS menu bar app to control your Nothing and CMF headphones. Battery, noise cancellation, spatial audio and EQ — completely local, fully native, no analytics, entirely free."
+
+app:
+  name: "NothingBar"
+
+nav:
+  features: "Features"
+  devices: "Devices"
+  github: "GitHub"
+
+hero:
+  title_line1: "Your Nothing headphones"
+  title_line2: "live in the menu bar"
+  subtitle: "A native macOS app to control your Nothing and CMF earbuds. Battery, noise cancellation, spatial audio and EQ — one click away."
+  download: "Download"
+  free_note: "free & open source"
+
+# Bento feature cards
+stats:
+  controls:
+    title: "Everything in one click"
+    sub: "Battery, noise cancellation, spatial audio, bass and equalizer — right from the menu bar."
+    tags:
+      - "Battery"
+      - "Noise Cancellation"
+      - "Transparency"
+      - "Spatial Audio"
+      - "Bass"
+      - "Equalizer"
+      - "Find Buds"
+  local:
+    title: "100%"
+    label: "local"
+    sub: "No analytics. No cloud. No account. Everything stays on your Mac."
+  free:
+    number: "Free"
+    sub_prefix: "and fully"
+    sub_accent: "open source"
+    sub_suffix: "on GitHub"
+  native:
+    title: "Truly native"
+    line1_accent: "SwiftUI"
+    line1: "menu bar app —"
+    line2: "lightweight, fast,"
+    line3_accent: "no Electron"
+    line3: "in sight"
+  updates:
+    number: "Auto"
+    label: "updates"
+    sub: "Seamless updates via Sparkle, managed right in settings."
+  notifications:
+    number: "2"
+    label: "styles"
+    sub_prefix: "Classic or Apple-style"
+    sub_accent: "notifications"
+
+devices:
+  title: "Works with your Nothing"
+  subtitle: "Support grows with the community — new devices land here first."
+  legend_supported: "Tested & supported"
+  legend_progress: "Supported, not tested"
+  list:
+    - { name: "Nothing Ear (a)", status: "supported" }
+    - { name: "Nothing Headphone (1)", status: "supported" }
+    - { name: "CMF Buds Pro 2", status: "supported" }
+    - { name: "CMF Buds 2", status: "supported" }
+    - { name: "Nothing Ear", status: "progress" }
+    - { name: "Nothing Ear (1)", status: "progress" }
+    - { name: "Nothing Ear (2)", status: "progress" }
+    - { name: "Nothing Ear (3)", status: "progress" }
+    - { name: "Nothing Ear (stick)", status: "progress" }
+    - { name: "Nothing Ear (open)", status: "progress" }
+    - { name: "Nothing Headphone (a)", status: "progress" }
+    - { name: "CMF Buds Pro", status: "progress" }
+    - { name: "CMF Buds", status: "progress" }
+    - { name: "CMF Buds 2a", status: "progress" }
+    - { name: "CMF Buds 2 Plus", status: "progress" }
+    - { name: "CMF Neckband Pro", status: "progress" }
+    - { name: "CMF Headphone Pro", status: "progress" }
+
+cta:
+  title: "Get NothingBar"
+  subtitle_prefix: "Download it for"
+  subtitle_accent: "free"
+  note: "Requires macOS · Updates automatically via Sparkle"
+
+footer:
+  copy: "NothingBar"
+  github: "GitHub"
+  releases: "Releases"
+  issues: "Report an issue"
+  disclaimer: "Not affiliated with, sponsored by, or endorsed by Nothing Technology."
+
+images:
+  app_icon_alt: "NothingBar app icon"
+  screenshot_alt: "NothingBar menu bar app controlling Nothing headphones"
+  github_alt: "View NothingBar on GitHub"

@@ -1,0 +1,48 @@
+# Site Settings
+baseurl: ""
+url: "https://nothingbar.bestk1ng.com"
+
+# App Info
+app_name: "NothingBar"
+header_title: "NothingBar"
+app_icon: "assets/appicon.png"
+
+# Links
+github_repo: "https://github.com/bestK1ngArthur/nothing-bar"
+download_link: "https://github.com/bestK1ngArthur/nothing-bar/releases"
+releases_link: "https://github.com/bestK1ngArthur/nothing-bar/releases"
+issues_link: "https://github.com/bestK1ngArthur/nothing-bar/issues"
+
+# Author
+your_name: "bestk1ng"
+your_link: "https://bestk1ng.com"
+
+# Theme
+accent_color: "#D71921"
+
+####################################################
+### Jekyll Configuration. No need to touch this. ###
+####################################################
+
+sass:
+  style: compressed
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - mise.toml
+  - vendor
+  - .jekyll-cache
+
+# Keep Sparkle appcast and release notes served as-is
+keep_files:
+  - appcast.xml
+  - releases
+
+collections:
+  pages:
+    output: true
+    permalink: /:path/
+
+markdown: kramdown

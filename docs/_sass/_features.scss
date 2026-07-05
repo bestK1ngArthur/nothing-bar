@@ -1,0 +1,212 @@
+// ---------------------------------------------------------------------------
+// Bento feature grid
+// ---------------------------------------------------------------------------
+
+.features {
+	padding: 64px 0;
+}
+
+.features__grid {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	gap: 24px;
+}
+
+// --- Card shell --------------------------------------------------------------
+.card {
+	position: relative;
+	display: flex;
+	padding: 40px;
+	border-radius: 28px;
+	background: var(--card-bg);
+	border: 1px solid var(--card-border);
+	box-shadow: var(--card-shadow);
+	overflow: hidden;
+	transition: transform 0.22s ease, box-shadow 0.22s ease;
+	will-change: transform;
+
+	&:hover {
+		transform: translateY(-4px);
+		box-shadow: var(--card-shadow-hover);
+	}
+}
+
+.card--controls { grid-column: span 3; align-items: center; min-height: 300px; }
+.card--local    { grid-column: span 3; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 300px; }
+.card--native   { grid-column: span 2; align-items: center; min-height: 250px; }
+.card--free     { grid-column: span 2; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 250px; }
+.card--updates  { grid-column: span 2; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 250px; }
+.card--notify   { grid-column: span 6; align-items: center; justify-content: space-between; gap: 24px; min-height: 260px; }
+
+.card__text { position: relative; z-index: 1; }
+.card__text--right { text-align: right; margin-left: auto; }
+.card__text--center { text-align: center; }
+
+.card__title {
+	font-size: 3rem;
+	font-weight: 800;
+	line-height: 1.1;
+	letter-spacing: -0.01em;
+	color: var(--heading);
+}
+
+.card__number {
+	font-size: 5.6rem;
+	font-weight: 800;
+	line-height: 1.02;
+	letter-spacing: -0.02em;
+	color: var(--heading);
+}
+
+.card__number--center { text-align: center; }
+
+.card__number-label {
+	display: block;
+	font-size: 2.6rem;
+	font-weight: 800;
+	line-height: 1.2;
+	white-space: nowrap;
+}
+
+.card__sub {
+	margin-top: 14px;
+	font-size: 1.9rem;
+	line-height: 1.4;
+	color: var(--text);
+}
+
+.card__sub--center { text-align: center; }
+
+.card__lead {
+	font-size: 2.4rem;
+	font-weight: 600;
+	line-height: 1.5;
+	color: var(--heading);
+	width: 100%;
+}
+
+// --- Accents -----------------------------------------------------------------
+.accent { font-weight: 800; }
+.accent--red { color: var(--red); }
+
+.accent--wave {
+	font-style: italic;
+	font-weight: 800;
+	color: var(--heading);
+	text-decoration: underline wavy var(--red);
+	text-underline-offset: 6px;
+	text-decoration-thickness: 2px;
+}
+
+.accent--italic { font-style: italic; }
+
+// --- Controls: feature tag stack --------------------------------------------
+.card--controls .card__text {
+	position: relative;
+	z-index: 1;
+	max-width: 58%;
+}
+
+.tagstack {
+	position: absolute;
+	right: -18px;
+	top: 50%;
+	transform: translateY(-50%) rotate(-10deg);
+	transition: transform 0.3s ease;
+	z-index: 0;
+}
+
+.card--controls:hover .tagstack { transform: translateY(-50%) rotate(-10deg) translateX(-8px); }
+
+.tagstack__inner {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.tag {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 220px;
+	padding: 10px 14px;
+	border-radius: 13px;
+	background: var(--tag-bg);
+	color: var(--tag-text);
+	font-size: 1.5rem;
+	font-weight: 600;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.tag__dot {
+	flex: none;
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	background: var(--red);
+}
+
+// --- Free: GitHub orbit ------------------------------------------------------
+.orbit {
+	position: relative;
+	width: 72px;
+	height: 72px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 6px;
+}
+
+.orbit__core {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+	background: var(--heading);
+	color: var(--card-bg);
+
+	svg { width: 40px; height: 40px; }
+}
+
+// --- Notify: notification preview image -------------------------------------
+.notifypreview {
+	flex: none;
+	width: 420px;
+	max-width: 55%;
+	border-radius: 16px;
+	overflow: hidden;
+	box-shadow: 0 10px 30px rgba(20, 20, 24, 0.18);
+
+	img { width: 100%; display: block; }
+}
+
+.card--notify .card__number { font-size: 6rem; }
+.card--notify .card__text--right { flex: 1; min-width: 0; }
+
+// --- Responsive --------------------------------------------------------------
+@media only screen and (max-width: 900px) {
+	.features__grid { grid-template-columns: 1fr; gap: 18px; }
+	.card { grid-column: auto !important; min-height: 210px; }
+	.tagstack { display: none; }
+	.card--controls .card__text { max-width: none; }
+
+	.card--notify {
+		flex-direction: column-reverse;
+		text-align: center;
+		gap: 20px;
+	}
+	.card--notify .card__text--right { text-align: center; margin-left: 0; }
+	.notifypreview { max-width: 88%; width: auto; }
+}
+
+@media only screen and (max-width: 600px) {
+	.features { padding: 40px 0; }
+	.card { padding: 30px; }
+	.card__number { font-size: 4.6rem; }
+	.card__title { font-size: 2.6rem; }
+	.card__lead { font-size: 2.1rem; }
+	.tag { width: 200px; }
+}

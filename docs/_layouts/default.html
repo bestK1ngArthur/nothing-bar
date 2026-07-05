@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+{% include head.html %}
+
+<body class="home">
+	<div class="page">
+		{% include header.html %}
+		<main class="main">
+			{% include hero.html %}
+			{% include showcase.html %}
+			{% include features.html %}
+		</main>
+	</div>
+	{% include devices.html %}
+	<div class="page">
+		<main class="main">
+			{% include cta.html %}
+		</main>
+		{% include footer.html %}
+	</div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+// ---------------------------------------------------------------------------
+// Resets + base typography
+// ---------------------------------------------------------------------------
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	font-size: 62.5%; // 1rem = 10px
+	font-family: $font;
+	line-height: 1.15;
+	-webkit-text-size-adjust: 100%;
+	scroll-behavior: smooth;
+}
+
+body {
+	font-size: 2rem;
+	font-family: $font;
+	color: var(--text);
+	background-color: var(--bg-bottom);
+	background-image:
+		radial-gradient(120% 60% at 50% 0%, var(--bg-top) 0%, rgba(0, 0, 0, 0) 60%),
+		linear-gradient(180deg, var(--bg-mid) 0%, var(--bg-bottom) 70%);
+	background-repeat: no-repeat;
+	background-attachment: scroll;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow-x: hidden;
+}
+
+a {
+	color: var(--red);
+	text-decoration: none;
+}
+
+img {
+	max-width: 100%;
+	display: block;
+}
+
+.page {
+	width: 100%;
+	max-width: $content-width;
+	margin: 0 auto;
+	padding: 0 24px;
+}
+
+.main {
+	width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+	.page {
+		padding: 0 18px;
+	}
+}

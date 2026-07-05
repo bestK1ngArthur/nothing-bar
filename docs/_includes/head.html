@@ -1,0 +1,60 @@
+<head>
+	{% assign s = site.data.strings %}
+	{% assign page_title = s.site.title %}
+	{% if page.title %}
+		{% assign page_title = page.title | append: ' | ' | append: s.app.name %}
+	{% endif %}
+	{% assign page_description = page.description | default: s.site.description %}
+
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<base target="_blank">
+
+	<title class="pageTitle">{{ page_title }}</title>
+	<meta name="description" content="{{ page_description }}">
+	<link rel="canonical" href="{{ site.url }}{{ page.url }}">
+
+	<meta property="og:title" content="{{ page_title }}">
+	<meta property="og:description" content="{{ page_description }}">
+	<meta property="og:image" content="{{ site.url }}/{{ site.app_icon }}">
+	<meta property="og:url" content="{{ site.url }}{{ page.url }}">
+	<meta property="og:type" content="website">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="{{ page_title }}">
+	<meta name="twitter:description" content="{{ page_description }}">
+	<meta name="twitter:image" content="{{ site.url }}/{{ site.app_icon }}">
+
+	<link rel="icon" type="image/png" sizes="32x32" href="{{ site.baseurl }}/assets/favicon-32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="{{ site.baseurl }}/assets/favicon-16.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="{{ site.baseurl }}/assets/favicon-180.png">
+	<link rel="manifest" href="{{ site.baseurl }}/site.webmanifest">
+
+	<link rel="stylesheet" href="{{ site.baseurl }}/main.css">
+
+	{% if page.layout == 'default' %}
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "SoftwareApplication",
+		"name": {{ s.app.name | jsonify }},
+		"description": {{ page_description | jsonify }},
+		"url": "{{ site.url }}/",
+		"image": "{{ site.url }}/{{ site.app_icon }}",
+		"applicationCategory": "UtilitiesApplication",
+		"operatingSystem": "macOS",
+		"downloadUrl": "{{ site.download_link }}",
+		"offers": {
+			"@type": "Offer",
+			"price": "0",
+			"priceCurrency": "USD"
+		},
+		"author": {
+			"@type": "Person",
+			"name": {{ site.your_name | jsonify }},
+			"url": "{{ site.your_link }}"
+		}
+	}
+	</script>
+	{% endif %}
+</head>

@@ -1,0 +1,66 @@
+{% assign s = site.data.strings.stats %}
+<section class="features" id="features">
+	<div class="features__grid">
+
+		{% comment %} Controls — one-click access, with feature tag stack {% endcomment %}
+		<article class="card card--controls">
+			<div class="card__text">
+				<h2 class="card__title">{{ s.controls.title }}</h2>
+				<p class="card__sub">{{ s.controls.sub }}</p>
+			</div>
+			<div class="tagstack" aria-hidden="true">
+				<div class="tagstack__inner">
+					{% for tag in s.controls.tags %}
+					<span class="tag"><span class="tag__dot"></span>{{ tag }}</span>
+					{% endfor %}
+				</div>
+			</div>
+		</article>
+
+		{% comment %} 100% local {% endcomment %}
+		<article class="card card--local">
+			<div class="card__number">{{ s.local.title }}<br><span class="card__number-label">{{ s.local.label }}</span></div>
+			<p class="card__sub card__sub--center">{{ s.local.sub }}</p>
+		</article>
+
+		{% comment %} Free & open source {% endcomment %}
+		<article class="card card--free">
+			<div class="orbit" aria-hidden="true">
+				<span class="orbit__core">
+					<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.66-.22.66-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.26-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.38.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.16.58.67.48A10 10 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg>
+				</span>
+			</div>
+			<div class="card__text card__text--center">
+				<div class="card__number card__number--center">{{ s.free.number }}</div>
+				<p class="card__sub card__sub--center">{{ s.free.sub_prefix }} <span class="accent accent--red">{{ s.free.sub_accent }}</span> {{ s.free.sub_suffix }}</p>
+			</div>
+		</article>
+
+		{% comment %} Truly native {% endcomment %}
+		<article class="card card--native">
+			<p class="card__lead">
+				<span class="accent accent--wave">{{ s.native.line1_accent }}</span> {{ s.native.line1 }}<br>
+				{{ s.native.line2 }}<br>
+				<span class="accent accent--wave">{{ s.native.line3_accent }}</span> {{ s.native.line3 }}
+			</p>
+		</article>
+
+		{% comment %} Auto updates {% endcomment %}
+		<article class="card card--updates">
+			<div class="card__number card__number--center">{{ s.updates.number }}<br><span class="card__number-label">{{ s.updates.label }}</span></div>
+			<p class="card__sub card__sub--center">{{ s.updates.sub }}</p>
+		</article>
+
+		{% comment %} Notifications {% endcomment %}
+		<article class="card card--notify">
+			<div class="notifypreview" aria-hidden="true">
+				<img src="{{ site.baseurl }}/assets/screenshot-notification-apple.png" alt="" loading="lazy">
+			</div>
+			<div class="card__text card__text--right">
+				<div class="card__number">{{ s.notifications.number }}<br><span class="card__number-label">{{ s.notifications.label }}</span></div>
+				<p class="card__sub">{{ s.notifications.sub_prefix }} <span class="accent accent--red">{{ s.notifications.sub_accent }}</span></p>
+			</div>
+		</article>
+
+	</div>
+</section>

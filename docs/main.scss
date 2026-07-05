@@ -1,0 +1,18 @@
+---
+# Front matter comment to ensure Jekyll properly reads file.
+---
+
+$accent-color: {{ site.accent_color }};
+
+@import
+	"variables",
+	"base",
+	"nav",
+	"hero",
+	"showcase",
+	"features",
+	"devices",
+	"cta",
+	"footer",
+	"animations",
+	"github-markdown";

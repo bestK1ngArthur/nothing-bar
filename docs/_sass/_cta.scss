@@ -1,0 +1,45 @@
+// ---------------------------------------------------------------------------
+// Call to action
+// ---------------------------------------------------------------------------
+
+.cta {
+	text-align: center;
+	padding: 56px 0 72px;
+}
+
+.cta__title {
+	font-size: 4.4rem;
+	font-weight: 800;
+	letter-spacing: -0.02em;
+	color: var(--heading);
+}
+
+.cta__subtitle {
+	margin-top: 18px;
+	font-size: 2.2rem;
+	color: var(--text);
+}
+
+.cta__button {
+	margin-top: 30px;
+}
+
+.cta__note {
+	margin-top: 18px;
+	font-size: 1.5rem;
+	color: var(--muted);
+}
+
+@media only screen and (max-width: 600px) {
+	.cta {
+		padding: 40px 0 56px;
+	}
+
+	.cta__title {
+		font-size: 3rem;
+	}
+
+	.cta__subtitle {
+		font-size: 1.9rem;
+	}
+}

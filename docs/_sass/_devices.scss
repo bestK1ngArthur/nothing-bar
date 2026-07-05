@@ -1,0 +1,105 @@
+// ---------------------------------------------------------------------------
+// Supported devices
+// ---------------------------------------------------------------------------
+
+.devices {
+	padding: 48px 0 64px;
+	width: 100%;
+	max-width: $content-width;
+	margin: 0 auto;
+}
+
+.devices__head {
+	text-align: center;
+	padding: 0 24px;
+	margin-bottom: 36px;
+}
+
+.devices__title {
+	font-size: 4rem;
+	font-weight: 800;
+	letter-spacing: -0.02em;
+	color: var(--heading);
+}
+
+.devices__subtitle {
+	max-width: 520px;
+	margin: 16px auto 0;
+	font-size: 1.9rem;
+	line-height: 1.45;
+	color: var(--muted);
+}
+
+.devices__legend {
+	display: inline-flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 24px;
+	margin-top: 22px;
+}
+
+.legend {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: var(--muted);
+}
+
+.legend__dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+}
+
+.legend__dot--supported { background: var(--supported); }
+.legend__dot--progress  { background: var(--progress); }
+
+.devices__grid {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 12px;
+	padding: 0 24px;
+}
+
+.device-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 12px 20px;
+	border-radius: 14px;
+	background: var(--card-bg);
+	border: 1px solid var(--card-border);
+	box-shadow: var(--card-shadow);
+	font-size: 1.6rem;
+	font-weight: 600;
+	color: var(--heading);
+	transition: transform 0.18s ease, box-shadow 0.18s ease;
+
+	&:hover {
+		transform: translateY(-3px);
+		box-shadow: var(--card-shadow-hover);
+	}
+}
+
+.device-chip__dot {
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	flex: none;
+}
+
+.device-chip--supported .device-chip__dot { background: var(--supported); }
+.device-chip--progress {
+	.device-chip__dot { background: var(--progress); }
+	color: var(--text);
+}
+
+@media only screen and (max-width: 600px) {
+	.devices { padding: 36px 0 48px; }
+	.devices__title { font-size: 3rem; }
+	.devices__subtitle { font-size: 1.7rem; }
+	.device-chip { padding: 10px 16px; font-size: 1.5rem; }
+}

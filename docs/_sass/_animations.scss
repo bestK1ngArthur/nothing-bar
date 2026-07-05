@@ -1,0 +1,41 @@
+// ---------------------------------------------------------------------------
+// Micro-animations (gated behind prefers-reduced-motion)
+// ---------------------------------------------------------------------------
+
+@media (prefers-reduced-motion: no-preference) {
+
+	.scroll-hint svg {
+		animation: bob 1.9s ease-in-out infinite;
+	}
+
+	.showcase__glow {
+		animation: pulse 4s ease-in-out infinite;
+	}
+
+	.card--free:hover .orbit__core {
+		animation: pop 0.5s ease;
+	}
+}
+
+@keyframes bob {
+	0%, 100% { transform: translateY(0); }
+	50%      { transform: translateY(4px); }
+}
+
+@keyframes pulse {
+	0%, 100% { opacity: 0.85; }
+	50%      { opacity: 1; }
+}
+
+@keyframes pop {
+	0%   { transform: scale(1); }
+	40%  { transform: scale(1.12); }
+	100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	* {
+		animation: none !important;
+		transition: none !important;
+	}
+}

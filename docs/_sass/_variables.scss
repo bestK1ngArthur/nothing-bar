@@ -1,0 +1,80 @@
+// ---------------------------------------------------------------------------
+// Design tokens — Nothing-inspired monochrome + red accent
+// light + dark themes via prefers-color-scheme
+// ---------------------------------------------------------------------------
+
+$font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+	sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$mono: "SFMono-Regular", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+$content-width: 1040px;
+$red: #D71921;
+$red-soft: #F04149;
+
+:root {
+	// Surfaces
+	--bg-top: #F2F2F4;      // cool light grey glow
+	--bg-mid: #F6F6F7;
+	--bg-bottom: #FBFBFC;
+	--card-bg: #FFFFFF;
+	--card-border: #ECECEE;
+	--card-shadow: 0 12px 32px rgba(20, 20, 24, 0.06);
+	--card-shadow-hover: 0 20px 48px rgba(20, 20, 24, 0.12);
+
+	// Text
+	--heading: #16161A;
+	--text: #3D3D44;
+	--muted: #77777F;
+
+	// Accents
+	--red: #{$red};
+	--red-soft: #{$red-soft};
+
+	// Decorative
+	--tag-bg: #F3F3F5;
+	--tag-text: #2A2A30;
+	--hl-bg: #EFEFF1;
+	--btn-bg: #16161A;
+	--btn-text: #FFFFFF;
+	--scroll-bg: #FFFFFF;
+
+	// Menu bar mock
+	--menubar-bg: rgba(250, 250, 251, 0.82);
+	--menubar-border: #E6E6E9;
+	--menubar-text: #3D3D44;
+	--stage-bg: linear-gradient(180deg, #EDEDF0 0%, #F7F7F8 100%);
+
+	--supported: #2FB460;
+	--progress: #E8A93A;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg-top: #17171B;
+		--bg-mid: #121216;
+		--bg-bottom: #0C0C0F;
+		--card-bg: #17171C;
+		--card-border: #242429;
+		--card-shadow: none;
+		--card-shadow-hover: none;
+
+		--heading: #F4F4F6;
+		--text: #C7C7CE;
+		--muted: #8C8C95;
+
+		--tag-bg: #222228;
+		--tag-text: #E6E6EA;
+		--hl-bg: #202026;
+		--btn-bg: #FFFFFF;
+		--btn-text: #0C0C0F;
+		--scroll-bg: #202026;
+
+		--menubar-bg: rgba(24, 24, 28, 0.8);
+		--menubar-border: #2A2A30;
+		--menubar-text: #C7C7CE;
+		--stage-bg: linear-gradient(180deg, #202026 0%, #121216 100%);
+
+		--supported: #34C36B;
+		--progress: #E8A93A;
+	}
+}

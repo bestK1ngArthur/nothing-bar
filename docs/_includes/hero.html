@@ -1,0 +1,18 @@
+{% assign hero = site.data.strings.hero %}
+<section class="hero">
+	<h1 class="hero__title">
+		<span class="hero__line"><span class="hl">{{ hero.title_line1 }}</span></span>
+		<span class="hero__line"><span class="hl">{{ hero.title_line2 }}</span></span>
+	</h1>
+	<p class="hero__subtitle">{{ hero.subtitle }}</p>
+
+	<div class="hero__cta">
+		{% include download-button.html %}
+		<span class="hero__free" aria-hidden="true">
+			<svg class="hero__arrow" viewBox="0 0 76 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M 74 30 L 30 30 Q 14 30 14 18 L 14 5 M 5 18 L 14 4 L 23 18" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg>
+			<span class="hero__free-label">{{ hero.free_note }}</span>
+		</span>
+	</div>
+</section>

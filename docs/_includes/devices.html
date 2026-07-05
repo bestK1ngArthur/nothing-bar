@@ -1,0 +1,19 @@
+{% assign d = site.data.strings.devices %}
+<section class="devices" id="devices">
+	<div class="devices__head">
+		<h2 class="devices__title">{{ d.title }}</h2>
+		<p class="devices__subtitle">{{ d.subtitle }}</p>
+		<div class="devices__legend">
+			<span class="legend"><span class="legend__dot legend__dot--supported"></span>{{ d.legend_supported }}</span>
+			<span class="legend"><span class="legend__dot legend__dot--progress"></span>{{ d.legend_progress }}</span>
+		</div>
+	</div>
+	<div class="devices__grid">
+		{% for device in d.list %}
+		<span class="device-chip device-chip--{{ device.status }}">
+			<span class="device-chip__dot"></span>
+			<span class="device-chip__name">{{ device.name }}</span>
+		</span>
+		{% endfor %}
+	</div>
+</section>

@@ -1,0 +1,82 @@
+// ---------------------------------------------------------------------------
+// Footer
+// ---------------------------------------------------------------------------
+
+.footer {
+	padding: 32px 0 48px;
+	border-top: 1px solid var(--card-border);
+}
+
+.footer__top {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	padding-top: 32px;
+}
+
+.footer__brand {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.footer__icon {
+	display: inline-flex;
+	width: 36px;
+	height: 36px;
+
+	img {
+		width: 36px;
+		height: 36px;
+		border-radius: 22.5%;
+	}
+}
+
+.footer__copy {
+	font-size: 1.8rem;
+	font-weight: 700;
+	color: var(--heading);
+}
+
+.footer__links {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 28px;
+}
+
+.footer__links a {
+	font-size: 1.7rem;
+	font-weight: 500;
+	color: var(--red);
+	transition: color 0.18s ease;
+
+	&:hover { color: var(--red-soft); }
+}
+
+.footer__disclaimer {
+	margin-top: 24px;
+	font-size: 1.4rem;
+	line-height: 1.5;
+	color: var(--muted);
+}
+
+@media only screen and (max-width: 600px) {
+	.footer__top {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 24px;
+	}
+
+	.footer__links {
+		justify-content: center;
+		gap: 20px;
+	}
+
+	.footer__disclaimer {
+		text-align: center;
+	}
+}
