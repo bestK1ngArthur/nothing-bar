@@ -1,5 +1,5 @@
 {
-  "originHash" : "bf71fb137effe737926d9ff35df2444b1b13027cb2d0cb63a8f6836e08999783",
+  "originHash" : "19f67f97e13e8f91e9ceb29330ffd0bfbc3cfe5ae31a8aeddce38482d56624dc",
   "pins" : [
     {
       "identity" : "sparkle",
@@ -13,10 +13,10 @@
     {
       "identity" : "swift-nothing-ear",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/bestK1ngArthur/swift-nothing-ear",
+      "location" : "https://github.com/greeenos/swift-nothing-ear",
       "state" : {
-        "revision" : "53f39134eabf5a965c8e6c0e70b33496f5ba23f6",
-        "version" : "1.10.0"
+        "branch" : "feature/gesture-callbacks",
+        "revision" : "97e35d6346aefd4b4fece11c2c477fbb1e24dce2"
       }
     },
     {

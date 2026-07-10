@@ -10,6 +10,15 @@ Special credits to:
 
 ## Installation
 
+### Homebrew
+
+```bash
+brew tap greeenos/nothing-bar
+brew install --cask nothingbar
+```
+
+### Manual
+
 Download .zip archive from [releases](https://github.com/bestK1ngArthur/nothing-bar/releases) and drag `NothingBar.app` to `/Applications` folder. The app updates automatically through the [Sparkle](https://sparkle-project.org/), you can manage this in the app settings.
 
 ## Screenshots
@@ -74,10 +83,10 @@ If you can't code but have ideas on how to improve the app, please [create an is
 
 - [x] Auto-update system
 - [x] Spatial Audio
-- [ ] Installation from brew
+- [x] Installation from brew
 - [x] Find buds
-- [ ] More EQ capabilities
-- [ ] Handle controls gestures
+- [x] More EQ capabilities
+- [x] Handle controls gestures
 
 ## Legal Disclaimer
 

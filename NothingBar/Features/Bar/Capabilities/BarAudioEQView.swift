@@ -47,6 +47,13 @@ struct BarAudioEQView: View {
                 if eqPreset == .custom, isEditingCustomEQ {
                     eqCustomSliders(customEQ: customEQ)
                 }
+
+                if eqPreset == .advanced {
+                    Text("Advanced EQ uses the headphone's built-in tuning profile.")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
             }
             .padding(.horizontal, 4)
             .onChange(of: eqPreset) { newValue in
