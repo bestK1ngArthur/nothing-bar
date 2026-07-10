@@ -38,6 +38,7 @@ Download .zip archive from [releases](https://github.com/bestK1ngArthur/nothing-
 - 🟡 Nothing Ear (1)
 - 🟡 Nothing Ear (2)
 - 🟡 Nothing Ear (3)
+- 🟡 Nothing Ear (3a)
 - 🟡 Nothing Ear (stick)
 - 🟡 Nothing Ear (open)
 - 🟡 Nothing Ear

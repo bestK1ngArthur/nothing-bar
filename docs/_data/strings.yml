@@ -70,6 +70,7 @@ devices:
     - { name: "Nothing Ear (1)", status: "progress" }
     - { name: "Nothing Ear (2)", status: "progress" }
     - { name: "Nothing Ear (3)", status: "progress" }
+    - { name: "Nothing Ear (3a)", status: "progress" }
     - { name: "Nothing Ear (stick)", status: "progress" }
     - { name: "Nothing Ear (open)", status: "progress" }
     - { name: "Nothing Headphone (a)", status: "progress" }
