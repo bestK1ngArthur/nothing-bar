@@ -132,10 +132,6 @@ class AppData {
                     self?.deviceState.ringBuds = ringBuds
                     AppLogger.device.deviceStateChanged("Ring Buds", value: ringBuds)
                 },
-                onUpdateGestures: { [weak self] gestures in
-                    self?.deviceState.gestures = gestures
-                    AppLogger.device.deviceStateChanged("Gestures", value: gestures.count)
-                },
                 onError: { [weak self] error in
                     self?.handleError(error)
                     AppLogger.main.logError("\(error)")

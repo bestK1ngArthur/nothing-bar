@@ -9,12 +9,31 @@ import Perception
 import SwiftNothingEar
 import SwiftUI
 
+private struct EQQuickProfile: Identifiable {
+    let id: String
+    let name: String
+    let values: EQPresetCustom
+}
+
 struct BarAudioEQView: View {
 
     @Environment(AppData.self) var appData
+    @State private var currentPreset: EQPreset = .balanced
+    @State private var pendingUserPreset: EQPreset?
+    @State private var selectedProfileID: String?
     @State private var isEditingCustomEQ: Bool = false
 
     let supportedEqPresets: [EQPreset]
+
+    private let quickProfiles: [EQQuickProfile] = [
+        .init(id: "rock", name: "Rock", values: .init(bass: 3, mid: 1, treble: 2)),
+        .init(id: "pop", name: "Pop", values: .init(bass: 2, mid: 0, treble: 1)),
+        .init(id: "electronic", name: "Electronic", values: .init(bass: 4, mid: -1, treble: 2)),
+        .init(id: "classical", name: "Classical", values: .init(bass: 0, mid: 2, treble: 3)),
+        .init(id: "warm", name: "Warm", values: .init(bass: 3, mid: 1, treble: -2)),
+        .init(id: "bright", name: "Bright", values: .init(bass: -1, mid: 0, treble: 4)),
+        .init(id: "podcast", name: "Podcast", values: .init(bass: -2, mid: 4, treble: 1))
+    ]
 
     private var deviceState: DeviceState {
         appData.deviceState
@@ -24,78 +43,125 @@ struct BarAudioEQView: View {
         appData.nothing
     }
 
+    private var standardPresets: [EQPreset] {
+        supportedEqPresets.filter { $0 != .advanced }
+    }
+
     var body: some View {
         WithPerceptionTracking {
-            let eqPreset = deviceState.eqPreset
+            let reportedPreset = deviceState.eqPreset
             let eqPresetCustom = deviceState.eqPresetCustom
             let customEQ = eqPresetCustom ?? EQPresetCustom(bass: 0, mid: 0, treble: 0)
 
             VStack(alignment: .leading, spacing: 12) {
-                HStack {
-                    header(
-                        currentPreset: eqPreset ?? .balanced,
-                        supportedEqPresets: supportedEqPresets
-                    )
+                Text("Equalizer")
+                    .font(.subheadline)
+                    .foregroundColor(.primary)
 
-                    Spacer()
+                presetSection(
+                    title: "Presets",
+                    presets: standardPresets
+                )
 
-                    if eqPreset == .custom {
-                        eqCustomControls(customEQ: customEQ)
-                    }
-                }
+                profileSection
 
-                if eqPreset == .custom, isEditingCustomEQ {
-                    eqCustomSliders(customEQ: customEQ)
-                }
+                if currentPreset == .custom {
+                    HStack {
+                        eqCustomValues(customEQ: customEQ)
 
-                if eqPreset == .advanced {
-                    Text("Advanced EQ uses the headphone's built-in tuning profile.")
+                        Spacer()
+
+                        Button(isEditingCustomEQ ? "Done" : "Edit") {
+                            isEditingCustomEQ.toggle()
+                        }
                         .font(.caption)
-                        .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+
+                    if isEditingCustomEQ {
+                        eqCustomSliders(customEQ: customEQ)
+                    }
                 }
             }
             .padding(.horizontal, 4)
-            .onChange(of: eqPreset) { newValue in
+            .onAppear {
+                syncFromDevice(reportedPreset)
+            }
+            .onChange(of: reportedPreset) { newValue in
+                syncFromDevice(newValue)
+            }
+            .onChange(of: currentPreset) { newValue in
                 if newValue != .custom {
                     isEditingCustomEQ = false
+                    selectedProfileID = nil
                 }
             }
             .animation(.easeInOut, value: eqPresetCustom)
         }
     }
 
-    private func header(
-        currentPreset: EQPreset,
-        supportedEqPresets: [EQPreset]
-    ) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("Equalizer")
-                .font(.subheadline)
-                .foregroundColor(.primary)
+    private var profileSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Profiles")
+                .font(.caption)
+                .foregroundColor(.secondary)
 
-            eqPresetMenu(
-                currentPreset: currentPreset,
-                supportedEqPresets: supportedEqPresets
-            )
-                .fixedSize()
-                .padding(.leading, -4)
+            LazyVGrid(
+                columns: [GridItem(.adaptive(minimum: 72), spacing: 8)],
+                alignment: .leading,
+                spacing: 8
+            ) {
+                ForEach(quickProfiles) { profile in
+                    presetChip(
+                        title: profile.name,
+                        isSelected: selectedProfileID == profile.id
+                    ) {
+                        applyQuickProfile(profile)
+                    }
+                }
+            }
         }
     }
 
-    private func eqCustomControls(customEQ: EQPresetCustom) -> some View {
-        VStack(alignment: .trailing, spacing: 8) {
-            HStack(spacing: 8) {
-                if !isEditingCustomEQ {
-                    eqCustomValues(customEQ: customEQ)
-                }
-
-                Button(isEditingCustomEQ ? "Done" : "Edit") {
-                    isEditingCustomEQ.toggle()
-                }
+    @ViewBuilder
+    private func presetSection(title: String, presets: [EQPreset]) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
                 .font(.caption)
+                .foregroundColor(.secondary)
+
+            LazyVGrid(
+                columns: [GridItem(.adaptive(minimum: 72), spacing: 8)],
+                alignment: .leading,
+                spacing: 8
+            ) {
+                ForEach(presets, id: \.self) { preset in
+                    presetChip(
+                        title: preset.displayName,
+                        isSelected: currentPreset == preset && selectedProfileID == nil
+                    ) {
+                        selectedProfileID = nil
+                        setPreset(preset)
+                    }
+                }
             }
         }
+    }
+
+    @ViewBuilder
+    private func presetChip(title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
+                .font(.caption)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .frame(maxWidth: .infinity)
+                .background(isSelected ? Color.accentColor : Color.secondary.opacity(0.18))
+                .foregroundColor(isSelected ? .white : .primary)
+                .clipShape(Capsule())
+        }
+        .buttonStyle(.plain)
     }
 
     private func eqCustomSliders(customEQ: EQPresetCustom) -> some View {
@@ -105,6 +171,7 @@ struct BarAudioEQView: View {
                 value: .init(
                     get: { customEQ.bass },
                     set: { newValue in
+                        selectedProfileID = nil
                         setCustomEQPreset(bass: newValue)
                     }
                 )
@@ -115,6 +182,7 @@ struct BarAudioEQView: View {
                 value: .init(
                     get: { customEQ.mid },
                     set: { newValue in
+                        selectedProfileID = nil
                         setCustomEQPreset(mid: newValue)
                     }
                 )
@@ -125,6 +193,7 @@ struct BarAudioEQView: View {
                 value: .init(
                     get: { customEQ.treble },
                     set: { newValue in
+                        selectedProfileID = nil
                         setCustomEQPreset(treble: newValue)
                     }
                 )
@@ -170,6 +239,56 @@ struct BarAudioEQView: View {
         }
     }
 
+    private func applyQuickProfile(_ profile: EQQuickProfile) {
+        selectedProfileID = profile.id
+        setPreset(.custom)
+        setCustomEQPreset(
+            bass: profile.values.bass,
+            mid: profile.values.mid,
+            treble: profile.values.treble
+        )
+        AppLogger.audio.uiSettingChanged("EQ Profile", value: profile.name)
+    }
+
+    private func setPreset(_ preset: EQPreset) {
+        guard preset != .advanced else {
+            return
+        }
+
+        pendingUserPreset = preset
+        currentPreset = preset
+        nothing.setEQPreset(preset)
+        deviceState.eqPreset = preset
+        AppLogger.audio.uiSettingChanged("EQ Preset", value: preset.displayName)
+    }
+
+    private func syncFromDevice(_ reportedPreset: EQPreset?) {
+        guard let reportedPreset else {
+            return
+        }
+
+        let normalizedPreset = reportedPreset == .advanced ? .balanced : reportedPreset
+
+        if let pendingUserPreset {
+            if pendingUserPreset == normalizedPreset {
+                self.pendingUserPreset = nil
+                currentPreset = normalizedPreset
+            }
+            return
+        }
+
+        currentPreset = normalizedPreset
+        selectedProfileID = matchingProfileID(for: deviceState.eqPresetCustom)
+    }
+
+    private func matchingProfileID(for customEQ: EQPresetCustom?) -> String? {
+        guard let customEQ else {
+            return nil
+        }
+
+        return quickProfiles.first { $0.values == customEQ }?.id
+    }
+
     private func setCustomEQPreset(bass: Int? = nil, mid: Int? = nil, treble: Int? = nil) {
         let current = deviceState.eqPresetCustom ?? EQPresetCustom(bass: 0, mid: 0, treble: 0)
         let updated = EQPresetCustom(
@@ -177,6 +296,11 @@ struct BarAudioEQView: View {
             mid: mid ?? current.mid,
             treble: treble ?? current.treble
         )
+
+        if currentPreset != .custom {
+            setPreset(.custom)
+        }
+
         nothing.setCustomEQPreset(updated)
         deviceState.eqPresetCustom = updated
         AppLogger.audio.uiSettingChanged("EQ Custom", value: "\(updated.bass), \(updated.mid), \(updated.treble)")
@@ -184,26 +308,5 @@ struct BarAudioEQView: View {
 
     private func formatEQValue(_ value: Int) -> String {
         value > 0 ? "+\(value)" : "\(value)"
-    }
-
-    private func eqPresetMenu(
-        currentPreset: EQPreset,
-        supportedEqPresets: [EQPreset]
-    ) -> some View {
-        Menu {
-            ForEach(supportedEqPresets, id: \.self) { preset in
-                Button {
-                    nothing.setEQPreset(preset)
-                    deviceState.eqPreset = preset
-                } label: {
-                    Text(preset.displayName) + (currentPreset == preset ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
-                }
-            }
-        } label: {
-            Text(currentPreset.displayName)
-                .font(.footnote)
-                .foregroundColor(.secondary)
-        }
-        .menuStyle(BorderlessButtonMenuStyle())
     }
 }

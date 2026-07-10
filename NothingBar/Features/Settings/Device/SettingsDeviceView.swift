@@ -21,8 +21,6 @@ struct SettingsDeviceView: View {
         WithPerceptionTracking {
             let model = deviceState.model
             let isConnected = deviceState.isConnected
-            let supportsGestures = model?.supportsGestures == true
-
             Form {
                 Section {
                     header(model: model)
@@ -30,13 +28,6 @@ struct SettingsDeviceView: View {
 
                 Section("Settings") {
                     SettingsDeviceToolsView()
-                }
-
-                if supportsGestures {
-                    Section("Controls") {
-                        SettingsDeviceGesturesView()
-                    }
-                    .disabled(!isConnected)
                 }
 
                 Section("Information") {
