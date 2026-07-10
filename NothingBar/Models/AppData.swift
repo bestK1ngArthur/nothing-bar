@@ -19,7 +19,6 @@ class AppData {
         static let hideMenuBarWhenDisconnected = "hideMenuBarWhenDisconnected"
     }
 
-    @PerceptionIgnored
     var deviceState: DeviceState
     @PerceptionIgnored
     var appVersion: AppVersion
