@@ -12,6 +12,8 @@ import SwiftUI
 struct BarNoiseCancellationView: View {
 
     @Environment(AppData.self) var appData
+    @State private var currentMode: NoiseCancellationMode = .off
+    @State private var pendingUserMode: NoiseCancellationMode?
 
     private var deviceState: DeviceState {
         appData.deviceState
@@ -23,8 +25,8 @@ struct BarNoiseCancellationView: View {
 
     var body: some View {
         WithPerceptionTracking {
-            let currentMode = deviceState.noiseCancellationMode ?? .off
-            let isDisabled = deviceState.noiseCancellationMode == nil
+            let reportedMode = deviceState.noiseCancellationMode
+            let isDisabled = reportedMode == nil
 
             BarSectionView(
                 title: "Noise Cancellation",
@@ -43,6 +45,12 @@ struct BarNoiseCancellationView: View {
                 }
                 .disabled(isDisabled)
             }
+            .onAppear {
+                syncFromDevice(reportedMode)
+            }
+            .onChange(of: reportedMode) { newMode in
+                syncFromDevice(newMode)
+            }
         }
     }
 
@@ -57,8 +65,7 @@ struct BarNoiseCancellationView: View {
             name: mode.displayName,
             isActive: isActive,
             onTap: {
-                nothing.setNoiseCancellationMode(mode)
-                AppLogger.audio.uiSettingChanged("Noise Cancellation", value: mode)
+                setMode(mode)
             },
             overlay: { EmptyView() }
         )
@@ -77,7 +84,7 @@ struct BarNoiseCancellationView: View {
     @ViewBuilder
     private func activeLevelView(_ level: NoiseCancellationMode.Active, isSelected: Bool) -> some View {
         Button {
-            nothing.setNoiseCancellationMode(.active(level))
+            setMode(.active(level))
         } label: {
             VStack(spacing: 4) {
 
@@ -91,6 +98,30 @@ struct BarNoiseCancellationView: View {
             }
         }
         .buttonStyle(.plain)
+    }
+
+    private func setMode(_ mode: NoiseCancellationMode) {
+        pendingUserMode = mode
+        currentMode = mode
+        nothing.setNoiseCancellationMode(mode)
+        deviceState.noiseCancellationMode = mode
+        AppLogger.audio.uiSettingChanged("Noise Cancellation", value: mode)
+    }
+
+    private func syncFromDevice(_ reportedMode: NoiseCancellationMode?) {
+        guard let reportedMode else {
+            return
+        }
+
+        if let pendingUserMode {
+            if modeIsEquivalent(pendingUserMode, reportedMode) {
+                self.pendingUserMode = nil
+                currentMode = reportedMode
+            }
+            return
+        }
+
+        currentMode = reportedMode
     }
 
     private func displayValue(for mode: NoiseCancellationMode) -> String {

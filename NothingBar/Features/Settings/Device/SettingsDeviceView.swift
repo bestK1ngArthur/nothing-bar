@@ -21,7 +21,6 @@ struct SettingsDeviceView: View {
         WithPerceptionTracking {
             let model = deviceState.model
             let isConnected = deviceState.isConnected
-
             Form {
                 Section {
                     header(model: model)

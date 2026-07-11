@@ -62,6 +62,12 @@ struct BarView: View {
                 BarSpatialAudioView()
             }
 
+            if model.supportsRingBuds {
+                Divider()
+
+                BarFindHeadphonesView()
+            }
+
             Divider()
 
             BarAudioView()
