@@ -3,6 +3,15 @@
     <channel>
         <title>NothingBar</title>
         <item>
+            <title>2.11.0</title>
+            <pubDate>Mon, 27 Jul 2026 09:18:42 +0300</pubDate>
+            <sparkle:version>26</sparkle:version>
+            <sparkle:shortVersionString>2.11.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+            <sparkle:releaseNotesLink>https://nothingbar.bestk1ng.com/releases/2.11.0.html</sparkle:releaseNotesLink>
+            <enclosure url="https://github.com/bestK1ngArthur/nothing-bar/releases/download/2.11.0/nothing-bar-2.11.0.zip" length="4771977" type="application/octet-stream" sparkle:edSignature="+iWjdnbiQP5ATC87OD9/vV94S2RQAERPE1USGhk27mNd2opNOvZKXY82kIdpqgfo+YAAI6iDCpO0k8vYi69mDg=="/>
+        </item>
+        <item>
             <title>2.10.0</title>
             <pubDate>Fri, 10 Jul 2026 09:46:29 +0300</pubDate>
             <sparkle:version>25</sparkle:version>
