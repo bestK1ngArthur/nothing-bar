@@ -273,27 +273,53 @@ enum NotificationStyle: String, CaseIterable, Identifiable {
     var displayName: String {
         switch self {
             case .classic:
-                "Classic"
+                String(localized: "Classic", comment: "Notification style option name")
             case .apple:
-                "Apple"
+                String(localized: "Apple", comment: "Notification style option name")
         }
     }
 
     var descriptionText: String {
         switch self {
             case .classic:
-                "Larger, more detailed notification appearance."
+                String(localized: "Larger, more detailed notification appearance.", comment: "Notification style description")
             case .apple:
-                "Compact style similar to native system accessories alerts."
+                String(localized: "Compact style similar to native system accessories alerts.", comment: "Notification style description")
         }
     }
 
     var placementText: String {
         switch self {
             case .classic:
-                "Top-right corner of the screen"
+                String(localized: "Top-right corner of the screen", comment: "Notification style placement on screen")
             case .apple:
-                "Under the menu bar item"
+                String(localized: "Under the menu bar item", comment: "Notification style placement on screen")
+        }
+    }
+}
+
+enum AppLanguage: String, CaseIterable, Identifiable {
+    case system
+    case english = "en"
+    case spanish = "es-ES"
+    case catalan = "ca-ES"
+
+    var id: String { rawValue }
+    static let defaultValue: AppLanguage = .system
+
+    /// Language names are shown as endonyms (each language's own name for itself), matching
+    /// the convention used by iOS/macOS system language pickers — so this deliberately does
+    /// not use String(localized:) except for "System", which isn't a language name.
+    var displayName: String {
+        switch self {
+            case .system:
+                String(localized: "System", comment: "Language picker option: follow the macOS system language")
+            case .english:
+                "English"
+            case .spanish:
+                "Español"
+            case .catalan:
+                "Català"
         }
     }
 }

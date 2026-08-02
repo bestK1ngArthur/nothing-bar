@@ -79,7 +79,7 @@ struct BarHeaderView: View {
         battery: Battery?
     ) -> some View {
         VStack(alignment: .leading, spacing: 3) {
-            Text(model?.displayName ?? "Unknown")
+            Text(model?.displayName ?? String(localized: "Unknown", comment: "Fallback device name"))
                 .font(.headline)
                 .foregroundColor(.primary)
                 .lineLimit(1)
@@ -122,7 +122,7 @@ struct BarHeaderView: View {
     }
 
     @ViewBuilder
-    private func batterySummaryItem(title: String?, level: BatteryLevel) -> some View {
+    private func batterySummaryItem(title: LocalizedStringKey?, level: BatteryLevel) -> some View {
         if level.isConnected {
             HStack(spacing: 2) {
                 if let title {

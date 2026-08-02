@@ -148,7 +148,9 @@ struct NothingBarApp: App {
         openWindow(id: "settings")
 
         DispatchQueue.main.async {
-            guard let window = NSApp.windows.first(where: { $0.title == "Settings" }) else {
+            // Match by the Window scene's stable `id`, not its (localized) title —
+            // "Settings" only matches the English UI.
+            guard let window = NSApp.windows.first(where: { $0.identifier?.rawValue == "settings" }) else {
                 return
             }
 
@@ -167,7 +169,7 @@ struct NothingBarApp: App {
         openWindow(id: "device-setup")
 
         DispatchQueue.main.async {
-            guard let window = NSApp.windows.first(where: { $0.title == "Device Setup" }) else {
+            guard let window = NSApp.windows.first(where: { $0.identifier?.rawValue == "device-setup" }) else {
                 return
             }
 

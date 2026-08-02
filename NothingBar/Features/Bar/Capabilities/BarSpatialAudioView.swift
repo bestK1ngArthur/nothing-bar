@@ -31,13 +31,13 @@ struct BarSpatialAudioView: View {
 
             BarSectionView(
                 title: "Spatial Audio",
-                value: currentMode.displayName
+                value: currentMode.localizedDisplayName
             ) {
                 HStack(alignment: .top, spacing: 8) {
                     ForEach(supportedModes.reversed(), id: \.self) { mode in
                         ModeCircleView<EmptyView>(
                             image: mode.imageName,
-                            name: mode.displayName,
+                            name: mode.localizedDisplayName,
                             isActive: currentMode == mode
                         ) {
                             setMode(mode, model: model, enhancedBass: enhancedBass)
@@ -93,6 +93,23 @@ private extension SpatialAudioMode {
                 return .spatialAudioCinema
             case .off:
                 return .spatialAudioOff
+        }
+    }
+
+    /// SwiftNothingEar's own `.displayName` is not localized — this is our own
+    /// translated label for the mode circle and section value.
+    var localizedDisplayName: String {
+        switch self {
+            case .off:
+                String(localized: "Off", comment: "Spatial audio mode")
+            case .fixed:
+                String(localized: "Fixed", comment: "Spatial audio mode")
+            case .headTracking:
+                String(localized: "Head-tracking", comment: "Spatial audio mode")
+            case .cinema:
+                String(localized: "Cinema", comment: "Spatial audio mode")
+            case .concert:
+                String(localized: "Concert", comment: "Spatial audio mode")
         }
     }
 }
