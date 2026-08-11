@@ -64,6 +64,7 @@ The app updates automatically through [Sparkle](https://sparkle-project.org/); y
 - 🟡 CMF Buds 2 Plus
 - 🟡 CMF Neckband Pro
 - 🟡 CMF Headphone Pro
+- 🟡 CMF Clip Pro
 
 > [!TIP]
 > If nothing happens when connecting the headphones, please check the **Bluetooth device name**. It's better if it matches the factory name (or a suitable model from the list above). Some models can be automatically detected by serial number, but not all.
