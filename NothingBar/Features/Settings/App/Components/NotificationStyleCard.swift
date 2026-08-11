@@ -54,7 +54,7 @@ struct NotificationStyleCard: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(style.displayName)
-        .accessibilityValue(isSelected ? "Selected" : "Not selected")
+        .accessibilityValue(Text(LocalizedStringKey(isSelected ? "Selected" : "Not selected")))
         .accessibilityHint(style.placementText)
     }
 }

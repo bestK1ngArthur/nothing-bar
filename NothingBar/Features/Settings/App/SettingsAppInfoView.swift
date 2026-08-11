@@ -15,10 +15,14 @@ struct SettingsAppInfoView: View {
     }
 
     private var appVersion: String {
-        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? unknown
     }
 
     private var appBuild: String {
-        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
+        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? unknown
+    }
+
+    private var unknown: String {
+        String(localized: "Unknown", comment: "Fallback value when app info is unavailable")
     }
 }

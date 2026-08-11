@@ -54,7 +54,7 @@ struct BarNoiseCancellationView: View {
         let isActive = modeIsEquivalent(mode, currentMode)
         ModeCircleView(
             image: mode.imageName,
-            name: mode.displayName,
+            name: mode.localizedDisplayName,
             isActive: isActive,
             onTap: {
                 nothing.setNoiseCancellationMode(mode)
@@ -85,7 +85,7 @@ struct BarNoiseCancellationView: View {
                 .fill(isSelected ? Color.accentColor : Color.secondary)
                 .frame(height: 6)
 
-                Text(level.displayName)
+                Text(level.localizedDisplayName)
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -96,9 +96,9 @@ struct BarNoiseCancellationView: View {
     private func displayValue(for mode: NoiseCancellationMode) -> String {
         switch mode {
             case .active(let mode):
-                return mode.displayName
+                return mode.localizedDisplayName
             default:
-                return mode.displayName
+                return mode.localizedDisplayName
         }
     }
 
@@ -124,6 +124,35 @@ private extension NoiseCancellationMode {
                 return .ancTransparent
             case .off:
                 return .ancOff
+        }
+    }
+
+    /// SwiftNothingEar's own `.displayName` is not localized — this is our own
+    /// translated label for the mode circle and section value.
+    var localizedDisplayName: String {
+        switch self {
+            case .off:
+                String(localized: "Off", comment: "Noise cancellation mode")
+            case .transparent:
+                String(localized: "Transparency", comment: "Noise cancellation mode")
+            case .active:
+                String(localized: "Active", comment: "Noise cancellation mode")
+        }
+    }
+}
+
+private extension NoiseCancellationMode.Active {
+
+    var localizedDisplayName: String {
+        switch self {
+            case .low:
+                String(localized: "Low", comment: "Noise cancellation active level")
+            case .mid:
+                String(localized: "Mid", comment: "Noise cancellation active level")
+            case .high:
+                String(localized: "High", comment: "Noise cancellation active level")
+            case .adaptive:
+                String(localized: "Adaptive", comment: "Noise cancellation active level")
         }
     }
 }

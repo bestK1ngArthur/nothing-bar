@@ -5,6 +5,7 @@
 //  Created by Artem Belkov on 31.07.2025.
 //
 
+import AppKit
 import ServiceManagement
 import Perception
 import SwiftUI
@@ -15,10 +16,37 @@ struct SettingsAppSettingsView: View {
 
     @AppStorage("launchAtLogin") private var launchAtLogin = false
     @AppStorage("hideMenuBarWhenDisconnected") private var hideMenuBarWhenDisconnected = false
+    @AppStorage("appLanguage") private var appLanguageRawValue = AppLanguage.defaultValue.rawValue
+    @State private var showRestartAlert = false
+
+    private var appLanguage: Binding<AppLanguage> {
+        Binding(
+            get: { AppLanguage(rawValue: appLanguageRawValue) ?? .defaultValue },
+            set: { newValue in
+                appLanguageRawValue = newValue.rawValue
+                stageLanguage(newValue)
+                showRestartAlert = true
+            }
+        )
+    }
 
     var body: some View {
         WithPerceptionTracking {
             Group {
+                SettingsRow(
+                    title: "App language",
+                    description: "Choose the language used by the app interface"
+                ) {
+                    Picker("", selection: appLanguage) {
+                        ForEach(AppLanguage.allCases) { language in
+                            Text(language.displayName).tag(language)
+                        }
+                    }
+                    .labelsHidden()
+                    .pickerStyle(.menu)
+                    .fixedSize()
+                }
+
                 SettingsRow(
                     title: "Launch at login",
                     description: "Automatically start app when you log in to your Mac"
@@ -56,7 +84,7 @@ struct SettingsAppSettingsView: View {
                     title: appData.appVersion.isUpdateAvailable ? "Update available" : "Check for updates",
                     description: "Current version: \(appData.appVersion.currentVersion)"
                 ) {
-                    Button(appData.appVersion.isUpdateAvailable ? "Update" : "Check Now") {
+                    Button(LocalizedStringKey(appData.appVersion.isUpdateAvailable ? "Update" : "Check Now")) {
                         appData.appVersion.checkForUpdatesManually()
                     }
                 }
@@ -64,6 +92,36 @@ struct SettingsAppSettingsView: View {
             .onAppear {
                 updateLaunchAtLoginState()
                 appData.hideMenuBarWhenDisconnected = hideMenuBarWhenDisconnected
+            }
+            .alert("Restart required", isPresented: $showRestartAlert) {
+                Button("Restart Now", role: .destructive) {
+                    relaunchApp()
+                }
+                Button("Later", role: .cancel) { }
+            } message: {
+                Text("NothingBar needs to restart to apply the new language.")
+            }
+        }
+    }
+
+    /// `AppleLanguages` is the system key AppKit reads at launch to pick the bundle's active
+    /// language, overriding the macOS system language for this app only. It only takes effect
+    /// on the next launch, hence `relaunchApp()` below.
+    private func stageLanguage(_ language: AppLanguage) {
+        if language == .system {
+            UserDefaults.standard.removeObject(forKey: "AppleLanguages")
+        } else {
+            UserDefaults.standard.set([language.rawValue], forKey: "AppleLanguages")
+        }
+    }
+
+    /// Launches a second instance of the app, then terminates this one once it's up —
+    /// there's no supported way to hot-swap `AppleLanguages` in a running process.
+    private func relaunchApp() {
+        let url = Bundle.main.bundleURL
+        NSWorkspace.shared.openApplication(at: url, configuration: NSWorkspace.OpenConfiguration()) { _, _ in
+            DispatchQueue.main.async {
+                NSApp.terminate(nil)
             }
         }
     }

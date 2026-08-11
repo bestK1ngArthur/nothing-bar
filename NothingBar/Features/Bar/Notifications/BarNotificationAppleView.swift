@@ -39,7 +39,7 @@ struct BarNotificationAppleView: View {
                             .multilineTextAlignment(.leading)
                     }
 
-                    Text(isConnected ? "Connected" : "Off")
+                    Text(LocalizedStringKey(isConnected ? "Connected" : "Off"))
                         .font(.system(size: 11, weight: .regular))
                         .foregroundColor(.secondary)
                 }

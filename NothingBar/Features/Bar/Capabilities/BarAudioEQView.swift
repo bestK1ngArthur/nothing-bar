@@ -83,7 +83,7 @@ struct BarAudioEQView: View {
                     eqCustomValues(customEQ: customEQ)
                 }
 
-                Button(isEditingCustomEQ ? "Done" : "Edit") {
+                Button(LocalizedStringKey(isEditingCustomEQ ? "Done" : "Edit")) {
                     isEditingCustomEQ.toggle()
                 }
                 .font(.caption)
@@ -136,7 +136,7 @@ struct BarAudioEQView: View {
         .foregroundColor(.secondary)
     }
 
-    private func eqSlider(title: String, value: Binding<Int>) -> some View {
+    private func eqSlider(title: LocalizedStringKey, value: Binding<Int>) -> some View {
         VStack(alignment: .trailing, spacing: 2) {
             HStack(spacing: 6) {
                 Text(title)
@@ -189,14 +189,36 @@ struct BarAudioEQView: View {
                     nothing.setEQPreset(preset)
                     deviceState.eqPreset = preset
                 } label: {
-                    Text(preset.displayName) + (currentPreset == preset ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
+                    Text(preset.localizedDisplayName) + (currentPreset == preset ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
                 }
             }
         } label: {
-            Text(currentPreset.displayName)
+            Text(currentPreset.localizedDisplayName)
                 .font(.footnote)
                 .foregroundColor(.secondary)
         }
         .menuStyle(BorderlessButtonMenuStyle())
+    }
+}
+
+private extension EQPreset {
+
+    /// SwiftNothingEar's own `.displayName` is not localized — this is our own
+    /// translated label for the EQ preset menu.
+    var localizedDisplayName: String {
+        switch self {
+            case .balanced:
+                String(localized: "Balanced", comment: "EQ preset name")
+            case .voice:
+                String(localized: "Voice", comment: "EQ preset name")
+            case .moreTreble:
+                String(localized: "More Treble", comment: "EQ preset name")
+            case .moreBass:
+                String(localized: "More Bass", comment: "EQ preset name")
+            case .custom:
+                String(localized: "Custom", comment: "EQ preset name")
+            case .advanced:
+                String(localized: "Advanced", comment: "EQ preset name")
+        }
     }
 }

@@ -145,9 +145,9 @@ struct DeviceSetupView: View {
     private func headerTitle(for mode: DeviceSetupMode?) -> String {
         switch mode {
             case .editSelection:
-                "Change model and color"
+                String(localized: "Change model and color", comment: "Device setup window title when editing an existing device")
             case .newDevice, .none:
-                "New Nothing headphones connected"
+                String(localized: "New Nothing headphones connected", comment: "Device setup window title for a newly detected device")
         }
     }
 
@@ -264,7 +264,7 @@ private struct DeviceModelSelectionCard: View {
 private extension DeviceModelSelection {
 
     var swatchColor: Color {
-        switch colorName {
+        switch colorKey {
             case "Black", "Dark Grey":
                 Color(nsColor: .darkGray)
             case "Grey", "Light Grey":

@@ -231,7 +231,10 @@ final class StatusBarController: NSObject {
         guard let button = statusItem?.button else { return }
 
         let symbolName = isConnected ? "headphones" : "headphones.slash"
-        let image = NSImage(systemSymbolName: symbolName, accessibilityDescription: "Nothing Headphones")
+        let image = NSImage(
+            systemSymbolName: symbolName,
+            accessibilityDescription: String(localized: "Nothing Headphones", comment: "VoiceOver description for the menu bar icon")
+        )
         image?.isTemplate = true
         button.image = image
     }

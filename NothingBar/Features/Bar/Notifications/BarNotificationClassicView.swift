@@ -38,7 +38,7 @@ struct BarNotificationClassicView: View {
                             .multilineTextAlignment(.leading)
                     }
 
-                    Text(isConnected ? "Connected" : "Disconnected")
+                    Text(LocalizedStringKey(isConnected ? "Connected" : "Disconnected"))
                         .font(.system(size: 11, weight: .regular))
                         .foregroundColor(.secondary)
                 }

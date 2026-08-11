@@ -10,7 +10,7 @@ import SwiftUI
 
 struct BarSectionView<Content: View>: View {
 
-    let title: String
+    let title: LocalizedStringKey
     let value: String?
 
     let content: () -> Content
