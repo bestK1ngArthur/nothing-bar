@@ -10,8 +10,8 @@ import Perception
 
 struct SettingsRow<Value: View>: View {
 
-    let title: String
-    let description: String
+    let title: LocalizedStringKey
+    let description: LocalizedStringKey
     let value: () -> Value
 
     var body: some View {

@@ -45,7 +45,7 @@ struct SettingsDeviceHeaderView: View {
             }
 
             VStack(spacing: 8) {
-                Text(model?.displayName ?? "Unknown")
+                Text(model?.displayName ?? String(localized: "Unknown", comment: "Fallback device name"))
                     .font(.title)
                     .fontWeight(.semibold)
 
@@ -62,7 +62,7 @@ struct SettingsDeviceHeaderView: View {
                     .frame(width: 7, height: 7)
             }
 
-            Text(isConnected ? "Connected" : "Disconnected")
+            Text(LocalizedStringKey(isConnected ? "Connected" : "Disconnected"))
                 .font(.subheadline)
                 .foregroundColor(.secondary)
 
@@ -118,7 +118,7 @@ struct SettingsDeviceHeaderView: View {
     }
 
     @ViewBuilder
-    private func batterySummaryItem(title: String, level: BatteryLevel) -> some View {
+    private func batterySummaryItem(title: LocalizedStringKey, level: BatteryLevel) -> some View {
         if level.isConnected {
             HStack(spacing: 4) {
                 Text(title)

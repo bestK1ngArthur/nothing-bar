@@ -150,12 +150,19 @@ private extension DeviceState {
 private extension RingBuds {
 
     var title: String {
-        let prefix = isOn ? "Stop" : "Play"
-        let suffix = switch bud {
-            case .left: " Left"
-            case .right: " Right"
-            case .unibody: ""
+        switch (isOn, bud) {
+            case (true, .left):
+                String(localized: "Stop Left", comment: "Button to stop the left earbud ringing")
+            case (true, .right):
+                String(localized: "Stop Right", comment: "Button to stop the right earbud ringing")
+            case (true, .unibody):
+                String(localized: "Stop", comment: "Button to stop the earbuds ringing")
+            case (false, .left):
+                String(localized: "Play Left", comment: "Button to ring the left earbud to help find it")
+            case (false, .right):
+                String(localized: "Play Right", comment: "Button to ring the right earbud to help find it")
+            case (false, .unibody):
+                String(localized: "Play", comment: "Button to ring the earbuds to help find them")
         }
-        return "\(prefix)\(suffix)"
     }
 }

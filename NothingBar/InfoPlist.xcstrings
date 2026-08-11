@@ -1,0 +1,54 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSBluetoothAlwaysUsageDescription": {
+      "comment": "System permission prompt shown when the app requests Bluetooth access",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'app necessita el Bluetooth per connectar-se als auriculars Nothing"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The app requires Bluetooth to connect to Nothing earbuds"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La app necesita Bluetooth para conectarse a los auriculares Nothing"
+          }
+        }
+      }
+    },
+    "NSBluetoothPeripheralUsageDescription": {
+      "comment": "System permission prompt shown when the app requests Bluetooth access (legacy key for older macOS versions)",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'app necessita el Bluetooth per connectar-se als auriculars Nothing"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The app requires Bluetooth to connect to Nothing earbuds"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La app necesita Bluetooth para conectarse a los auriculares Nothing"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

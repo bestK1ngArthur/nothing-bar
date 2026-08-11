@@ -16,13 +16,17 @@ struct SettingsDeviceInfoView: View {
         appData.deviceState
     }
 
+    private var unknown: String {
+        String(localized: "Unknown", comment: "Fallback value when device info is unavailable")
+    }
+
     var body: some View {
         WithPerceptionTracking {
             Group {
-                InfoRow(title: "Model", value: deviceState.model?.displayName ?? "Unknown")
-                InfoRow(title: "Serial number", value: deviceState.serialNumber ?? "Unknown")
-                InfoRow(title: "Bluetooth address", value: deviceState.bluetoothAddress ?? "Unknown")
-                InfoRow(title: "Firmware version", value: deviceState.firmwareVersion ?? "Unknown")
+                InfoRow(title: "Model", value: deviceState.model?.displayName ?? unknown)
+                InfoRow(title: "Serial number", value: deviceState.serialNumber ?? unknown)
+                InfoRow(title: "Bluetooth address", value: deviceState.bluetoothAddress ?? unknown)
+                InfoRow(title: "Firmware version", value: deviceState.firmwareVersion ?? unknown)
             }
         }
     }
@@ -30,7 +34,7 @@ struct SettingsDeviceInfoView: View {
 
 struct InfoRow: View {
 
-    let title: String
+    let title: LocalizedStringKey
     let value: String
 
     var body: some View {

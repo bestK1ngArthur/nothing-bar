@@ -72,10 +72,12 @@ struct BarAudioView: View {
 
     private func enhancedBassValue(for enhancedBass: EnhancedBass?) -> String {
         guard let enhancedBass else {
-            return "N/A"
+            return String(localized: "N/A", comment: "Enhanced bass value when unavailable")
         }
 
-        return enhancedBass.isEnabled ? "Level \(enhancedBass.level)" : "Off"
+        return enhancedBass.isEnabled
+            ? String(localized: "Level \(enhancedBass.level)", comment: "Enhanced bass level")
+            : String(localized: "Off", comment: "Enhanced bass disabled state")
     }
 
     private func enhancedBassMenu(
@@ -143,9 +145,9 @@ struct BarAudioView: View {
         // Check if it's a headphone (over-ear) or earbuds (in-ear)
         switch model {
             case .headphone1, .headphoneA, .cmfHeadphonePro:
-                return "Bass Enhancement"
+                return String(localized: "Bass Enhancement", comment: "Enhanced bass control title for over-ear headphones")
             default:
-                return "Ultra Bass"
+                return String(localized: "Ultra Bass", comment: "Enhanced bass control title for earbuds")
         }
     }
 }

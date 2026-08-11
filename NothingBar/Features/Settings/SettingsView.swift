@@ -93,11 +93,16 @@ struct SettingsView: View {
 
 private enum SettingsTab: String, CaseIterable {
 
-    case device = "Device"
-    case app = "App"
+    case device
+    case app
 
     var title: String {
-        return self.rawValue
+        switch self {
+        case .device:
+            String(localized: "Device", comment: "Settings sidebar tab")
+        case .app:
+            String(localized: "App", comment: "Settings sidebar tab")
+        }
     }
 
     var icon: String {
