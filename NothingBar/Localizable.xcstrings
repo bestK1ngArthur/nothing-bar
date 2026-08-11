@@ -1081,6 +1081,30 @@
         }
       }
     },
+    "Coral": {
+      "comment": "Device color name",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corall"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coral"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coral"
+          }
+        }
+      }
+    },
     "Current version: %@": {
       "comment": "Settings row description showing the current app version",
       "extractionState": "manual",

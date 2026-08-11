@@ -36,6 +36,8 @@ struct DeviceModelSelection: Identifiable, Equatable {
                 String(localized: "Grey", comment: "Device color name")
             case "Orange":
                 String(localized: "Orange", comment: "Device color name")
+            case "Coral":
+                String(localized: "Coral", comment: "Device color name")
             case "Light Green":
                 String(localized: "Light Green", comment: "Device color name")
             case "Dark Grey":
@@ -128,7 +130,10 @@ enum DeviceModelCatalog {
         .init(id: "cmfNeckbandPro.white", model: .cmfNeckbandPro(.white), colorKey: "White", deviceImage: .single(.cmfNeckbandProWhite)),
         .init(id: "cmfHeadphonePro.darkGrey", model: .cmfHeadphonePro(.darkGrey), colorKey: "Dark Grey", deviceImage: .single(.cmfHeadphonePro1DarkGrey)),
         .init(id: "cmfHeadphonePro.lightGreen", model: .cmfHeadphonePro(.lightGreen), colorKey: "Light Green", deviceImage: .single(.cmfHeadphonePro1LightGreen)),
-        .init(id: "cmfHeadphonePro.lightGrey", model: .cmfHeadphonePro(.lightGrey), colorKey: "Light Grey", deviceImage: .single(.cmfHeadphonePro1LightGrey))
+        .init(id: "cmfHeadphonePro.lightGrey", model: .cmfHeadphonePro(.lightGrey), colorKey: "Light Grey", deviceImage: .single(.cmfHeadphonePro1LightGrey)),
+        .init(id: "cmfClipPro.darkGrey", model: .cmfClipPro(.darkGrey), colorKey: "Dark Grey", deviceImage: .buds(left: .cmfClipProDarkGreyLeft, right: .cmfClipProDarkGreyRight)),
+        .init(id: "cmfClipPro.lightGrey", model: .cmfClipPro(.lightGrey), colorKey: "Light Grey", deviceImage: .buds(left: .cmfClipProLightGreyLeft, right: .cmfClipProLightGreyRight)),
+        .init(id: "cmfClipPro.coral", model: .cmfClipPro(.coral), colorKey: "Coral", deviceImage: .buds(left: .cmfClipProCoralLeft, right: .cmfClipProCoralRight))
     ]
 
     static func selection(for id: String) -> DeviceModelSelection? {
