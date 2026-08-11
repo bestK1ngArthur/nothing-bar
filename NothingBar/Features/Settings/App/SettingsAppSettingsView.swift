@@ -118,8 +118,20 @@ struct SettingsAppSettingsView: View {
     /// Launches a second instance of the app, then terminates this one once it's up —
     /// there's no supported way to hot-swap `AppleLanguages` in a running process.
     private func relaunchApp() {
-        let url = Bundle.main.bundleURL
-        NSWorkspace.shared.openApplication(at: url, configuration: NSWorkspace.OpenConfiguration()) { _, _ in
+        let configuration = NSWorkspace.OpenConfiguration()
+        configuration.createsNewApplicationInstance = true
+
+        NSWorkspace.shared.openApplication(at: Bundle.main.bundleURL, configuration: configuration) { application, error in
+            if let error {
+                AppLogger.main.logError("Failed to relaunch app: \(error)")
+                return
+            }
+
+            guard application != nil else {
+                AppLogger.main.logError("Failed to relaunch app: no running application was returned")
+                return
+            }
+
             DispatchQueue.main.async {
                 NSApp.terminate(nil)
             }
