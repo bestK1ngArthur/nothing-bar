@@ -271,7 +271,7 @@ private extension DeviceModelSelection {
                 Color(nsColor: .lightGray)
             case "White":
                 Color.white
-            case "Orange":
+            case "Orange", "Coral":
                 Color.orange
             case "Yellow":
                 Color.yellow
