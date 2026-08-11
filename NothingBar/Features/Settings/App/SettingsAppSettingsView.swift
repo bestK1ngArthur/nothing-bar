@@ -115,26 +115,36 @@ struct SettingsAppSettingsView: View {
         }
     }
 
-    /// Launches a second instance of the app, then terminates this one once it's up —
-    /// there's no supported way to hot-swap `AppleLanguages` in a running process.
+    /// Relaunches the app after this process exits so the replacement does not compete for
+    /// the active Bluetooth connection while applying the staged `AppleLanguages` value.
     private func relaunchApp() {
-        let configuration = NSWorkspace.OpenConfiguration()
-        configuration.createsNewApplicationInstance = true
+        guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
+            AppLogger.main.logError("Failed to relaunch app: missing bundle identifier")
+            return
+        }
 
-        NSWorkspace.shared.openApplication(at: Bundle.main.bundleURL, configuration: configuration) { application, error in
-            if let error {
-                AppLogger.main.logError("Failed to relaunch app: \(error)")
-                return
-            }
+        let script = """
+        while kill -0 "$1" 2>/dev/null; do
+            sleep 0.1
+        done
+        /usr/bin/open -n "$2" || exec /usr/bin/open -n -b "$3"
+        """
+        let relauncher = Process()
+        relauncher.executableURL = URL(fileURLWithPath: "/bin/sh")
+        relauncher.arguments = [
+            "-c",
+            script,
+            "nothingbar-relauncher",
+            String(ProcessInfo.processInfo.processIdentifier),
+            Bundle.main.bundleURL.path,
+            bundleIdentifier
+        ]
 
-            guard application != nil else {
-                AppLogger.main.logError("Failed to relaunch app: no running application was returned")
-                return
-            }
-
-            DispatchQueue.main.async {
-                NSApp.terminate(nil)
-            }
+        do {
+            try relauncher.run()
+            NSApp.terminate(nil)
+        } catch {
+            AppLogger.main.logError("Failed to start app relauncher: \(error)")
         }
     }
 
