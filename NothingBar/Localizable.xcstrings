@@ -1249,6 +1249,30 @@
         }
       }
     },
+    "Device Setup": {
+      "comment": "Device setup window title",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configuració del dispositiu"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Device Setup"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configuración del dispositivo"
+          }
+        }
+      }
+    },
     "Disconnected": {
       "comment": "Device connection status",
       "extractionState": "manual",
@@ -2061,6 +2085,30 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cancelación de ruido"
+          }
+        }
+      }
+    },
+    "Not selected": {
+      "comment": "VoiceOver value for an unselected notification style card",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No seleccionat"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not selected"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No seleccionado"
           }
         }
       }

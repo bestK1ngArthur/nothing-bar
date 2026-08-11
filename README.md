@@ -10,7 +10,18 @@ Special credits to:
 
 ## Installation
 
-Download .zip archive from [releases](https://github.com/bestK1ngArthur/nothing-bar/releases) and drag `NothingBar.app` to `/Applications` folder. The app updates automatically through the [Sparkle](https://sparkle-project.org/), you can manage this in the app settings.
+### Homebrew
+
+```shell
+brew tap bestk1ngarthur/nothingbar https://github.com/bestK1ngArthur/nothing-bar
+brew install --cask nothingbar
+```
+
+### Manually
+
+Download the `.zip` archive from [releases](https://github.com/bestK1ngArthur/nothing-bar/releases) and drag `NothingBar.app` to the `/Applications` folder.
+
+The app updates automatically through [Sparkle](https://sparkle-project.org/); you can manage this in the app settings.
 
 ## Screenshots
 
@@ -74,7 +85,7 @@ If you can't code but have ideas on how to improve the app, please [create an is
 
 - [x] Auto-update system
 - [x] Spatial Audio
-- [ ] Installation from brew
+- [x] Installation from Homebrew
 - [x] Find buds
 - [ ] More EQ capabilities
 - [ ] Handle controls gestures
