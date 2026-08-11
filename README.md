@@ -14,7 +14,7 @@ Special credits to:
 
 ```shell
 brew tap bestk1ngarthur/nothingbar https://github.com/bestK1ngArthur/nothing-bar
-brew install --cask nothingbar
+brew install --cask bestk1ngarthur/nothingbar/nothingbar
 ```
 
 ### Manually
