@@ -57,16 +57,18 @@ struct SettingsDeviceToolsView: View {
                         .disabled(!isConnected)
                 }
 
-                SettingsRow(
-                    title: "Over-ear detection",
-                    description: "Automatically play audio when headphones are in and pause when removed"
-                ) {
-                    Toggle("", isOn: $bindableDeviceState.inEarDetection)
-                        .onChange(of: inEarDetection) { isEnabled in
-                            nothing.setInEarDetection(isEnabled)
-                            AppLogger.settings.uiSettingChanged("Over-ear Detection", value: isEnabled)
-                        }
-                        .disabled(!isConnected)
+                if let model, model.supportsInEarDetection {
+                    SettingsRow(
+                        title: "Over-ear detection",
+                        description: "Automatically play audio when headphones are in and pause when removed"
+                    ) {
+                        Toggle("", isOn: $bindableDeviceState.inEarDetection)
+                            .onChange(of: inEarDetection) { isEnabled in
+                                nothing.setInEarDetection(isEnabled)
+                                AppLogger.settings.uiSettingChanged("Over-ear Detection", value: isEnabled)
+                            }
+                            .disabled(!isConnected)
+                    }
                 }
 
                 if let model,
