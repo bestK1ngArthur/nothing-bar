@@ -1,6 +1,6 @@
 cask "nothingbar" do
-  version "2.12.0"
-  sha256 "56d1a1729657dd495120fefaf102a98744ac8b23410d2c6dbbd2de793e3d991f"
+  version "2.12.1"
+  sha256 "7bace6632c5b314b72de8fdcd736b069e192b6d9cee77a8acafcea8f6236d748"
 
   url "https://github.com/bestK1ngArthur/nothing-bar/releases/download/#{version}/nothing-bar-#{version}.zip"
   name "NothingBar"
