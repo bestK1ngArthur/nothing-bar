@@ -76,10 +76,12 @@ devices:
     - { name: "Nothing Headphone (a)", status: "progress" }
     - { name: "CMF Buds Pro", status: "progress" }
     - { name: "CMF Buds", status: "progress" }
+    - { name: "CMF Buds Neo", status: "progress" }
     - { name: "CMF Buds 2a", status: "progress" }
     - { name: "CMF Buds 2 Plus", status: "progress" }
     - { name: "CMF Neckband Pro", status: "progress" }
     - { name: "CMF Headphone Pro", status: "progress" }
+    - { name: "CMF Clip Pro", status: "progress" }
 
 cta:
   title: "Get NothingBar"
