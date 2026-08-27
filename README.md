@@ -59,6 +59,7 @@ The app updates automatically through [Sparkle](https://sparkle-project.org/); y
 - 🟡 CMF Buds Pro
 - 🟢 CMF Buds Pro 2
 - 🟡 CMF Buds
+- 🟡 CMF Buds Neo
 - 🟡 CMF Buds 2a
 - 🟢 CMF Buds 2
 - 🟡 CMF Buds 2 Plus
