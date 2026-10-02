@@ -412,11 +412,7 @@ private final class SpectrumMarkView: NSView {
 
 private extension EQPreset {
     var menuDisplayName: String {
-        switch self {
-        case .custom: String(localized: "Custom · three bands")
-        case .advanced: localizedDisplayName
-        default: localizedDisplayName
-        }
+        self == .custom ? String(localized: "Custom · three bands") : localizedDisplayName
     }
 
     var localizedDisplayName: String {

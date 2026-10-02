@@ -77,12 +77,12 @@ final class SystemAudioAnalyzer {
         return id
     }
 
-    private func uid(for device: AudioObjectID) throws -> String {
-        var address = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyDeviceUID, mScope: kAudioObjectPropertyScopeGlobal, mElement: kAudioObjectPropertyElementMain)
+    private func stringProperty(_ selector: AudioObjectPropertySelector, of object: AudioObjectID) throws -> String {
+        var address = AudioObjectPropertyAddress(mSelector: selector, mScope: kAudioObjectPropertyScopeGlobal, mElement: kAudioObjectPropertyElementMain)
         var uid: CFString = "" as CFString
         var size = UInt32(MemoryLayout<CFString>.size)
         let status = withUnsafeMutablePointer(to: &uid) {
-            AudioObjectGetPropertyData(device, &address, 0, nil, &size, $0)
+            AudioObjectGetPropertyData(object, &address, 0, nil, &size, $0)
         }
         guard status == noErr else { throw AudioError(status) }
         return uid as String
@@ -94,7 +94,7 @@ final class SystemAudioAnalyzer {
         description.name = "NothingBar Spectrum"
         description.isPrivate = true
         description.muteBehavior = .unmuted
-        description.deviceUID = try uid(for: device)
+        description.deviceUID = try stringProperty(kAudioDevicePropertyDeviceUID, of: device)
         try check(AudioHardwareCreateProcessTap(description, &tapID))
 
         var formatAddress = AudioObjectPropertyAddress(mSelector: kAudioTapPropertyFormat, mScope: kAudioObjectPropertyScopeGlobal, mElement: kAudioObjectPropertyElementMain)
@@ -111,13 +111,7 @@ final class SystemAudioAnalyzer {
             lastPublishTime = 0
         }
 
-        var address = AudioObjectPropertyAddress(mSelector: kAudioTapPropertyUID, mScope: kAudioObjectPropertyScopeGlobal, mElement: kAudioObjectPropertyElementMain)
-        var tapUID: CFString = "" as CFString
-        var size = UInt32(MemoryLayout<CFString>.size)
-        let status = withUnsafeMutablePointer(to: &tapUID) {
-            AudioObjectGetPropertyData(tapID, &address, 0, nil, &size, $0)
-        }
-        try check(status)
+        let tapUID = try stringProperty(kAudioTapPropertyUID, of: tapID) as CFString
 
         let aggregateDescription: [String: Any] = [
             kAudioAggregateDeviceNameKey: "NothingBar Spectrum",
@@ -140,15 +134,12 @@ final class SystemAudioAnalyzer {
 
     private func receive(_ input: UnsafePointer<AudioBufferList>, generation: Int) {
         guard workSlot.wait(timeout: .now()) == .success else { return }
-        guard input.pointee.mNumberBuffers > 0 else {
+        guard input.pointee.mNumberBuffers > 0,
+              let data = input.pointee.mBuffers.mData else {
             workSlot.signal()
             return
         }
         let buffer = input.pointee.mBuffers
-        guard let data = buffer.mData else {
-            workSlot.signal()
-            return
-        }
         let count = Int(buffer.mDataByteSize) / MemoryLayout<Float>.size
         guard count > 0, count <= scratch.count else {
             workSlot.signal()
