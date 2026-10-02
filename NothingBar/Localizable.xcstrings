@@ -3408,6 +3408,499 @@
           }
         }
       }
+    },
+    "Use the arrow keys to adjust the equalizer gain.": {
+      "comment": "VoiceOver help for the vertical EQ slider",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fes servir les tecles de fletxa per ajustar el guany de l'equalitzador."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use the arrow keys to adjust the equalizer gain."
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa las teclas de flecha para ajustar la ganancia del ecualizador."
+          }
+        }
+      }
+    },
+    "Warm": {
+      "comment": "Suggested three-band EQ profile; not a manufacturer preset",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Càlid"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warm"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cálido"
+          }
+        }
+      }
+    },
+    "Detail": {
+      "comment": "Suggested three-band EQ profile; not a manufacturer preset",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detall"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detail"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detalle"
+          }
+        }
+      }
+    },
+    "Podcast": {
+      "comment": "Suggested three-band EQ profile; not a manufacturer preset",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pòdcast"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Podcast"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pódcast"
+          }
+        }
+      }
+    },
+    "Not now": {
+      "comment": "Optional live EQ visualization disclosure and control",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not now"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ahora no"
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ara no"
+          }
+        }
+      }
+    },
+    "Live audio unavailable. The EQ still works.": {
+      "comment": "Accessible status after audio capture could not start",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live audio unavailable. The EQ still works."
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Audio en directo no disponible. El ecualizador sigue funcionando."
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Àudio en directe no disponible. L’equalitzador continua funcionant."
+          }
+        }
+      }
+    },
+    "Nothing sound modes": {
+      "comment": "Equalizer mode grouping, description or live audio disclosure",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing sound modes"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modos de sonido Nothing"
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modes de so Nothing"
+          }
+        }
+      }
+    },
+    "NothingBar profiles": {
+      "comment": "Equalizer mode grouping, description or live audio disclosure",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NothingBar profiles"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perfiles de NothingBar"
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perfils de NothingBar"
+          }
+        }
+      }
+    },
+    "Custom · three bands": {
+      "comment": "Equalizer mode grouping, description or live audio disclosure",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom · three bands"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalizado · tres bandas"
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalitzat · tres bandes"
+          }
+        }
+      }
+    },
+    "Adjust three fixed bands directly in NothingBar.": {
+      "comment": "Equalizer mode grouping, description or live audio disclosure",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adjust three fixed bands directly in NothingBar."
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajusta tres bandas fijas directamente en NothingBar."
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajusta tres bandes fixes directament a NothingBar."
+          }
+        }
+      }
+    },
+    "See your sound live": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See your sound live"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver tu sonido en directo"
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veure el teu so en directe"
+          }
+        }
+      }
+    },
+    "Show live levels": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show live levels"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar niveles en directo"
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra els nivells en directe"
+          }
+        }
+      }
+    },
+    "Hide live levels": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hide live levels"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ocultar niveles en directo"
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amaga els nivells en directe"
+          }
+        }
+      }
+    },
+    "Animate the EQ with your Mac's sound. macOS will ask to capture audio and show an indicator. NothingBar processes it only in memory; nothing is recorded or shared. The EQ works without it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Animate the EQ with your Mac's sound. macOS will ask to capture audio and show an indicator. NothingBar processes it only in memory; nothing is recorded or shared. The EQ works without it."
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anima el ecualizador con el sonido de tu Mac. macOS pedirá permiso para capturar audio y mostrará un indicador. NothingBar lo procesa solo en memoria: no graba ni comparte nada. El ecualizador funciona sin esta función."
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anima l’equalitzador amb el so del Mac. macOS demanarà permís per capturar àudio i mostrarà un indicador. NothingBar només el processa en memòria: no grava ni comparteix res. L’equalitzador funciona sense aquesta funció."
+          }
+        }
+      }
+    },
+    "Music styles": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Music styles"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estilos musicales"
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estils musicals"
+          }
+        }
+      }
+    },
+    "Pop": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pop"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pop"
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pop"
+          }
+        }
+      }
+    },
+    "Rock": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rock"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rock"
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rock"
+          }
+        }
+      }
+    },
+    "Hip-hop": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hip-hop"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hip-hop"
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hip-hop"
+          }
+        }
+      }
+    },
+    "Electronic": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Electronic"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Electrónica"
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Electrònica"
+          }
+        }
+      }
+    },
+    "Factory sound mode; gain unavailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Factory sound mode; gain unavailable"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo de sonido de fábrica; ganancia no disponible"
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mode de so de fàbrica; guany no disponible"
+          }
+        }
+      }
+    },
+    "Move to start a custom EQ from 0 dB.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move to start a custom EQ from 0 dB."
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muévelo para crear un ecualizador personalizado desde 0 dB."
+          }
+        },
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mou-lo per crear un equalitzador personalitzat des de 0 dB."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

@@ -51,21 +51,16 @@ struct BarAudioView: View {
         spatialAudioMode: SpatialAudioMode?
     ) -> some View {
         HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(bassTitle(for: model))
-                    .font(.subheadline)
-                    .foregroundColor(.primary)
-
-                enhancedBassMenu(
-                    model: model,
-                    enhancedBass: enhancedBass,
-                    spatialAudioMode: spatialAudioMode
-                )
-                    .fixedSize()
-                    .padding(.leading, -4)
-            }
-
+            Text(bassTitle(for: model))
+                .font(.subheadline)
+                .foregroundColor(.primary)
             Spacer()
+            enhancedBassMenu(
+                model: model,
+                enhancedBass: enhancedBass,
+                spatialAudioMode: spatialAudioMode
+            )
+                .fixedSize()
         }
         .padding(.horizontal, 4)
     }
