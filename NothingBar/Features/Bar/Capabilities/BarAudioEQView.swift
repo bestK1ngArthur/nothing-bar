@@ -6,7 +6,6 @@ import SwiftUI
 
 struct BarAudioEQView: View {
     @Environment(AppData.self) private var appData
-    @Environment(\.colorSchemeContrast) private var contrast
     @State private var showingSpectrumDisclosure = false
     let supportedEqPresets: [EQPreset]
 
@@ -61,46 +60,14 @@ struct BarAudioEQView: View {
     }
 
     private func editor(gains: EQPresetCustom, editable: Bool) -> some View {
-        GeometryReader { geometry in
-            let columns = geometry.size.width / 3
-            ZStack(alignment: .top) {
-                Rectangle()
-                    .fill(Color.primary.opacity(contrast == .increased ? 0.32 : 0.12))
-                    .frame(height: 1)
-                    .offset(y: (geometry.size.height - 34) / 2)
-                    .allowsHitTesting(false)
-                HStack(spacing: 0) {
-                    band(String(localized: "Bass"), value: editable ? gains.bass : 0, width: columns, editable: editable, level: analyzer.isAvailable ? analyzer.levels.bass : nil, peak: analyzer.levels.bassPeak) {
-                        if editable { setGains(bass: $0) } else { applySuggestedGains(bass: $0, mid: 0, treble: 0) }
-                    }
-                    band(String(localized: "Mid"), value: editable ? gains.mid : 0, width: columns, editable: editable, level: analyzer.isAvailable ? analyzer.levels.mid : nil, peak: analyzer.levels.midPeak) {
-                        if editable { setGains(mid: $0) } else { applySuggestedGains(bass: 0, mid: $0, treble: 0) }
-                    }
-                    band(String(localized: "Treble"), value: editable ? gains.treble : 0, width: columns, editable: editable, level: analyzer.isAvailable ? analyzer.levels.treble : nil, peak: analyzer.levels.treblePeak) {
-                        if editable { setGains(treble: $0) } else { applySuggestedGains(bass: 0, mid: 0, treble: $0) }
-                    }
-                }
-            }
-        }
-    }
-
-    private func band(_ title: String, value: Int, width: CGFloat, editable: Bool, level: Float?, peak: Float, set: @escaping (Int) -> Void) -> some View {
-        VStack(spacing: 2) {
-            VerticalEQSlider(value: Binding(get: { value }, set: set), range: -6...6, label: title, isFactoryMode: !editable, level: level, peak: peak)
-                .frame(width: 44)
-                .frame(maxHeight: .infinity)
-            if editable {
-                Text("\(value > 0 ? "+" : "")\(value) dB")
-                    .font(.caption2.monospacedDigit())
-            } else {
-                Text("—").font(.caption2)
-                    .help(String(localized: "Factory sound mode; gain unavailable"))
-            }
-            Text(title)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-        }
-        .frame(width: width)
+        EQEditorView(
+            analyzer: analyzer,
+            gains: gains,
+            editable: editable,
+            setBass: { editable ? setGains(bass: $0) : applySuggestedGains(bass: $0, mid: 0, treble: 0) },
+            setMid: { editable ? setGains(mid: $0) : applySuggestedGains(bass: 0, mid: $0, treble: 0) },
+            setTreble: { editable ? setGains(treble: $0) : applySuggestedGains(bass: 0, mid: 0, treble: $0) }
+        )
     }
 
     private func setGains(bass: Int? = nil, mid: Int? = nil, treble: Int? = nil) {
@@ -173,6 +140,58 @@ struct BarAudioEQView: View {
         appData.nothing.setEQPreset(.custom)
         deviceState.eqPreset = .custom
         setGains(bass: bass, mid: mid, treble: treble)
+    }
+}
+
+/// Observes live levels on its own so their ~30 Hz updates don't re-render the header and preset menu.
+private struct EQEditorView: View {
+    @Environment(\.colorSchemeContrast) private var contrast
+    let analyzer: SystemAudioAnalyzer
+    let gains: EQPresetCustom
+    let editable: Bool
+    let setBass: (Int) -> Void
+    let setMid: (Int) -> Void
+    let setTreble: (Int) -> Void
+
+    var body: some View {
+        WithPerceptionTracking {
+            let levels = analyzer.isAvailable ? analyzer.levels : nil
+            let peaks = analyzer.levels
+            GeometryReader { geometry in
+                let columns = geometry.size.width / 3
+                ZStack(alignment: .top) {
+                    Rectangle()
+                        .fill(Color.primary.opacity(contrast == .increased ? 0.32 : 0.12))
+                        .frame(height: 1)
+                        .offset(y: (geometry.size.height - 34) / 2)
+                        .allowsHitTesting(false)
+                    HStack(spacing: 0) {
+                        band(String(localized: "Bass"), value: editable ? gains.bass : 0, width: columns, level: levels?.bass, peak: peaks.bassPeak, set: setBass)
+                        band(String(localized: "Mid"), value: editable ? gains.mid : 0, width: columns, level: levels?.mid, peak: peaks.midPeak, set: setMid)
+                        band(String(localized: "Treble"), value: editable ? gains.treble : 0, width: columns, level: levels?.treble, peak: peaks.treblePeak, set: setTreble)
+                    }
+                }
+            }
+        }
+    }
+
+    private func band(_ title: String, value: Int, width: CGFloat, level: Float?, peak: Float, set: @escaping (Int) -> Void) -> some View {
+        VStack(spacing: 2) {
+            VerticalEQSlider(value: Binding(get: { value }, set: set), range: -6...6, label: title, isFactoryMode: !editable, level: level, peak: peak)
+                .frame(width: 44)
+                .frame(maxHeight: .infinity)
+            if editable {
+                Text("\(value > 0 ? "+" : "")\(value) dB")
+                    .font(.caption2.monospacedDigit())
+            } else {
+                Text("—").font(.caption2)
+                    .help(String(localized: "Factory sound mode; gain unavailable"))
+            }
+            Text(title)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        }
+        .frame(width: width)
     }
 }
 
