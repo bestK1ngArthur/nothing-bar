@@ -109,9 +109,9 @@ struct BarAudioEQView: View {
             analyzer: analyzer,
             gains: gains,
             editable: editable,
-            setBass: { editable ? setGains(bass: $0) : switchToCustom(bass: $0) },
-            setMid: { editable ? setGains(mid: $0) : switchToCustom(mid: $0) },
-            setTreble: { editable ? setGains(treble: $0) : switchToCustom(treble: $0) }
+            setBass: { switchToCustom(bass: $0) },
+            setMid: { switchToCustom(mid: $0) },
+            setTreble: { switchToCustom(treble: $0) }
         )
     }
 
@@ -177,10 +177,14 @@ struct BarAudioEQView: View {
         Toggle(isOn: Binding(get: { isSelected }, set: { _ in action() })) { label }
     }
 
-    /// Switches to the custom preset, keeping the saved gains for bands that aren't passed.
+    /// Sets gains on the custom preset, switching to it first if needed and keeping
+    /// the saved gains for bands that aren't passed.
     private func switchToCustom(bass: Int? = nil, mid: Int? = nil, treble: Int? = nil) {
-        appData.nothing.setEQPreset(.custom)
-        deviceState.eqPreset = .custom
+        // Checked at call time: a slider drag fires several changes before the view re-renders.
+        if deviceState.eqPreset != .custom {
+            appData.nothing.setEQPreset(.custom)
+            deviceState.eqPreset = .custom
+        }
         setGains(bass: bass, mid: mid, treble: treble)
     }
 }
