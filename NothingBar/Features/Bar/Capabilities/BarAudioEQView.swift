@@ -117,61 +117,49 @@ struct BarAudioEQView: View {
     }
 
     private func presetMenu(current: EQPreset, gains: EQPresetCustom) -> some View {
-        Menu {
+        let profile = current == .custom ? EQProfile.matching(gains) : nil
+        return Menu {
             Section(String(localized: "Nothing sound modes")) {
                 ForEach(supportedEqPresets.filter { $0 != .custom && $0 != .advanced }, id: \.self) { preset in
-                    presetButton(preset)
+                    presetItem(preset, isSelected: current == preset)
                 }
             }
             if supportedEqPresets.contains(.custom) {
-                // Editorial starting points: research does not prescribe universal genre gains.
                 Section(String(localized: "NothingBar profiles")) {
-                    presetButton(.custom)
-                    Button(String(localized: "Warm")) {
-                        switchToCustom(bass: 2, mid: 0, treble: -1)
-                    }
-                    Button(String(localized: "Detail")) {
-                        switchToCustom(bass: -1, mid: 1, treble: 2)
-                    }
-                    Button(String(localized: "Podcast")) {
-                        switchToCustom(bass: -2, mid: 2, treble: 0)
+                    presetItem(.custom, isSelected: current == .custom && profile == nil)
+                    ForEach(EQProfile.general) { item in
+                        profileItem(item, isSelected: item == profile)
                     }
                     Menu(String(localized: "Music styles")) {
-                        Button(String(localized: "Pop")) { switchToCustom(bass: 1, mid: 0, treble: 1) }
-                        Button(String(localized: "Rock")) { switchToCustom(bass: 1, mid: 1, treble: 0) }
-                        Button(String(localized: "Hip-hop")) { switchToCustom(bass: 2, mid: -1, treble: 0) }
-                        Button(String(localized: "Electronic")) { switchToCustom(bass: 2, mid: -1, treble: 1) }
+                        ForEach(EQProfile.musicStyles) { item in
+                            profileItem(item, isSelected: item == profile)
+                        }
                     }
                 }
             }
-        } label: { Text(selectedPresetName(current: current, gains: gains)).font(.footnote) }
+        } label: { Text(profile?.name ?? current.localizedDisplayName).font(.footnote) }
             .menuStyle(.borderlessButton)
     }
 
-    private func presetButton(_ preset: EQPreset) -> some View {
-        Button {
+    private func presetItem(_ preset: EQPreset, isSelected: Bool) -> some View {
+        menuItem(preset.menuDisplayName, isSelected: isSelected) {
             appData.nothing.setEQPreset(preset)
             deviceState.eqPreset = preset
-        } label: {
-            Text(preset.menuDisplayName)
         }
         .help(preset == .custom
                 ? String(localized: "Adjust three fixed bands directly in NothingBar.")
                 : preset.localizedDisplayName)
     }
 
-    private func selectedPresetName(current: EQPreset, gains: EQPresetCustom) -> String {
-        guard current == .custom else { return current.localizedDisplayName }
-        switch (gains.bass, gains.mid, gains.treble) {
-        case (2, 0, -1): return String(localized: "Warm")
-        case (-1, 1, 2): return String(localized: "Detail")
-        case (-2, 2, 0): return String(localized: "Podcast")
-        case (1, 0, 1): return String(localized: "Pop")
-        case (1, 1, 0): return String(localized: "Rock")
-        case (2, -1, 0): return String(localized: "Hip-hop")
-        case (2, -1, 1): return String(localized: "Electronic")
-        default: return current.localizedDisplayName
+    private func profileItem(_ profile: EQProfile, isSelected: Bool) -> some View {
+        menuItem(profile.name, isSelected: isSelected) {
+            switchToCustom(bass: profile.gains.bass, mid: profile.gains.mid, treble: profile.gains.treble)
         }
+    }
+
+    /// A toggle renders the native checkmark next to the selected menu item.
+    private func menuItem(_ title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
+        Toggle(title, isOn: Binding(get: { isSelected }, set: { _ in action() }))
     }
 
     /// Switches to the custom preset, keeping the saved gains for bands that aren't passed.
@@ -471,6 +459,41 @@ private final class SpectrumMarkView: NSView {
         NSColor.controlAccentColor.setFill()
         NSBezierPath(roundedRect: NSRect(x: center - 1.5, y: 2, width: 3, height: max(1, height * displayedLevel)), xRadius: 1.5, yRadius: 1.5).fill()
         NSRect(x: center - 3, y: 2 + height * displayedPeak, width: 6, height: 1.5).fill()
+    }
+}
+
+/// Editorial starting points for the custom EQ: research does not prescribe universal genre gains.
+private struct EQProfile: Identifiable, Equatable {
+    let id: String
+    let name: String
+    let gains: EQPresetCustom
+
+    private init(_ id: String, _ name: String, bass: Int, mid: Int, treble: Int) {
+        self.id = id
+        self.name = name
+        self.gains = EQPresetCustom(bass: bass, mid: mid, treble: treble)
+    }
+
+    // Computed so names follow an in-app language change.
+    static var general: [EQProfile] {
+        [
+            EQProfile("warm", String(localized: "Warm"), bass: 2, mid: 0, treble: -1),
+            EQProfile("detail", String(localized: "Detail"), bass: -1, mid: 1, treble: 2),
+            EQProfile("podcast", String(localized: "Podcast"), bass: -2, mid: 2, treble: 0)
+        ]
+    }
+
+    static var musicStyles: [EQProfile] {
+        [
+            EQProfile("pop", String(localized: "Pop"), bass: 1, mid: 0, treble: 1),
+            EQProfile("rock", String(localized: "Rock"), bass: 1, mid: 1, treble: 0),
+            EQProfile("hipHop", String(localized: "Hip-hop"), bass: 2, mid: -1, treble: 0),
+            EQProfile("electronic", String(localized: "Electronic"), bass: 2, mid: -1, treble: 1)
+        ]
+    }
+
+    static func matching(_ gains: EQPresetCustom) -> EQProfile? {
+        (general + musicStyles).first { $0.gains == gains }
     }
 }
 
