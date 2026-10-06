@@ -144,8 +144,9 @@ struct BarAudioEQView: View {
                     }
                 }
             }
-        } label: { Text(profile?.name ?? current.localizedDisplayName).font(.footnote) }
+        } label: { BarMenuLabel(title: profile?.name ?? current.localizedDisplayName) }
             .menuStyle(.borderlessButton)
+            .menuIndicator(.hidden)
     }
 
     private func presetItem(_ preset: EQPreset, isSelected: Bool) -> some View {
