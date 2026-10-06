@@ -47,7 +47,9 @@ struct BarAudioEQView: View {
                         }
                         .buttonStyle(.plain)
                         .help(spectrumButtonLabel(enabled: liveSpectrumEnabled))
-                        .accessibilityLabel(spectrumButtonLabel(enabled: liveSpectrumEnabled))
+                        .accessibilityLabel(String(localized: "Live levels"))
+                        .accessibilityValue(liveSpectrumEnabled ? String(localized: "On") : String(localized: "Off"))
+                        .accessibilityHint(spectrumButtonLabel(enabled: liveSpectrumEnabled))
                         // Hidden rather than removed: the icon is taller than the text, so removing it changes the row height.
                         .opacity(isExpanded ? 1 : 0)
                         .allowsHitTesting(isExpanded)
