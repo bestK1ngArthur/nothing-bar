@@ -25,6 +25,9 @@ struct BarNoiseCancellationView: View {
         WithPerceptionTracking {
             let currentMode = deviceState.noiseCancellationMode ?? .off
             let isDisabled = deviceState.noiseCancellationMode == nil
+            let model = deviceState.model
+            let modes = model.map(NoiseCancellationMode.allSupported(by:)) ?? NoiseCancellationMode.allCases
+            let levels = model.map(NoiseCancellationMode.Active.allSupported(by:)) ?? NoiseCancellationMode.Active.allCases
 
             BarSectionView(
                 title: "Noise Cancellation",
@@ -32,13 +35,13 @@ struct BarNoiseCancellationView: View {
             ) {
                 VStack(alignment: .center, spacing: 12) {
                     HStack(alignment: .top, spacing: 8) {
-                        ForEach(NoiseCancellationMode.allCases, id: \.self) { mode in
+                        ForEach(modes, id: \.self) { mode in
                             noiseCancellationItem(mode, currentMode: currentMode)
                         }
                     }
 
-                    if case .active(let currentLevel) = currentMode {
-                        activeLevelsStack(currentLevel: currentLevel)
+                    if case .active(let currentLevel) = currentMode, levels.count > 1 {
+                        activeLevelsStack(levels: levels, currentLevel: currentLevel)
                     }
                 }
                 .disabled(isDisabled)
@@ -64,10 +67,10 @@ struct BarNoiseCancellationView: View {
         )
     }
 
-    private func activeLevelsStack(currentLevel: NoiseCancellationMode.Active) -> some View {
+    private func activeLevelsStack(levels: [NoiseCancellationMode.Active], currentLevel: NoiseCancellationMode.Active) -> some View {
         VStack(alignment: .center, spacing: 6) {
             HStack(spacing: 12) {
-                ForEach(NoiseCancellationMode.Active.allCases, id: \.self) { level in
+                ForEach(levels, id: \.self) { level in
                     activeLevelView(level, isSelected: currentLevel == level)
                 }
             }
@@ -87,7 +90,7 @@ struct BarNoiseCancellationView: View {
 
                 Text(level.localizedDisplayName)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.primary.opacity(0.75))
             }
         }
         .buttonStyle(.plain)

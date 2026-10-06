@@ -17,6 +17,8 @@ class AppData {
         static let showBatteryNotifications = "showBatteryNotifications"
         static let notificationStyle = "notificationStyle"
         static let hideMenuBarWhenDisconnected = "hideMenuBarWhenDisconnected"
+        static let liveSpectrumEnabled = "liveSpectrumEnabled"
+        static let isEqualizerExpanded = "isEqualizerExpanded"
     }
 
     @PerceptionIgnored
@@ -34,6 +36,36 @@ class AppData {
             UserDefaults.standard.set(hideMenuBarWhenDisconnected, forKey: Keys.hideMenuBarWhenDisconnected)
             onHideMenuPreferenceChanged?(hideMenuBarWhenDisconnected)
         }
+    }
+
+    var isEqualizerExpanded: Bool = true {
+        didSet {
+            UserDefaults.standard.set(isEqualizerExpanded, forKey: Keys.isEqualizerExpanded)
+        }
+    }
+
+    @PerceptionIgnored
+    let audioAnalyzer = SystemAudioAnalyzer()
+
+    var liveSpectrumEnabled: Bool = false {
+        didSet {
+            UserDefaults.standard.set(liveSpectrumEnabled, forKey: Keys.liveSpectrumEnabled)
+            updateAudioAnalyzer()
+        }
+    }
+
+    /// Whether the menu bar panel is on screen. The panel is only ordered out when closed,
+    /// so SwiftUI `onDisappear` can't be relied on to stop audio capture.
+    @PerceptionIgnored
+    var isBarVisible: Bool = false {
+        didSet { updateAudioAnalyzer() }
+    }
+
+    /// Number of views showing live levels. A count rather than a flag, because SwiftUI may
+    /// call a new view's `onAppear` before the replaced view's `onDisappear`.
+    @PerceptionIgnored
+    private var visibleSpectrumViews = 0 {
+        didSet { updateAudioAnalyzer() }
     }
 
     @PerceptionIgnored
@@ -61,6 +93,8 @@ class AppData {
             rawValue: defaults.string(forKey: Keys.notificationStyle) ?? ""
         ) ?? .defaultValue
         self.hideMenuBarWhenDisconnected = defaults.object(forKey: Keys.hideMenuBarWhenDisconnected) as? Bool ?? false
+        self.liveSpectrumEnabled = defaults.bool(forKey: Keys.liveSpectrumEnabled)
+        self.isEqualizerExpanded = defaults.object(forKey: Keys.isEqualizerExpanded) as? Bool ?? true
         self.nothing = Device(
             .init(
                 onDiscover: { device in
@@ -174,6 +208,22 @@ class AppData {
     @MainActor
     func openPendingDeviceSetupIfNeeded() {
         deviceSetupState.openPendingIfNeeded()
+    }
+
+    func spectrumViewDidAppear() {
+        visibleSpectrumViews += 1
+    }
+
+    func spectrumViewDidDisappear() {
+        visibleSpectrumViews = max(0, visibleSpectrumViews - 1)
+    }
+
+    private func updateAudioAnalyzer() {
+        if liveSpectrumEnabled && isBarVisible && visibleSpectrumViews > 0 {
+            audioAnalyzer.start()
+        } else {
+            audioAnalyzer.stop()
+        }
     }
 
     private func handleError(_ error: Error) {

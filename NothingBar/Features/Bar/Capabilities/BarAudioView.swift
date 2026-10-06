@@ -106,11 +106,10 @@ struct BarAudioView: View {
                 }
             }
         } label: {
-            Text(value)
-                .font(.footnote)
-                .foregroundColor(.secondary)
+            BarMenuLabel(title: value)
         }
         .menuStyle(BorderlessButtonMenuStyle())
+        .menuIndicator(.hidden)
     }
 
     private func isCompatibleWithSpatialAudio(model: DeviceModel) -> Bool {

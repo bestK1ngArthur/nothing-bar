@@ -1,3 +1,10 @@
+//
+//  BarAudioEQView.swift
+//  NothingBar
+//
+//  Created by Artem Belkov on 24.01.2026.
+//
+
 import AppKit
 import Perception
 import QuartzCore
@@ -6,26 +13,31 @@ import SwiftUI
 
 struct BarAudioEQView: View {
     @Environment(AppData.self) private var appData
-    @Environment(\.colorSchemeContrast) private var contrast
-    @State private var analyzer = SystemAudioAnalyzer()
-    @AppStorage("liveSpectrumEnabled") private var liveSpectrumEnabled = false
     @State private var showingSpectrumDisclosure = false
     let supportedEqPresets: [EQPreset]
 
     private var deviceState: DeviceState { appData.deviceState }
+    private var analyzer: SystemAudioAnalyzer { appData.audioAnalyzer }
 
     var body: some View {
         WithPerceptionTracking {
-            let preset = deviceState.eqPreset ?? .balanced
+            let preset = deviceState.eqPreset ?? supportedEqPresets.first ?? .balanced
             let gains = deviceState.eqPresetCustom ?? EQPresetCustom(bass: 0, mid: 0, treble: 0)
+            let liveSpectrumEnabled = appData.liveSpectrumEnabled
+            let supportsCustomEQ = supportedEqPresets.contains(.custom)
+            let isExpanded = supportsCustomEQ && appData.isEqualizerExpanded
             VStack(alignment: .leading, spacing: 12) {
-                HStack {
-                    Text("Equalizer").font(.subheadline)
+                HStack(spacing: 4) {
+                    if supportsCustomEQ {
+                        expandButton(isExpanded: isExpanded)
+                    } else {
+                        Text("Equalizer").font(.subheadline)
+                    }
                     Spacer()
-                    if #available(macOS 14.2, *) {
+                    if #available(macOS 14.2, *), supportsCustomEQ {
                         Button {
                             if liveSpectrumEnabled {
-                                liveSpectrumEnabled = false
+                                appData.liveSpectrumEnabled = false
                             } else {
                                 showingSpectrumDisclosure = true
                             }
@@ -34,76 +46,75 @@ struct BarAudioEQView: View {
                                 .foregroundStyle(liveSpectrumEnabled && !analyzer.captureFailed ? Color.accentColor : .secondary)
                         }
                         .buttonStyle(.plain)
-                        .help(spectrumButtonLabel)
-                        .accessibilityLabel(spectrumButtonLabel)
+                        .help(spectrumButtonLabel(enabled: liveSpectrumEnabled))
+                        .accessibilityLabel(String(localized: "Live levels"))
+                        .accessibilityValue(liveSpectrumEnabled ? String(localized: "On") : String(localized: "Off"))
+                        .accessibilityHint(spectrumButtonLabel(enabled: liveSpectrumEnabled))
+                        // Hidden rather than removed: the icon is taller than the text, so removing it changes the row height.
+                        .opacity(isExpanded ? 1 : 0)
+                        .allowsHitTesting(isExpanded)
+                        .accessibilityHidden(!isExpanded)
                     }
                     presetMenu(current: preset, gains: gains)
                 }
-                editor(gains: gains, editable: preset == .custom)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 184)
+                if isExpanded {
+                    editor(gains: gains, editable: preset == .custom)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 184)
+                        .onAppear { appData.spectrumViewDidAppear() }
+                        .onDisappear { appData.spectrumViewDidDisappear() }
+                }
             }
             .padding(.horizontal, 4)
             .alert(String(localized: "See your sound live"), isPresented: $showingSpectrumDisclosure) {
                 Button(String(localized: "Not now"), role: .cancel) {}
-                Button(String(localized: "Show live levels")) { liveSpectrumEnabled = true }
+                Button(String(localized: "Show live levels")) { appData.liveSpectrumEnabled = true }
             } message: {
                 Text("Animate the EQ with your Mac's sound. macOS will ask to capture audio and show an indicator. NothingBar processes it only in memory; nothing is recorded or shared. The EQ works without it.")
             }
-            .onAppear { if liveSpectrumEnabled { analyzer.start() } }
-            .onChange(of: liveSpectrumEnabled) { enabled in
-                if enabled { analyzer.start() } else { analyzer.stop() }
-            }
-            .onDisappear { analyzer.stop() }
         }
     }
 
-    private var spectrumButtonLabel: String {
+    private func expandButton(isExpanded: Bool) -> some View {
+        Button {
+            appData.isEqualizerExpanded.toggle()
+        } label: {
+            HStack(spacing: 4) {
+                Text("Equalizer").font(.subheadline)
+                // Not animated: an implicit animation also moves the chevron while the panel resizes.
+                Image(systemName: "chevron.right")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                    .frame(width: 10, height: 10)
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .help(isExpanded ? String(localized: "Hide equalizer") : String(localized: "Show equalizer"))
+        .accessibilityLabel(String(localized: "Equalizer"))
+        .accessibilityValue(isExpanded ? String(localized: "Expanded") : String(localized: "Collapsed"))
+    }
+
+    private func spectrumButtonLabel(enabled: Bool) -> String {
         if analyzer.captureFailed { return String(localized: "Live audio unavailable. The EQ still works.") }
-        return liveSpectrumEnabled ? String(localized: "Hide live levels") : String(localized: "Show live levels")
+        guard enabled else { return String(localized: "Show live levels") }
+        // A denied capture permission delivers silence rather than an error, so it looks the same as no playback.
+        if !analyzer.isAvailable {
+            return String(localized: "Hide live levels. If no levels appear during playback, allow NothingBar to record system audio in System Settings › Privacy & Security.")
+        }
+        return String(localized: "Hide live levels")
     }
 
     private func editor(gains: EQPresetCustom, editable: Bool) -> some View {
-        GeometryReader { geometry in
-            let columns = geometry.size.width / 3
-            ZStack(alignment: .top) {
-                Rectangle()
-                    .fill(Color.primary.opacity(contrast == .increased ? 0.32 : 0.12))
-                    .frame(height: 1)
-                    .offset(y: (geometry.size.height - 34) / 2)
-                    .allowsHitTesting(false)
-                HStack(spacing: 0) {
-                    band(String(localized: "Bass"), value: editable ? gains.bass : 0, width: columns, editable: editable, level: analyzer.isAvailable ? analyzer.levels.bass : nil, peak: analyzer.levels.bassPeak) {
-                        if editable { setGains(bass: $0) } else { applySuggestedGains(bass: $0, mid: 0, treble: 0) }
-                    }
-                    band(String(localized: "Mid"), value: editable ? gains.mid : 0, width: columns, editable: editable, level: analyzer.isAvailable ? analyzer.levels.mid : nil, peak: analyzer.levels.midPeak) {
-                        if editable { setGains(mid: $0) } else { applySuggestedGains(bass: 0, mid: $0, treble: 0) }
-                    }
-                    band(String(localized: "Treble"), value: editable ? gains.treble : 0, width: columns, editable: editable, level: analyzer.isAvailable ? analyzer.levels.treble : nil, peak: analyzer.levels.treblePeak) {
-                        if editable { setGains(treble: $0) } else { applySuggestedGains(bass: 0, mid: 0, treble: $0) }
-                    }
-                }
-            }
-        }
-    }
-
-    private func band(_ title: String, value: Int, width: CGFloat, editable: Bool, level: Float?, peak: Float, set: @escaping (Int) -> Void) -> some View {
-        VStack(spacing: 2) {
-            VerticalEQSlider(value: Binding(get: { value }, set: set), range: -6...6, label: title, isFactoryMode: !editable, level: level, peak: peak)
-                .frame(width: 44)
-                .frame(maxHeight: .infinity)
-            if editable {
-                Text("\(value > 0 ? "+" : "")\(value) dB")
-                    .font(.caption2.monospacedDigit())
-            } else {
-                Text("—").font(.caption2)
-                    .help(String(localized: "Factory sound mode; gain unavailable"))
-            }
-            Text(title)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-        }
-        .frame(width: width)
+        EQEditorView(
+            analyzer: analyzer,
+            gains: gains,
+            editable: editable,
+            setBass: { switchToCustom(bass: $0) },
+            setMid: { switchToCustom(mid: $0) },
+            setTreble: { switchToCustom(treble: $0) }
+        )
     }
 
     private func setGains(bass: Int? = nil, mid: Int? = nil, treble: Int? = nil) {
@@ -115,68 +126,128 @@ struct BarAudioEQView: View {
     }
 
     private func presetMenu(current: EQPreset, gains: EQPresetCustom) -> some View {
-        Menu {
-            Section(String(localized: "Nothing sound modes")) {
-                ForEach(supportedEqPresets.filter { $0 != .custom && $0 != .advanced }, id: \.self) { preset in
-                    presetButton(preset)
+        let profile = current == .custom ? EQProfile.matching(gains) : nil
+        return Menu {
+            if supportedEqPresets.contains(.custom) {
+                presetItem(.custom, isSelected: current == .custom)
+            }
+            Section(String(localized: "Nothing Presets")) {
+                ForEach(supportedEqPresets.filter { $0 != .custom }, id: \.self) { preset in
+                    presetItem(preset, isSelected: current == preset)
                 }
             }
             if supportedEqPresets.contains(.custom) {
-                // Editorial starting points: research does not prescribe universal genre gains.
-                Section(String(localized: "NothingBar profiles")) {
-                    presetButton(.custom)
-                    Button(String(localized: "Warm")) {
-                        applySuggestedGains(bass: 2, mid: 0, treble: -1)
+                Section(String(localized: "App Presets")) {
+                    ForEach(EQProfile.general) { item in
+                        profileItem(item, isSelected: item == profile)
                     }
-                    Button(String(localized: "Detail")) {
-                        applySuggestedGains(bass: -1, mid: 1, treble: 2)
-                    }
-                    Button(String(localized: "Podcast")) {
-                        applySuggestedGains(bass: -2, mid: 2, treble: 0)
-                    }
-                    Menu(String(localized: "Music styles")) {
-                        Button(String(localized: "Pop")) { applySuggestedGains(bass: 1, mid: 0, treble: 1) }
-                        Button(String(localized: "Rock")) { applySuggestedGains(bass: 1, mid: 1, treble: 0) }
-                        Button(String(localized: "Hip-hop")) { applySuggestedGains(bass: 2, mid: -1, treble: 0) }
-                        Button(String(localized: "Electronic")) { applySuggestedGains(bass: 2, mid: -1, treble: 1) }
+                    // Models with music style presets of their own would list Pop or Rock twice.
+                    if !supportedEqPresets.contains(where: \.isMusicStyle) {
+                        Menu(String(localized: "Music Styles")) {
+                            ForEach(EQProfile.musicStyles) { item in
+                                profileItem(item, isSelected: item == profile)
+                            }
+                        }
                     }
                 }
             }
-        } label: { Text(selectedPresetName(current: current, gains: gains)).font(.footnote) }
+        } label: { BarMenuLabel(title: menuTitle(current: current, profile: profile)) }
             .menuStyle(.borderlessButton)
+            .menuIndicator(.hidden)
     }
 
-    private func presetButton(_ preset: EQPreset) -> some View {
-        Button {
+    /// Custom gains that match an App Preset are still custom, so the preset is named after it.
+    private func menuTitle(current: EQPreset, profile: EQProfile?) -> String {
+        guard let profile else { return current.localizedDisplayName }
+        return "\(current.localizedDisplayName) · \(profile.name)"
+    }
+
+    private func presetItem(_ preset: EQPreset, isSelected: Bool) -> some View {
+        menuItem(preset.menuDisplayName, isSelected: isSelected) {
             appData.nothing.setEQPreset(preset)
             deviceState.eqPreset = preset
-        } label: {
-            Text(preset.menuDisplayName)
         }
-        .help(preset == .custom
-                ? String(localized: "Adjust three fixed bands directly in NothingBar.")
-                : preset.localizedDisplayName)
+        .help(preset.menuHelp)
     }
 
-    private func selectedPresetName(current: EQPreset, gains: EQPresetCustom) -> String {
-        guard current == .custom else { return current.localizedDisplayName }
-        switch (gains.bass, gains.mid, gains.treble) {
-        case (2, 0, -1): return String(localized: "Warm")
-        case (-1, 1, 2): return String(localized: "Detail")
-        case (-2, 2, 0): return String(localized: "Podcast")
-        case (1, 0, 1): return String(localized: "Pop")
-        case (1, 1, 0): return String(localized: "Rock")
-        case (2, -1, 0): return String(localized: "Hip-hop")
-        case (2, -1, 1): return String(localized: "Electronic")
-        default: return current.localizedDisplayName
+    private func profileItem(_ profile: EQProfile, isSelected: Bool) -> some View {
+        menuItem(Text(profile.name), isSelected: isSelected) {
+            switchToCustom(bass: profile.gains.bass, mid: profile.gains.mid, treble: profile.gains.treble)
         }
     }
 
-    private func applySuggestedGains(bass: Int, mid: Int, treble: Int) {
-        appData.nothing.setEQPreset(.custom)
-        deviceState.eqPreset = .custom
+    /// A toggle renders the native checkmark next to the selected menu item.
+    private func menuItem(_ label: Text, isSelected: Bool, action: @escaping () -> Void) -> some View {
+        Toggle(isOn: Binding(get: { isSelected }, set: { _ in action() })) { label }
+    }
+
+    /// Sets gains on the custom preset, switching to it first if needed and keeping
+    /// the saved gains for bands that aren't passed.
+    private func switchToCustom(bass: Int? = nil, mid: Int? = nil, treble: Int? = nil) {
+        // Checked at call time: a slider drag fires several changes before the view re-renders.
+        if deviceState.eqPreset != .custom {
+            appData.nothing.setEQPreset(.custom)
+            deviceState.eqPreset = .custom
+        }
         setGains(bass: bass, mid: mid, treble: treble)
     }
+}
+
+/// Observes live levels on its own so their ~30 Hz updates don't re-render the header and preset menu.
+private struct EQEditorView: View {
+    @Environment(\.colorSchemeContrast) private var contrast
+    let analyzer: SystemAudioAnalyzer
+    let gains: EQPresetCustom
+    let editable: Bool
+    let setBass: (Int) -> Void
+    let setMid: (Int) -> Void
+    let setTreble: (Int) -> Void
+
+    var body: some View {
+        WithPerceptionTracking {
+            let levels = analyzer.isAvailable ? analyzer.levels : nil
+            let peaks = analyzer.levels
+            GeometryReader { geometry in
+                let columns = geometry.size.width / 3
+                ZStack(alignment: .top) {
+                    Rectangle()
+                        .fill(Color.primary.opacity(contrast == .increased ? 0.32 : 0.12))
+                        .frame(height: 1)
+                        .offset(y: (geometry.size.height - 34) / 2)
+                        .allowsHitTesting(false)
+                    HStack(spacing: 0) {
+                        band(String(localized: "Bass"), value: editable ? gains.bass : 0, width: columns, level: levels?.bass, peak: peaks.bassPeak, set: setBass)
+                        band(String(localized: "Mid"), value: editable ? gains.mid : 0, width: columns, level: levels?.mid, peak: peaks.midPeak, set: setMid)
+                        band(String(localized: "Treble"), value: editable ? gains.treble : 0, width: columns, level: levels?.treble, peak: peaks.treblePeak, set: setTreble)
+                    }
+                }
+            }
+        }
+    }
+
+    private func band(_ title: String, value: Int, width: CGFloat, level: Float?, peak: Float, set: @escaping (Int) -> Void) -> some View {
+        VStack(spacing: 2) {
+            VerticalEQSlider(value: Binding(get: { value }, set: set), range: -6...6, label: title, isFactoryMode: !editable, level: level, peak: peak)
+                .frame(width: 44)
+                .frame(maxHeight: .infinity)
+            if editable {
+                Text(formattedGain(value))
+                    .font(.caption2.monospacedDigit())
+            } else {
+                Text("—").font(.caption2)
+                    .help(String(localized: "Factory sound mode; gain unavailable"))
+            }
+            Text(title)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        }
+        .frame(width: width)
+    }
+}
+
+private func formattedGain(_ value: Int) -> String {
+    let number = value > 0 ? "+\(value)" : "\(value)"
+    return String(localized: "\(number) dB", comment: "Equalizer band gain, e.g. '+2 dB'")
 }
 
 private struct VerticalEQSlider: NSViewRepresentable {
@@ -213,6 +284,8 @@ private struct VerticalEQSlider: NSViewRepresentable {
 
     func updateNSView(_ slider: NSSlider, context: Context) {
         context.coordinator.value = $value
+        // NSViewRepresentable doesn't forward `.disabled` to the control.
+        slider.isEnabled = context.environment.isEnabled
         slider.minValue = Double(range.lowerBound)
         slider.maxValue = Double(range.upperBound)
         if let slider = slider as? GlassEQSlider {
@@ -222,9 +295,9 @@ private struct VerticalEQSlider: NSViewRepresentable {
         } else {
             slider.doubleValue = Double(value)
         }
-        slider.setAccessibilityValue(isFactoryMode ? String(localized: "Factory sound mode; gain unavailable") : "\(value) dB")
+        slider.setAccessibilityValue(isFactoryMode ? String(localized: "Factory sound mode; gain unavailable") : formattedGain(value))
         slider.setAccessibilityHelp(isFactoryMode
-            ? String(localized: "Move to start a custom EQ from 0 dB.")
+            ? String(localized: "Move to switch to your custom EQ.")
             : String(localized: "Use the arrow keys to adjust the equalizer gain."))
     }
 
@@ -247,7 +320,10 @@ private struct VerticalEQSlider: NSViewRepresentable {
 private final class GlassEQSlider: NSSlider {
     var isAdjusting = false
     var isFactoryMode = false {
-        didSet { glassHandle?.alphaValue = isFactoryMode ? 0.55 : 1 }
+        didSet { updateHandleAlpha() }
+    }
+    override var isEnabled: Bool {
+        didSet { updateHandleAlpha() }
     }
     private var glassHandle: NSView?
     private var spectrumMark: NSView?
@@ -267,6 +343,10 @@ private final class GlassEQSlider: NSSlider {
             (cell as? HorizontalKnobSliderCell)?.drawsGlass = true
         }
         positionHandle()
+    }
+
+    private func updateHandleAlpha() {
+        glassHandle?.alphaValue = isFactoryMode || !isEnabled ? 0.55 : 1
     }
 
     func setSpectrum(level: Float?, peak: Float) {
@@ -410,9 +490,61 @@ private final class SpectrumMarkView: NSView {
     }
 }
 
+/// Editorial starting points for the custom EQ: research does not prescribe universal genre gains.
+private struct EQProfile: Identifiable, Equatable {
+    let id: String
+    let name: String
+    let gains: EQPresetCustom
+
+    private init(_ id: String, _ name: String, bass: Int, mid: Int, treble: Int) {
+        self.id = id
+        self.name = name
+        self.gains = EQPresetCustom(bass: bass, mid: mid, treble: treble)
+    }
+
+    // Computed so names follow an in-app language change.
+    static var general: [EQProfile] {
+        [
+            EQProfile("warm", String(localized: "Warm"), bass: 2, mid: 0, treble: -1),
+            EQProfile("detail", String(localized: "Detail"), bass: -1, mid: 1, treble: 2),
+            EQProfile("podcast", String(localized: "Podcast"), bass: -2, mid: 2, treble: 0)
+        ]
+    }
+
+    static var musicStyles: [EQProfile] {
+        [
+            EQProfile("pop", String(localized: "Pop"), bass: 1, mid: 0, treble: 1),
+            EQProfile("rock", String(localized: "Rock"), bass: 1, mid: 1, treble: 0),
+            EQProfile("hipHop", String(localized: "Hip-hop"), bass: 2, mid: -1, treble: 0),
+            EQProfile("electronic", String(localized: "Electronic"), bass: 2, mid: -1, treble: 1)
+        ]
+    }
+
+    static func matching(_ gains: EQPresetCustom) -> EQProfile? {
+        (general + musicStyles).first { $0.gains == gains }
+    }
+}
+
 private extension EQPreset {
-    var menuDisplayName: String {
-        self == .custom ? String(localized: "Custom · three bands") : localizedDisplayName
+    var menuDisplayName: Text {
+        guard self == .custom else { return Text(localizedDisplayName) }
+        // Three sliders stand for the three bands this preset edits.
+        return Text(localizedDisplayName) + Text(" ") + Text(Image(systemName: "slider.vertical.3"))
+    }
+
+    var isMusicStyle: Bool {
+        switch self {
+        case .pop, .rock, .electronic, .classical: true
+        default: false
+        }
+    }
+
+    var menuHelp: String {
+        switch self {
+        case .custom: String(localized: "Adjust three fixed bands directly in NothingBar.")
+        case .advanced: String(localized: "Use the advanced EQ set up in Nothing X.")
+        default: localizedDisplayName
+        }
     }
 
     var localizedDisplayName: String {
@@ -421,6 +553,14 @@ private extension EQPreset {
         case .voice: String(localized: "Voice", comment: "EQ preset name")
         case .moreTreble: String(localized: "More Treble", comment: "EQ preset name")
         case .moreBass: String(localized: "More Bass", comment: "EQ preset name")
+        case .newVoice: String(localized: "New Voice", comment: "EQ preset name")
+        case .newInstrument: String(localized: "New Instrument", comment: "EQ preset name")
+        case .immersionBoost: String(localized: "Immersion Boost", comment: "EQ preset name")
+        case .pop: String(localized: "Pop")
+        case .rock: String(localized: "Rock")
+        case .electronic: String(localized: "Electronic")
+        case .enhanceVocals: String(localized: "Enhance Vocals", comment: "EQ preset name")
+        case .classical: String(localized: "Classical", comment: "EQ preset name")
         case .custom: String(localized: "Custom", comment: "EQ preset name")
         case .advanced: String(localized: "Advanced", comment: "EQ preset name")
         }

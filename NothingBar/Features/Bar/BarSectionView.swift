@@ -23,9 +23,10 @@ struct BarSectionView<Content: View>: View {
 
                     Spacer()
 
+                    // Matches the menu values in the Audio section: `.secondary` renders noticeably dimmer here.
                     Text(value)
                         .font(.subheadline)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.primary.opacity(0.6))
                         .contentTransition(.opacity)
                         .animation(.easeInOut, value: value)
                 }

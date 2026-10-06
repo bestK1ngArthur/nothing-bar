@@ -88,10 +88,12 @@ final class StatusBarController: NSObject {
         }
 
         panel.makeKeyAndOrderFront(nil)
+        appData.isBarVisible = true
     }
 
     func closePopover() {
         panel.orderOut(nil)
+        appData.isBarVisible = false
     }
 
     @objc
