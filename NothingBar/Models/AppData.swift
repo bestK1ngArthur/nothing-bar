@@ -18,6 +18,7 @@ class AppData {
         static let notificationStyle = "notificationStyle"
         static let hideMenuBarWhenDisconnected = "hideMenuBarWhenDisconnected"
         static let liveSpectrumEnabled = "liveSpectrumEnabled"
+        static let isEqualizerExpanded = "isEqualizerExpanded"
     }
 
     @PerceptionIgnored
@@ -34,6 +35,12 @@ class AppData {
         didSet {
             UserDefaults.standard.set(hideMenuBarWhenDisconnected, forKey: Keys.hideMenuBarWhenDisconnected)
             onHideMenuPreferenceChanged?(hideMenuBarWhenDisconnected)
+        }
+    }
+
+    var isEqualizerExpanded: Bool = true {
+        didSet {
+            UserDefaults.standard.set(isEqualizerExpanded, forKey: Keys.isEqualizerExpanded)
         }
     }
 
@@ -86,6 +93,7 @@ class AppData {
         ) ?? .defaultValue
         self.hideMenuBarWhenDisconnected = defaults.object(forKey: Keys.hideMenuBarWhenDisconnected) as? Bool ?? false
         self.liveSpectrumEnabled = defaults.bool(forKey: Keys.liveSpectrumEnabled)
+        self.isEqualizerExpanded = defaults.object(forKey: Keys.isEqualizerExpanded) as? Bool ?? true
         self.nothing = Device(
             .init(
                 onDiscover: { device in

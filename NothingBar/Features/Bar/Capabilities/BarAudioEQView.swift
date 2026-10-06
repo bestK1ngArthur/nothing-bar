@@ -18,9 +18,14 @@ struct BarAudioEQView: View {
             let gains = deviceState.eqPresetCustom ?? EQPresetCustom(bass: 0, mid: 0, treble: 0)
             let liveSpectrumEnabled = appData.liveSpectrumEnabled
             let supportsCustomEQ = supportedEqPresets.contains(.custom)
+            let isExpanded = supportsCustomEQ && appData.isEqualizerExpanded
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    Text("Equalizer").font(.subheadline)
+                    if supportsCustomEQ {
+                        expandButton(isExpanded: isExpanded)
+                    } else {
+                        Text("Equalizer").font(.subheadline)
+                    }
                     Spacer()
                     if #available(macOS 14.2, *), supportsCustomEQ {
                         Button {
@@ -36,10 +41,14 @@ struct BarAudioEQView: View {
                         .buttonStyle(.plain)
                         .help(spectrumButtonLabel(enabled: liveSpectrumEnabled))
                         .accessibilityLabel(spectrumButtonLabel(enabled: liveSpectrumEnabled))
+                        // Hidden rather than removed: the icon is taller than the text, so removing it changes the row height.
+                        .opacity(isExpanded ? 1 : 0)
+                        .allowsHitTesting(isExpanded)
+                        .accessibilityHidden(!isExpanded)
                     }
                     presetMenu(current: preset, gains: gains)
                 }
-                if supportsCustomEQ {
+                if isExpanded {
                     editor(gains: gains, editable: preset == .custom)
                         .frame(maxWidth: .infinity)
                         .frame(height: 184)
@@ -55,6 +64,27 @@ struct BarAudioEQView: View {
                 Text("Animate the EQ with your Mac's sound. macOS will ask to capture audio and show an indicator. NothingBar processes it only in memory; nothing is recorded or shared. The EQ works without it.")
             }
         }
+    }
+
+    private func expandButton(isExpanded: Bool) -> some View {
+        Button {
+            appData.isEqualizerExpanded.toggle()
+        } label: {
+            HStack(spacing: 4) {
+                Text("Equalizer").font(.subheadline)
+                // Not animated: an implicit animation also moves the chevron while the panel resizes.
+                Image(systemName: "chevron.right")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                    .frame(width: 10, height: 10)
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .help(isExpanded ? String(localized: "Hide equalizer") : String(localized: "Show equalizer"))
+        .accessibilityLabel(String(localized: "Equalizer"))
+        .accessibilityValue(isExpanded ? String(localized: "Expanded") : String(localized: "Collapsed"))
     }
 
     private func spectrumButtonLabel(enabled: Bool) -> String {
