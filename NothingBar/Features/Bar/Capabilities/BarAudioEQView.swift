@@ -7,17 +7,17 @@ import SwiftUI
 struct BarAudioEQView: View {
     @Environment(AppData.self) private var appData
     @Environment(\.colorSchemeContrast) private var contrast
-    @State private var analyzer = SystemAudioAnalyzer()
-    @AppStorage("liveSpectrumEnabled") private var liveSpectrumEnabled = false
     @State private var showingSpectrumDisclosure = false
     let supportedEqPresets: [EQPreset]
 
     private var deviceState: DeviceState { appData.deviceState }
+    private var analyzer: SystemAudioAnalyzer { appData.audioAnalyzer }
 
     var body: some View {
         WithPerceptionTracking {
             let preset = deviceState.eqPreset ?? .balanced
             let gains = deviceState.eqPresetCustom ?? EQPresetCustom(bass: 0, mid: 0, treble: 0)
+            let liveSpectrumEnabled = appData.liveSpectrumEnabled
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
                     Text("Equalizer").font(.subheadline)
@@ -25,7 +25,7 @@ struct BarAudioEQView: View {
                     if #available(macOS 14.2, *) {
                         Button {
                             if liveSpectrumEnabled {
-                                liveSpectrumEnabled = false
+                                appData.liveSpectrumEnabled = false
                             } else {
                                 showingSpectrumDisclosure = true
                             }
@@ -34,33 +34,30 @@ struct BarAudioEQView: View {
                                 .foregroundStyle(liveSpectrumEnabled && !analyzer.captureFailed ? Color.accentColor : .secondary)
                         }
                         .buttonStyle(.plain)
-                        .help(spectrumButtonLabel)
-                        .accessibilityLabel(spectrumButtonLabel)
+                        .help(spectrumButtonLabel(enabled: liveSpectrumEnabled))
+                        .accessibilityLabel(spectrumButtonLabel(enabled: liveSpectrumEnabled))
                     }
                     presetMenu(current: preset, gains: gains)
                 }
                 editor(gains: gains, editable: preset == .custom)
                     .frame(maxWidth: .infinity)
                     .frame(height: 184)
+                    .onAppear { appData.isSpectrumVisible = true }
+                    .onDisappear { appData.isSpectrumVisible = false }
             }
             .padding(.horizontal, 4)
             .alert(String(localized: "See your sound live"), isPresented: $showingSpectrumDisclosure) {
                 Button(String(localized: "Not now"), role: .cancel) {}
-                Button(String(localized: "Show live levels")) { liveSpectrumEnabled = true }
+                Button(String(localized: "Show live levels")) { appData.liveSpectrumEnabled = true }
             } message: {
                 Text("Animate the EQ with your Mac's sound. macOS will ask to capture audio and show an indicator. NothingBar processes it only in memory; nothing is recorded or shared. The EQ works without it.")
             }
-            .onAppear { if liveSpectrumEnabled { analyzer.start() } }
-            .onChange(of: liveSpectrumEnabled) { enabled in
-                if enabled { analyzer.start() } else { analyzer.stop() }
-            }
-            .onDisappear { analyzer.stop() }
         }
     }
 
-    private var spectrumButtonLabel: String {
+    private func spectrumButtonLabel(enabled: Bool) -> String {
         if analyzer.captureFailed { return String(localized: "Live audio unavailable. The EQ still works.") }
-        return liveSpectrumEnabled ? String(localized: "Hide live levels") : String(localized: "Show live levels")
+        return enabled ? String(localized: "Hide live levels") : String(localized: "Show live levels")
     }
 
     private func editor(gains: EQPresetCustom, editable: Bool) -> some View {

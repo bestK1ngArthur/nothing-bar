@@ -17,6 +17,7 @@ class AppData {
         static let showBatteryNotifications = "showBatteryNotifications"
         static let notificationStyle = "notificationStyle"
         static let hideMenuBarWhenDisconnected = "hideMenuBarWhenDisconnected"
+        static let liveSpectrumEnabled = "liveSpectrumEnabled"
     }
 
     @PerceptionIgnored
@@ -34,6 +35,29 @@ class AppData {
             UserDefaults.standard.set(hideMenuBarWhenDisconnected, forKey: Keys.hideMenuBarWhenDisconnected)
             onHideMenuPreferenceChanged?(hideMenuBarWhenDisconnected)
         }
+    }
+
+    @PerceptionIgnored
+    let audioAnalyzer = SystemAudioAnalyzer()
+
+    var liveSpectrumEnabled: Bool = false {
+        didSet {
+            UserDefaults.standard.set(liveSpectrumEnabled, forKey: Keys.liveSpectrumEnabled)
+            updateAudioAnalyzer()
+        }
+    }
+
+    /// Whether the menu bar panel is on screen. The panel is only ordered out when closed,
+    /// so SwiftUI `onDisappear` can't be relied on to stop audio capture.
+    @PerceptionIgnored
+    var isBarVisible: Bool = false {
+        didSet { updateAudioAnalyzer() }
+    }
+
+    /// Whether a view showing live levels is currently in the view hierarchy.
+    @PerceptionIgnored
+    var isSpectrumVisible: Bool = false {
+        didSet { updateAudioAnalyzer() }
     }
 
     @PerceptionIgnored
@@ -61,6 +85,7 @@ class AppData {
             rawValue: defaults.string(forKey: Keys.notificationStyle) ?? ""
         ) ?? .defaultValue
         self.hideMenuBarWhenDisconnected = defaults.object(forKey: Keys.hideMenuBarWhenDisconnected) as? Bool ?? false
+        self.liveSpectrumEnabled = defaults.bool(forKey: Keys.liveSpectrumEnabled)
         self.nothing = Device(
             .init(
                 onDiscover: { device in
@@ -174,6 +199,14 @@ class AppData {
     @MainActor
     func openPendingDeviceSetupIfNeeded() {
         deviceSetupState.openPendingIfNeeded()
+    }
+
+    private func updateAudioAnalyzer() {
+        if liveSpectrumEnabled && isBarVisible && isSpectrumVisible {
+            audioAnalyzer.start()
+        } else {
+            audioAnalyzer.stop()
+        }
     }
 
     private func handleError(_ error: Error) {
