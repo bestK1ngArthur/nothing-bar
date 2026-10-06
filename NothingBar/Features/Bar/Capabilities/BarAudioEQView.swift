@@ -17,11 +17,12 @@ struct BarAudioEQView: View {
             let preset = deviceState.eqPreset ?? .balanced
             let gains = deviceState.eqPresetCustom ?? EQPresetCustom(bass: 0, mid: 0, treble: 0)
             let liveSpectrumEnabled = appData.liveSpectrumEnabled
+            let supportsCustomEQ = supportedEqPresets.contains(.custom)
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
                     Text("Equalizer").font(.subheadline)
                     Spacer()
-                    if #available(macOS 14.2, *) {
+                    if #available(macOS 14.2, *), supportsCustomEQ {
                         Button {
                             if liveSpectrumEnabled {
                                 appData.liveSpectrumEnabled = false
@@ -38,11 +39,13 @@ struct BarAudioEQView: View {
                     }
                     presetMenu(current: preset, gains: gains)
                 }
-                editor(gains: gains, editable: preset == .custom)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 184)
-                    .onAppear { appData.isSpectrumVisible = true }
-                    .onDisappear { appData.isSpectrumVisible = false }
+                if supportsCustomEQ {
+                    editor(gains: gains, editable: preset == .custom)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 184)
+                        .onAppear { appData.isSpectrumVisible = true }
+                        .onDisappear { appData.isSpectrumVisible = false }
+                }
             }
             .padding(.horizontal, 4)
             .alert(String(localized: "See your sound live"), isPresented: $showingSpectrumDisclosure) {
