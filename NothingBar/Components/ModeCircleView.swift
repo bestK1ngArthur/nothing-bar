@@ -47,7 +47,7 @@ struct ModeCircleView<Overlay: View>: View {
 
                     Text(name)
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.primary.opacity(0.75))
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
                 }

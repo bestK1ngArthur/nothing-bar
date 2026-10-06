@@ -87,7 +87,7 @@ struct BarNoiseCancellationView: View {
 
                 Text(level.localizedDisplayName)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.primary.opacity(0.75))
             }
         }
         .buttonStyle(.plain)
