@@ -141,8 +141,8 @@ struct BarAudioEQView: View {
                     ForEach(EQProfile.general) { item in
                         profileItem(item, isSelected: item == profile)
                     }
-                    // Models with genre presets of their own would list Pop or Rock twice.
-                    if !supportedEqPresets.contains(.pop) {
+                    // Models with music style presets of their own would list Pop or Rock twice.
+                    if !supportedEqPresets.contains(where: \.isMusicStyle) {
                         Menu(String(localized: "Music Styles")) {
                             ForEach(EQProfile.musicStyles) { item in
                                 profileItem(item, isSelected: item == profile)
@@ -165,16 +165,12 @@ struct BarAudioEQView: View {
     }
 
     private func profileItem(_ profile: EQProfile, isSelected: Bool) -> some View {
-        menuItem(profile.name, isSelected: isSelected) {
+        menuItem(Text(profile.name), isSelected: isSelected) {
             switchToCustom(bass: profile.gains.bass, mid: profile.gains.mid, treble: profile.gains.treble)
         }
     }
 
     /// A toggle renders the native checkmark next to the selected menu item.
-    private func menuItem(_ title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
-        menuItem(Text(title), isSelected: isSelected, action: action)
-    }
-
     private func menuItem(_ label: Text, isSelected: Bool, action: @escaping () -> Void) -> some View {
         Toggle(isOn: Binding(get: { isSelected }, set: { _ in action() })) { label }
     }
@@ -528,6 +524,13 @@ private extension EQPreset {
         guard self == .custom else { return Text(localizedDisplayName) }
         // Three sliders stand for the three bands this preset edits.
         return Text(localizedDisplayName) + Text(" ") + Text(Image(systemName: "slider.vertical.3"))
+    }
+
+    var isMusicStyle: Bool {
+        switch self {
+        case .pop, .rock, .electronic, .classical: true
+        default: false
+        }
     }
 
     var menuHelp: String {
