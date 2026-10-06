@@ -2,6 +2,12 @@ import CoreAudio
 import Foundation
 import Perception
 
+private var defaultOutputAddress = AudioObjectPropertyAddress(
+    mSelector: kAudioHardwarePropertyDefaultOutputDevice,
+    mScope: kAudioObjectPropertyScopeGlobal,
+    mElement: kAudioObjectPropertyElementMain
+)
+
 @Perceptible
 final class SystemAudioAnalyzer {
     var levels = SpectrumLevels()
@@ -13,7 +19,7 @@ final class SystemAudioAnalyzer {
     @PerceptionIgnored private let workSlot = DispatchSemaphore(value: 1)
     // ponytail: Bound callback work to 16K mono frames; raise this if tap buffers exceed that size.
     @PerceptionIgnored private var scratch = [Float](repeating: 0, count: 16_384)
-    @PerceptionIgnored private var refreshTimer: Timer?
+    @PerceptionIgnored private var outputListener: AudioObjectPropertyListenerBlock?
     @PerceptionIgnored private var tapID = AudioObjectID(kAudioObjectUnknown)
     @PerceptionIgnored private var aggregateID = AudioObjectID(kAudioObjectUnknown)
     @PerceptionIgnored private var ioProcID: AudioDeviceIOProcID?
@@ -23,20 +29,27 @@ final class SystemAudioAnalyzer {
     @PerceptionIgnored private var lastPublishTime = 0.0
 
     func start() {
-        guard refreshTimer == nil else { return }
+        guard outputListener == nil else { return }
         guard #available(macOS 14.2, *) else {
             captureFailed = true
             return
         }
-        reconnectIfNeeded()
-        refreshTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+        let listener: AudioObjectPropertyListenerBlock = { [weak self] _, _ in
             self?.reconnectIfNeeded()
         }
+        guard AudioObjectAddPropertyListenerBlock(AudioObjectID(kAudioObjectSystemObject), &defaultOutputAddress, .main, listener) == noErr else {
+            captureFailed = true
+            return
+        }
+        outputListener = listener
+        reconnectIfNeeded()
     }
 
     func stop() {
-        refreshTimer?.invalidate()
-        refreshTimer = nil
+        if let outputListener {
+            AudioObjectRemovePropertyListenerBlock(AudioObjectID(kAudioObjectSystemObject), &defaultOutputAddress, .main, outputListener)
+            self.outputListener = nil
+        }
         tearDown()
         isAvailable = false
         captureFailed = false
@@ -70,10 +83,9 @@ final class SystemAudioAnalyzer {
     }
 
     private func defaultOutputID() -> AudioObjectID? {
-        var address = AudioObjectPropertyAddress(mSelector: kAudioHardwarePropertyDefaultOutputDevice, mScope: kAudioObjectPropertyScopeGlobal, mElement: kAudioObjectPropertyElementMain)
         var id = AudioObjectID(kAudioObjectUnknown)
         var size = UInt32(MemoryLayout<AudioObjectID>.size)
-        guard AudioObjectGetPropertyData(AudioObjectID(kAudioObjectSystemObject), &address, 0, nil, &size, &id) == noErr else { return nil }
+        guard AudioObjectGetPropertyData(AudioObjectID(kAudioObjectSystemObject), &defaultOutputAddress, 0, nil, &size, &id) == noErr else { return nil }
         return id
     }
 
@@ -163,7 +175,7 @@ final class SystemAudioAnalyzer {
         guard now - lastPublishTime >= 1.0 / 30 else { return }
         lastPublishTime = now
         DispatchQueue.main.async { [weak self] in
-            guard let self, self.refreshTimer != nil, self.generation == generation else { return }
+            guard let self, self.outputListener != nil, self.generation == generation else { return }
             if result.bass > 0 || result.mid > 0 || result.treble > 0 { self.isAvailable = true }
             self.levels = result
         }
