@@ -48,6 +48,30 @@
           }
         }
       }
+    },
+    "NSAudioCaptureUsageDescription": {
+      "comment": "System permission prompt for the optional equalizer spectrum",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NothingBar analitza l'àudio de la sortida actual en memòria per animar l'equalitzador."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NothingBar analyzes audio from the current output in memory to animate the equalizer."
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NothingBar analiza en memoria el audio de la salida actual para animar el ecualizador."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSAudioCaptureUsageDescription</key>
+	<string>NothingBar analyzes audio from the current output in memory to animate the equalizer.</string>
 	<key>SUFeedURL</key>
 	<string>https://nothingbar.bestk1ng.com/appcast.xml</string>
 	<key>SUPublicEDKey</key>

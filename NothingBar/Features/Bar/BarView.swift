@@ -32,7 +32,7 @@ struct BarView: View {
                     noDeviceView
                 }
             }
-            .frame(width: 320)
+            .frame(minWidth: 320)
             .cornerRadius(12)
         }
     }
