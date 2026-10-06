@@ -73,6 +73,7 @@ devices:
     - { name: "Nothing Ear (3a)", status: "progress" }
     - { name: "Nothing Ear (stick)", status: "progress" }
     - { name: "Nothing Ear (open)", status: "progress" }
+    - { name: "Nothing Headphone (1) Pro", status: "progress" }
     - { name: "Nothing Headphone (a)", status: "progress" }
     - { name: "CMF Buds Pro", status: "progress" }
     - { name: "CMF Buds", status: "progress" }

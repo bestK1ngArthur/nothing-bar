@@ -144,7 +144,7 @@ struct BarAudioView: View {
     private func bassTitle(for model: DeviceModel) -> String {
         // Check if it's a headphone (over-ear) or earbuds (in-ear)
         switch model {
-            case .headphone1, .headphoneA, .cmfHeadphonePro:
+            case .headphone1, .headphone1Pro, .headphoneA, .cmfHeadphonePro:
                 return String(localized: "Bass Enhancement", comment: "Enhanced bass control title for over-ear headphones")
             default:
                 return String(localized: "Ultra Bass", comment: "Enhanced bass control title for earbuds")

@@ -2833,6 +2833,30 @@
         }
       }
     },
+    "Silver": {
+      "comment": "Device color name",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plata"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silver"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plateado"
+          }
+        }
+      }
+    },
     "Spatial Audio": {
       "comment": "Bar section title",
       "extractionState": "manual",
