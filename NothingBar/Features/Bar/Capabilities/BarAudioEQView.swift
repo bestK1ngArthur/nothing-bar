@@ -89,7 +89,12 @@ struct BarAudioEQView: View {
 
     private func spectrumButtonLabel(enabled: Bool) -> String {
         if analyzer.captureFailed { return String(localized: "Live audio unavailable. The EQ still works.") }
-        return enabled ? String(localized: "Hide live levels") : String(localized: "Show live levels")
+        guard enabled else { return String(localized: "Show live levels") }
+        // A denied capture permission delivers silence rather than an error, so it looks the same as no playback.
+        if !analyzer.isAvailable {
+            return String(localized: "Hide live levels. If no levels appear during playback, allow NothingBar to record system audio in System Settings › Privacy & Security.")
+        }
+        return String(localized: "Hide live levels")
     }
 
     private func editor(gains: EQPresetCustom, editable: Bool) -> some View {

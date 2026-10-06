@@ -4021,6 +4021,30 @@
           }
         }
       }
+    },
+    "Hide live levels. If no levels appear during playback, allow NothingBar to record system audio in System Settings › Privacy & Security.": {
+      "comment": "Tooltip for the live levels button while no audio has been received yet",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amaga els nivells en directe. Si no apareixen nivells durant la reproducció, permet que NothingBar enregistri l'àudio del sistema a Configuració del Sistema › Privadesa i seguretat."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hide live levels. If no levels appear during playback, allow NothingBar to record system audio in System Settings › Privacy & Security."
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ocultar niveles en directo. Si no aparecen niveles durante la reproducción, permite que NothingBar grabe el audio del sistema en Ajustes del Sistema › Privacidad y seguridad."
+          }
+        }
+      }
     }
   },
   "version": "1.0"
