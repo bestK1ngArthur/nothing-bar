@@ -126,14 +126,16 @@ struct BarAudioEQView: View {
     private func presetMenu(current: EQPreset, gains: EQPresetCustom) -> some View {
         let profile = current == .custom ? EQProfile.matching(gains) : nil
         return Menu {
-            Section(String(localized: "Nothing Profiles")) {
+            if supportedEqPresets.contains(.custom) {
+                presetItem(.custom, isSelected: current == .custom && profile == nil)
+            }
+            Section(String(localized: "Nothing Presets")) {
                 ForEach(supportedEqPresets.filter { $0 != .custom }, id: \.self) { preset in
                     presetItem(preset, isSelected: current == preset)
                 }
             }
             if supportedEqPresets.contains(.custom) {
-                Section(String(localized: "App Profiles")) {
-                    presetItem(.custom, isSelected: current == .custom && profile == nil)
+                Section(String(localized: "App Presets")) {
                     ForEach(EQProfile.general) { item in
                         profileItem(item, isSelected: item == profile)
                     }
