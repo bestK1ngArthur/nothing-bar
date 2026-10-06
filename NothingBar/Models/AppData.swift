@@ -61,9 +61,10 @@ class AppData {
         didSet { updateAudioAnalyzer() }
     }
 
-    /// Whether a view showing live levels is currently in the view hierarchy.
+    /// Number of views showing live levels. A count rather than a flag, because SwiftUI may
+    /// call a new view's `onAppear` before the replaced view's `onDisappear`.
     @PerceptionIgnored
-    var isSpectrumVisible: Bool = false {
+    private var visibleSpectrumViews = 0 {
         didSet { updateAudioAnalyzer() }
     }
 
@@ -209,8 +210,16 @@ class AppData {
         deviceSetupState.openPendingIfNeeded()
     }
 
+    func spectrumViewDidAppear() {
+        visibleSpectrumViews += 1
+    }
+
+    func spectrumViewDidDisappear() {
+        visibleSpectrumViews = max(0, visibleSpectrumViews - 1)
+    }
+
     private func updateAudioAnalyzer() {
-        if liveSpectrumEnabled && isBarVisible && isSpectrumVisible {
+        if liveSpectrumEnabled && isBarVisible && visibleSpectrumViews > 0 {
             audioAnalyzer.start()
         } else {
             audioAnalyzer.stop()

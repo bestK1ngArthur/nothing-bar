@@ -59,8 +59,8 @@ struct BarAudioEQView: View {
                     editor(gains: gains, editable: preset == .custom)
                         .frame(maxWidth: .infinity)
                         .frame(height: 184)
-                        .onAppear { appData.isSpectrumVisible = true }
-                        .onDisappear { appData.isSpectrumVisible = false }
+                        .onAppear { appData.spectrumViewDidAppear() }
+                        .onDisappear { appData.spectrumViewDidDisappear() }
                 }
             }
             .padding(.horizontal, 4)
