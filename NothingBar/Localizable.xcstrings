@@ -3457,50 +3457,50 @@
         }
       }
     },
-    "Nothing sound modes": {
+    "Nothing Profiles": {
       "comment": "Equalizer mode grouping, description or live audio disclosure",
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nothing sound modes"
+            "value": "Nothing Profiles"
           }
         },
         "es-ES": {
           "stringUnit": {
             "state": "translated",
-            "value": "Modos de sonido Nothing"
+            "value": "Perfiles de Nothing"
           }
         },
         "ca-ES": {
           "stringUnit": {
             "state": "translated",
-            "value": "Modes de so Nothing"
+            "value": "Perfils de Nothing"
           }
         }
       }
     },
-    "NothingBar profiles": {
+    "App Profiles": {
       "comment": "Equalizer mode grouping, description or live audio disclosure",
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "NothingBar profiles"
+            "value": "App Profiles"
           }
         },
         "es-ES": {
           "stringUnit": {
             "state": "translated",
-            "value": "Perfiles de NothingBar"
+            "value": "Perfiles de la app"
           }
         },
         "ca-ES": {
           "stringUnit": {
             "state": "translated",
-            "value": "Perfils de NothingBar"
+            "value": "Perfils de l'app"
           }
         }
       }
