@@ -337,30 +337,6 @@
         }
       }
     },
-    "Bass %@": {
-      "comment": "Equalizer band value display, e.g. 'Bass +3'",
-      "extractionState": "manual",
-      "localizations": {
-        "ca-ES": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Greus %@"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bass %@"
-          }
-        },
-        "es-ES": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Graves %@"
-          }
-        }
-      }
-    },
     "Bass Enhancement": {
       "comment": "Enhanced bass control title for over-ear headphones",
       "extractionState": "manual",
@@ -1321,54 +1297,6 @@
         }
       }
     },
-    "Done": {
-      "comment": "Button to finish editing the custom EQ",
-      "extractionState": "manual",
-      "localizations": {
-        "ca-ES": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fet"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Done"
-          }
-        },
-        "es-ES": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hecho"
-          }
-        }
-      }
-    },
-    "Edit": {
-      "comment": "Button to edit the custom EQ",
-      "extractionState": "manual",
-      "localizations": {
-        "ca-ES": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Edita"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Edit"
-          }
-        },
-        "es-ES": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Editar"
-          }
-        }
-      }
-    },
     "Equalizer": {
       "comment": "Equalizer section title",
       "extractionState": "manual",
@@ -1869,30 +1797,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Medios"
-          }
-        }
-      }
-    },
-    "Mid %@": {
-      "comment": "Equalizer band value display, e.g. 'Mid -2'",
-      "extractionState": "manual",
-      "localizations": {
-        "ca-ES": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mitjos %@"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mid %@"
-          }
-        },
-        "es-ES": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Medios %@"
           }
         }
       }
@@ -3069,30 +2973,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Agudos"
-          }
-        }
-      }
-    },
-    "Treble %@": {
-      "comment": "Equalizer band value display, e.g. 'Treble 0'",
-      "extractionState": "manual",
-      "localizations": {
-        "ca-ES": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aguts %@"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Treble %@"
-          }
-        },
-        "es-ES": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Agudos %@"
           }
         }
       }
