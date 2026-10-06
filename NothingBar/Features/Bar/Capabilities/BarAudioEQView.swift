@@ -141,7 +141,7 @@ struct BarAudioEQView: View {
                     }
                     // Models with genre presets of their own would list Pop or Rock twice.
                     if !supportedEqPresets.contains(.pop) {
-                        Menu(String(localized: "Music styles")) {
+                        Menu(String(localized: "Music Styles")) {
                             ForEach(EQProfile.musicStyles) { item in
                                 profileItem(item, isSelected: item == profile)
                             }

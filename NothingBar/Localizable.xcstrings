@@ -3621,13 +3621,13 @@
         }
       }
     },
-    "Music styles": {
+    "Music Styles": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Music styles"
+            "value": "Music Styles"
           }
         },
         "es-ES": {
