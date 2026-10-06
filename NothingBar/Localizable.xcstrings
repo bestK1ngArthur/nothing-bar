@@ -3949,6 +3949,150 @@
           }
         }
       }
+    },
+    "New Voice": {
+      "comment": "EQ preset name",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nova veu"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Voice"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva voz"
+          }
+        }
+      }
+    },
+    "New Instrument": {
+      "comment": "EQ preset name",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nou instrument"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Instrument"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo instrumento"
+          }
+        }
+      }
+    },
+    "Immersion Boost": {
+      "comment": "EQ preset name",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Immersion Boost"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Immersion Boost"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Immersion Boost"
+          }
+        }
+      }
+    },
+    "Enhance Vocals": {
+      "comment": "EQ preset name",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Realçar veus"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enhance Vocals"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Realzar voces"
+          }
+        }
+      }
+    },
+    "Classical": {
+      "comment": "EQ preset name",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clàssica"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Classical"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clásica"
+          }
+        }
+      }
+    },
+    "Use the advanced EQ set up in Nothing X.": {
+      "comment": "Tooltip for the Advanced EQ preset",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fa servir l'equalitzador avançat configurat a Nothing X."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use the advanced EQ set up in Nothing X."
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa el ecualizador avanzado configurado en Nothing X."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

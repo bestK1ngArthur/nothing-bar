@@ -21,7 +21,7 @@ struct BarAudioEQView: View {
 
     var body: some View {
         WithPerceptionTracking {
-            let preset = deviceState.eqPreset ?? .balanced
+            let preset = deviceState.eqPreset ?? supportedEqPresets.first ?? .balanced
             let gains = deviceState.eqPresetCustom ?? EQPresetCustom(bass: 0, mid: 0, treble: 0)
             let liveSpectrumEnabled = appData.liveSpectrumEnabled
             let supportsCustomEQ = supportedEqPresets.contains(.custom)
@@ -127,7 +127,7 @@ struct BarAudioEQView: View {
         let profile = current == .custom ? EQProfile.matching(gains) : nil
         return Menu {
             Section(String(localized: "Nothing Profiles")) {
-                ForEach(supportedEqPresets.filter { $0 != .custom && $0 != .advanced }, id: \.self) { preset in
+                ForEach(supportedEqPresets.filter { $0 != .custom }, id: \.self) { preset in
                     presetItem(preset, isSelected: current == preset)
                 }
             }
@@ -137,9 +137,12 @@ struct BarAudioEQView: View {
                     ForEach(EQProfile.general) { item in
                         profileItem(item, isSelected: item == profile)
                     }
-                    Menu(String(localized: "Music styles")) {
-                        ForEach(EQProfile.musicStyles) { item in
-                            profileItem(item, isSelected: item == profile)
+                    // Models with genre presets of their own would list Pop or Rock twice.
+                    if !supportedEqPresets.contains(.pop) {
+                        Menu(String(localized: "Music styles")) {
+                            ForEach(EQProfile.musicStyles) { item in
+                                profileItem(item, isSelected: item == profile)
+                            }
                         }
                     }
                 }
@@ -154,9 +157,7 @@ struct BarAudioEQView: View {
             appData.nothing.setEQPreset(preset)
             deviceState.eqPreset = preset
         }
-        .help(preset == .custom
-                ? String(localized: "Adjust three fixed bands directly in NothingBar.")
-                : preset.localizedDisplayName)
+        .help(preset.menuHelp)
     }
 
     private func profileItem(_ profile: EQProfile, isSelected: Bool) -> some View {
@@ -515,12 +516,28 @@ private extension EQPreset {
         self == .custom ? String(localized: "Custom · three bands") : localizedDisplayName
     }
 
+    var menuHelp: String {
+        switch self {
+        case .custom: String(localized: "Adjust three fixed bands directly in NothingBar.")
+        case .advanced: String(localized: "Use the advanced EQ set up in Nothing X.")
+        default: localizedDisplayName
+        }
+    }
+
     var localizedDisplayName: String {
         switch self {
         case .balanced: String(localized: "Balanced", comment: "EQ preset name")
         case .voice: String(localized: "Voice", comment: "EQ preset name")
         case .moreTreble: String(localized: "More Treble", comment: "EQ preset name")
         case .moreBass: String(localized: "More Bass", comment: "EQ preset name")
+        case .newVoice: String(localized: "New Voice", comment: "EQ preset name")
+        case .newInstrument: String(localized: "New Instrument", comment: "EQ preset name")
+        case .immersionBoost: String(localized: "Immersion Boost", comment: "EQ preset name")
+        case .pop: String(localized: "Pop")
+        case .rock: String(localized: "Rock")
+        case .electronic: String(localized: "Electronic")
+        case .enhanceVocals: String(localized: "Enhance Vocals", comment: "EQ preset name")
+        case .classical: String(localized: "Classical", comment: "EQ preset name")
         case .custom: String(localized: "Custom", comment: "EQ preset name")
         case .advanced: String(localized: "Advanced", comment: "EQ preset name")
         }
