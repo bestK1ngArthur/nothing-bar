@@ -1,3 +1,10 @@
+//
+//  SpectrumProcessor.swift
+//  NothingBar
+//
+//  Created by Ahmed Bibi Abdellaoui on 02.10.2026.
+//
+
 import Accelerate
 import Foundation
 

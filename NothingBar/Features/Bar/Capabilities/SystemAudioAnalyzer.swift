@@ -1,3 +1,10 @@
+//
+//  SystemAudioAnalyzer.swift
+//  NothingBar
+//
+//  Created by Ahmed Bibi Abdellaoui on 02.10.2026.
+//
+
 import CoreAudio
 import Foundation
 import Perception
@@ -17,7 +24,7 @@ final class SystemAudioAnalyzer {
     @PerceptionIgnored private let ioQueue = DispatchQueue(label: "NothingBar.AudioTap", qos: .userInteractive)
     @PerceptionIgnored private let worker = DispatchQueue(label: "NothingBar.Spectrum", qos: .userInitiated)
     @PerceptionIgnored private let workSlot = DispatchSemaphore(value: 1)
-    // ponytail: Bound callback work to 16K mono frames; raise this if tap buffers exceed that size.
+    // Tap buffers larger than 16K mono frames are dropped to keep the IO callback bounded.
     @PerceptionIgnored private var scratch = [Float](repeating: 0, count: 16_384)
     @PerceptionIgnored private var outputListener: AudioObjectPropertyListenerBlock?
     @PerceptionIgnored private var tapID = AudioObjectID(kAudioObjectUnknown)

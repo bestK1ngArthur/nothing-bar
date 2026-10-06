@@ -1,3 +1,10 @@
+//
+//  BarAudioEQView.swift
+//  NothingBar
+//
+//  Created by Artem Belkov on 24.01.2026.
+//
+
 import AppKit
 import Perception
 import QuartzCore
