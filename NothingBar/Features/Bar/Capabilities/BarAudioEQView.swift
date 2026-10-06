@@ -27,7 +27,7 @@ struct BarAudioEQView: View {
             let supportsCustomEQ = supportedEqPresets.contains(.custom)
             let isExpanded = supportsCustomEQ && appData.isEqualizerExpanded
             VStack(alignment: .leading, spacing: 12) {
-                HStack {
+                HStack(spacing: 4) {
                     if supportsCustomEQ {
                         expandButton(isExpanded: isExpanded)
                     } else {
