@@ -232,6 +232,8 @@ private struct VerticalEQSlider: NSViewRepresentable {
 
     func updateNSView(_ slider: NSSlider, context: Context) {
         context.coordinator.value = $value
+        // NSViewRepresentable doesn't forward `.disabled` to the control.
+        slider.isEnabled = context.environment.isEnabled
         slider.minValue = Double(range.lowerBound)
         slider.maxValue = Double(range.upperBound)
         if let slider = slider as? GlassEQSlider {
@@ -266,7 +268,10 @@ private struct VerticalEQSlider: NSViewRepresentable {
 private final class GlassEQSlider: NSSlider {
     var isAdjusting = false
     var isFactoryMode = false {
-        didSet { glassHandle?.alphaValue = isFactoryMode ? 0.55 : 1 }
+        didSet { updateHandleAlpha() }
+    }
+    override var isEnabled: Bool {
+        didSet { updateHandleAlpha() }
     }
     private var glassHandle: NSView?
     private var spectrumMark: NSView?
@@ -286,6 +291,10 @@ private final class GlassEQSlider: NSSlider {
             (cell as? HorizontalKnobSliderCell)?.drawsGlass = true
         }
         positionHandle()
+    }
+
+    private func updateHandleAlpha() {
+        glassHandle?.alphaValue = isFactoryMode || !isEnabled ? 0.55 : 1
     }
 
     func setSpectrum(level: Float?, peak: Float) {
