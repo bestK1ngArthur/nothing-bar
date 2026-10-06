@@ -3903,25 +3903,25 @@
         }
       }
     },
-    "Move to start a custom EQ from 0 dB.": {
+    "Move to switch to your custom EQ.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Move to start a custom EQ from 0 dB."
+            "value": "Move to switch to your custom EQ."
           }
         },
         "es-ES": {
           "stringUnit": {
             "state": "translated",
-            "value": "Muévelo para crear un ecualizador personalizado desde 0 dB."
+            "value": "Muévelo para cambiar a tu ecualizador personalizado."
           }
         },
         "ca-ES": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mou-lo per crear un equalitzador personalitzat des de 0 dB."
+            "value": "Mou-lo per canviar al teu equalitzador personalitzat."
           }
         }
       }

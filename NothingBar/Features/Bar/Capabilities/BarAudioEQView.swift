@@ -67,9 +67,9 @@ struct BarAudioEQView: View {
             analyzer: analyzer,
             gains: gains,
             editable: editable,
-            setBass: { editable ? setGains(bass: $0) : applySuggestedGains(bass: $0, mid: 0, treble: 0) },
-            setMid: { editable ? setGains(mid: $0) : applySuggestedGains(bass: 0, mid: $0, treble: 0) },
-            setTreble: { editable ? setGains(treble: $0) : applySuggestedGains(bass: 0, mid: 0, treble: $0) }
+            setBass: { editable ? setGains(bass: $0) : switchToCustom(bass: $0) },
+            setMid: { editable ? setGains(mid: $0) : switchToCustom(mid: $0) },
+            setTreble: { editable ? setGains(treble: $0) : switchToCustom(treble: $0) }
         )
     }
 
@@ -93,19 +93,19 @@ struct BarAudioEQView: View {
                 Section(String(localized: "NothingBar profiles")) {
                     presetButton(.custom)
                     Button(String(localized: "Warm")) {
-                        applySuggestedGains(bass: 2, mid: 0, treble: -1)
+                        switchToCustom(bass: 2, mid: 0, treble: -1)
                     }
                     Button(String(localized: "Detail")) {
-                        applySuggestedGains(bass: -1, mid: 1, treble: 2)
+                        switchToCustom(bass: -1, mid: 1, treble: 2)
                     }
                     Button(String(localized: "Podcast")) {
-                        applySuggestedGains(bass: -2, mid: 2, treble: 0)
+                        switchToCustom(bass: -2, mid: 2, treble: 0)
                     }
                     Menu(String(localized: "Music styles")) {
-                        Button(String(localized: "Pop")) { applySuggestedGains(bass: 1, mid: 0, treble: 1) }
-                        Button(String(localized: "Rock")) { applySuggestedGains(bass: 1, mid: 1, treble: 0) }
-                        Button(String(localized: "Hip-hop")) { applySuggestedGains(bass: 2, mid: -1, treble: 0) }
-                        Button(String(localized: "Electronic")) { applySuggestedGains(bass: 2, mid: -1, treble: 1) }
+                        Button(String(localized: "Pop")) { switchToCustom(bass: 1, mid: 0, treble: 1) }
+                        Button(String(localized: "Rock")) { switchToCustom(bass: 1, mid: 1, treble: 0) }
+                        Button(String(localized: "Hip-hop")) { switchToCustom(bass: 2, mid: -1, treble: 0) }
+                        Button(String(localized: "Electronic")) { switchToCustom(bass: 2, mid: -1, treble: 1) }
                     }
                 }
             }
@@ -139,7 +139,8 @@ struct BarAudioEQView: View {
         }
     }
 
-    private func applySuggestedGains(bass: Int, mid: Int, treble: Int) {
+    /// Switches to the custom preset, keeping the saved gains for bands that aren't passed.
+    private func switchToCustom(bass: Int? = nil, mid: Int? = nil, treble: Int? = nil) {
         appData.nothing.setEQPreset(.custom)
         deviceState.eqPreset = .custom
         setGains(bass: bass, mid: mid, treble: treble)
@@ -245,7 +246,7 @@ private struct VerticalEQSlider: NSViewRepresentable {
         }
         slider.setAccessibilityValue(isFactoryMode ? String(localized: "Factory sound mode; gain unavailable") : "\(value) dB")
         slider.setAccessibilityHelp(isFactoryMode
-            ? String(localized: "Move to start a custom EQ from 0 dB.")
+            ? String(localized: "Move to switch to your custom EQ.")
             : String(localized: "Use the arrow keys to adjust the equalizer gain."))
     }
 
