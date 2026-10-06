@@ -208,7 +208,7 @@ private struct EQEditorView: View {
                 .frame(width: 44)
                 .frame(maxHeight: .infinity)
             if editable {
-                Text("\(value > 0 ? "+" : "")\(value) dB")
+                Text(formattedGain(value))
                     .font(.caption2.monospacedDigit())
             } else {
                 Text("—").font(.caption2)
@@ -220,6 +220,11 @@ private struct EQEditorView: View {
         }
         .frame(width: width)
     }
+}
+
+private func formattedGain(_ value: Int) -> String {
+    let number = value > 0 ? "+\(value)" : "\(value)"
+    return String(localized: "\(number) dB", comment: "Equalizer band gain, e.g. '+2 dB'")
 }
 
 private struct VerticalEQSlider: NSViewRepresentable {
@@ -267,7 +272,7 @@ private struct VerticalEQSlider: NSViewRepresentable {
         } else {
             slider.doubleValue = Double(value)
         }
-        slider.setAccessibilityValue(isFactoryMode ? String(localized: "Factory sound mode; gain unavailable") : "\(value) dB")
+        slider.setAccessibilityValue(isFactoryMode ? String(localized: "Factory sound mode; gain unavailable") : formattedGain(value))
         slider.setAccessibilityHelp(isFactoryMode
             ? String(localized: "Move to switch to your custom EQ.")
             : String(localized: "Use the arrow keys to adjust the equalizer gain."))

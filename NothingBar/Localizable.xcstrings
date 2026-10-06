@@ -4045,6 +4045,30 @@
           }
         }
       }
+    },
+    "%@ dB": {
+      "comment": "Equalizer band gain, e.g. '+2 dB'",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ dB"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ dB"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ dB"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
