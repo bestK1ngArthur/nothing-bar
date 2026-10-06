@@ -267,7 +267,7 @@ private extension DeviceModelSelection {
         switch colorKey {
             case "Black", "Dark Grey":
                 Color(nsColor: .darkGray)
-            case "Grey", "Light Grey":
+            case "Grey", "Light Grey", "Silver":
                 Color(nsColor: .lightGray)
             case "White":
                 Color.white

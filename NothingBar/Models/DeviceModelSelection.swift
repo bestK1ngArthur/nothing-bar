@@ -44,6 +44,8 @@ struct DeviceModelSelection: Identifiable, Equatable {
                 String(localized: "Dark Grey", comment: "Device color name")
             case "Light Grey":
                 String(localized: "Light Grey", comment: "Device color name")
+            case "Silver":
+                String(localized: "Silver", comment: "Device color name")
             default:
                 colorKey
         }
@@ -103,6 +105,8 @@ enum DeviceModelCatalog {
         .init(id: "earA.yellow", model: .earA(.yellow), colorKey: "Yellow", deviceImage: .buds(left: .earAYellowLeft, right: .earAYellowRight)),
         .init(id: "headphone1.black", model: .headphone1(.black), colorKey: "Black", deviceImage: .single(.headphone1Black)),
         .init(id: "headphone1.grey", model: .headphone1(.grey), colorKey: "Grey", deviceImage: .single(.headphone1Grey)),
+        .init(id: "headphone1Pro.black", model: .headphone1Pro(.black), colorKey: "Black", deviceImage: .single(.headphone1ProBlack)),
+        .init(id: "headphone1Pro.silver", model: .headphone1Pro(.silver), colorKey: "Silver", deviceImage: .single(.headphone1ProSilver)),
         .init(id: "headphoneA.black", model: .headphoneA(.black), colorKey: "Black", deviceImage: .single(.headphoneABlack)),
         .init(id: "headphoneA.white", model: .headphoneA(.white), colorKey: "White", deviceImage: .single(.headphoneAWhite)),
         .init(id: "headphoneA.yellow", model: .headphoneA(.yellow), colorKey: "Yellow", deviceImage: .single(.headphoneAYellow)),
@@ -113,9 +117,9 @@ enum DeviceModelCatalog {
         .init(id: "cmfBuds.black", model: .cmfBuds(.black), colorKey: "Black", deviceImage: .buds(left: .cmfBudsBlackLeft, right: .cmfBudsBlackRight)),
         .init(id: "cmfBuds.orange", model: .cmfBuds(.orange), colorKey: "Orange", deviceImage: .buds(left: .cmfBudsOrangeLeft, right: .cmfBudsOrangeRight)),
         .init(id: "cmfBuds.white", model: .cmfBuds(.white), colorKey: "White", deviceImage: .buds(left: .cmfBudsWhiteLeft, right: .cmfBudsWhiteRight)),
-        .init(id: "cmfBudsNeo.darkGrey", model: .cmfBudsNeo(.black), colorKey: "Dark Grey", deviceImage: .buds(left: .cmfBudsNeoDarkGreyLeft, right: .cmfBudsNeoDarkGreyRight)),
-        .init(id: "cmfBudsNeo.orange", model: .cmfBudsNeo(.white), colorKey: "Orange", deviceImage: .buds(left: .cmfBudsNeoOrangeLeft, right: .cmfBudsNeoOrangeRight)),
-        .init(id: "cmfBudsNeo.blue", model: .cmfBudsNeo(.darkBlue), colorKey: "Blue", deviceImage: .buds(left: .cmfBudsNeoBlueLeft, right: .cmfBudsNeoBlueRight)),
+        .init(id: "cmfBudsNeo.darkGrey", model: .cmfBudsNeo(.darkGrey), colorKey: "Dark Grey", deviceImage: .buds(left: .cmfBudsNeoDarkGreyLeft, right: .cmfBudsNeoDarkGreyRight)),
+        .init(id: "cmfBudsNeo.orange", model: .cmfBudsNeo(.orange), colorKey: "Orange", deviceImage: .buds(left: .cmfBudsNeoOrangeLeft, right: .cmfBudsNeoOrangeRight)),
+        .init(id: "cmfBudsNeo.blue", model: .cmfBudsNeo(.blue), colorKey: "Blue", deviceImage: .buds(left: .cmfBudsNeoBlueLeft, right: .cmfBudsNeoBlueRight)),
         .init(id: "cmfBuds2.lightGreen", model: .cmfBuds2(.lightGreen), colorKey: "Light Green", deviceImage: .buds(left: .cmfBuds2GreenLeft, right: .cmfBuds2GreenRight)),
         .init(id: "cmfBuds2.orange", model: .cmfBuds2(.orange), colorKey: "Orange", deviceImage: .buds(left: .cmfBuds2OrangeLeft, right: .cmfBuds2OrangeRight)),
         .init(id: "cmfBuds2.darkGrey", model: .cmfBuds2(.darkGrey), colorKey: "Dark Grey", deviceImage: .buds(left: .cmfBuds2BlackLeft, right: .cmfBuds2BlackRight)),

@@ -55,6 +55,7 @@ The app updates automatically through [Sparkle](https://sparkle-project.org/); y
 - 🟡 Nothing Ear
 - 🟢 Nothing Ear (a)
 - 🟢 Nothing Headphone (1)
+- 🟡 Nothing Headphone (1) Pro
 - 🟡 Nothing Headphone (a)
 - 🟡 CMF Buds Pro
 - 🟢 CMF Buds Pro 2
