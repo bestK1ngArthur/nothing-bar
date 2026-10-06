@@ -129,7 +129,7 @@ struct BarAudioEQView: View {
         let profile = current == .custom ? EQProfile.matching(gains) : nil
         return Menu {
             if supportedEqPresets.contains(.custom) {
-                presetItem(.custom, isSelected: current == .custom && profile == nil)
+                presetItem(.custom, isSelected: current == .custom)
             }
             Section(String(localized: "Nothing Presets")) {
                 ForEach(supportedEqPresets.filter { $0 != .custom }, id: \.self) { preset in
@@ -151,9 +151,15 @@ struct BarAudioEQView: View {
                     }
                 }
             }
-        } label: { BarMenuLabel(title: profile?.name ?? current.localizedDisplayName) }
+        } label: { BarMenuLabel(title: menuTitle(current: current, profile: profile)) }
             .menuStyle(.borderlessButton)
             .menuIndicator(.hidden)
+    }
+
+    /// Custom gains that match an App Preset are still custom, so the preset is named after it.
+    private func menuTitle(current: EQPreset, profile: EQProfile?) -> String {
+        guard let profile else { return current.localizedDisplayName }
+        return "\(current.localizedDisplayName) · \(profile.name)"
     }
 
     private func presetItem(_ preset: EQPreset, isSelected: Bool) -> some View {
