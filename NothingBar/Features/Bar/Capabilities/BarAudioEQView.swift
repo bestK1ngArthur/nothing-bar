@@ -168,7 +168,11 @@ struct BarAudioEQView: View {
 
     /// A toggle renders the native checkmark next to the selected menu item.
     private func menuItem(_ title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
-        Toggle(title, isOn: Binding(get: { isSelected }, set: { _ in action() }))
+        menuItem(Text(title), isSelected: isSelected, action: action)
+    }
+
+    private func menuItem(_ label: Text, isSelected: Bool, action: @escaping () -> Void) -> some View {
+        Toggle(isOn: Binding(get: { isSelected }, set: { _ in action() })) { label }
     }
 
     /// Switches to the custom preset, keeping the saved gains for bands that aren't passed.
@@ -512,8 +516,10 @@ private struct EQProfile: Identifiable, Equatable {
 }
 
 private extension EQPreset {
-    var menuDisplayName: String {
-        self == .custom ? String(localized: "Custom · three bands") : localizedDisplayName
+    var menuDisplayName: Text {
+        guard self == .custom else { return Text(localizedDisplayName) }
+        // Three sliders stand for the three bands this preset edits.
+        return Text(localizedDisplayName) + Text(" ") + Text(Image(systemName: "slider.vertical.3"))
     }
 
     var menuHelp: String {

@@ -3505,30 +3505,6 @@
         }
       }
     },
-    "Custom · three bands": {
-      "comment": "Equalizer mode grouping, description or live audio disclosure",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Custom · three bands"
-          }
-        },
-        "es-ES": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Personalizado · tres bandas"
-          }
-        },
-        "ca-ES": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Personalitzat · tres bandes"
-          }
-        }
-      }
-    },
     "Adjust three fixed bands directly in NothingBar.": {
       "comment": "Equalizer mode grouping, description or live audio disclosure",
       "extractionState": "manual",
