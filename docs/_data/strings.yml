@@ -64,6 +64,7 @@ devices:
   list:
     - { name: "Nothing Ear (a)", status: "supported" }
     - { name: "Nothing Headphone (1)", status: "supported" }
+    - { name: "Nothing Headphone (a)", status: "supported" }
     - { name: "CMF Buds Pro 2", status: "supported" }
     - { name: "CMF Buds 2", status: "supported" }
     - { name: "Nothing Ear", status: "progress" }
@@ -74,7 +75,6 @@ devices:
     - { name: "Nothing Ear (stick)", status: "progress" }
     - { name: "Nothing Ear (open)", status: "progress" }
     - { name: "Nothing Headphone (1) Pro", status: "progress" }
-    - { name: "Nothing Headphone (a)", status: "progress" }
     - { name: "CMF Buds Pro", status: "progress" }
     - { name: "CMF Buds", status: "progress" }
     - { name: "CMF Buds Neo", status: "progress" }
