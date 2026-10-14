@@ -164,6 +164,11 @@ struct BarAudioEQView: View {
 
     private func presetItem(_ preset: EQPreset, isSelected: Bool) -> some View {
         menuItem(preset.menuDisplayName, isSelected: isSelected) {
+            if [.voice, .moreTreble, .moreBass].contains(preset),
+               case .night = deviceState.speakerSoundMode {
+                appData.nothing.setSpeakerSoundMode(.normal)
+                deviceState.speakerSoundMode = .normal
+            }
             appData.nothing.setEQPreset(preset)
             deviceState.eqPreset = preset
         }

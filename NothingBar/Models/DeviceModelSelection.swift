@@ -46,6 +46,8 @@ struct DeviceModelSelection: Identifiable, Equatable {
                 String(localized: "Light Grey", comment: "Device color name")
             case "Silver":
                 String(localized: "Silver", comment: "Device color name")
+            case "Turquoise":
+                String(localized: "Turquoise", comment: "Device color name")
             default:
                 colorKey
         }
@@ -140,7 +142,15 @@ enum DeviceModelCatalog {
         .init(id: "cmfHeadphonePro.lightGrey", model: .cmfHeadphonePro(.lightGrey), colorKey: "Light Grey", deviceImage: .single(.cmfHeadphonePro1LightGrey)),
         .init(id: "cmfClipPro.darkGrey", model: .cmfClipPro(.darkGrey), colorKey: "Dark Grey", deviceImage: .buds(left: .cmfClipProDarkGreyLeft, right: .cmfClipProDarkGreyRight)),
         .init(id: "cmfClipPro.lightGrey", model: .cmfClipPro(.lightGrey), colorKey: "Light Grey", deviceImage: .buds(left: .cmfClipProLightGreyLeft, right: .cmfClipProLightGreyRight)),
-        .init(id: "cmfClipPro.coral", model: .cmfClipPro(.coral), colorKey: "Coral", deviceImage: .buds(left: .cmfClipProCoralLeft, right: .cmfClipProCoralRight))
+        .init(id: "cmfClipPro.coral", model: .cmfClipPro(.coral), colorKey: "Coral", deviceImage: .buds(left: .cmfClipProCoralLeft, right: .cmfClipProCoralRight)),
+        .init(id: "cmfSpeakerS.darkGrey", model: .cmfSpeakerS(.darkGrey), colorKey: "Dark Grey", deviceImage: .single(.cmfSpeakerSDarkGrey)),
+        .init(id: "cmfSpeakerS.white", model: .cmfSpeakerS(.white), colorKey: "White", deviceImage: .single(.cmfSpeakerSWhite)),
+        .init(id: "cmfSpeakerS.orange", model: .cmfSpeakerS(.orange), colorKey: "Orange", deviceImage: .single(.cmfSpeakerSOrange)),
+        .init(id: "cmfSpeakerS.turquoise", model: .cmfSpeakerS(.turquoise), colorKey: "Turquoise", deviceImage: .single(.cmfSpeakerSTurquoise)),
+        .init(id: "cmfSpeakerM.darkGrey", model: .cmfSpeakerM(.darkGrey), colorKey: "Dark Grey", deviceImage: .single(.cmfSpeakerMDarkGrey)),
+        .init(id: "cmfSpeakerM.white", model: .cmfSpeakerM(.white), colorKey: "White", deviceImage: .single(.cmfSpeakerMWhite)),
+        .init(id: "cmfSpeakerM.orange", model: .cmfSpeakerM(.orange), colorKey: "Orange", deviceImage: .single(.cmfSpeakerMOrange)),
+        .init(id: "cmfSpeakerM.turquoise", model: .cmfSpeakerM(.turquoise), colorKey: "Turquoise", deviceImage: .single(.cmfSpeakerMTurquoise))
     ]
 
     static func selection(for id: String) -> DeviceModelSelection? {
