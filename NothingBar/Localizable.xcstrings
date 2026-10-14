@@ -4166,26 +4166,26 @@
         }
       }
     },
-    "Connect your Nothing or CMF audio device using Bluetooth settings on your Mac": {
+    "Connect your Nothing or CMF device using Bluetooth settings on your Mac": {
       "comment": "No device description",
       "extractionState": "manual",
       "localizations": {
         "ca-ES": {
           "stringUnit": {
             "state": "translated",
-            "value": "Connecta el teu dispositiu d’àudio Nothing o CMF des de la configuració Bluetooth del Mac"
+            "value": "Connecta el teu dispositiu Nothing o CMF des de la configuració Bluetooth del Mac"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Connect your Nothing or CMF audio device using Bluetooth settings on your Mac"
+            "value": "Connect your Nothing or CMF device using Bluetooth settings on your Mac"
           }
         },
         "es-ES": {
           "stringUnit": {
             "state": "translated",
-            "value": "Conecta tu dispositivo de audio Nothing o CMF desde los ajustes Bluetooth del Mac"
+            "value": "Conecta tu dispositivo Nothing o CMF desde los ajustes Bluetooth del Mac"
           }
         }
       }
@@ -4310,26 +4310,26 @@
         }
       }
     },
-    "New audio device connected": {
+    "New device connected": {
       "comment": "Device setup window title for a newly detected device",
       "extractionState": "manual",
       "localizations": {
         "ca-ES": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nou dispositiu d’àudio connectat"
+            "value": "Nou dispositiu connectat"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "New audio device connected"
+            "value": "New device connected"
           }
         },
         "es-ES": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nuevo dispositivo de audio conectado"
+            "value": "Nuevo dispositivo conectado"
           }
         }
       }

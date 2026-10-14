@@ -147,7 +147,7 @@ struct DeviceSetupView: View {
             case .editSelection:
                 String(localized: "Change model and color", comment: "Device setup window title when editing an existing device")
             case .newDevice, .none:
-                String(localized: "New audio device connected", comment: "Device setup window title for a newly detected device")
+                String(localized: "New device connected", comment: "Device setup window title for a newly detected device")
         }
     }
 

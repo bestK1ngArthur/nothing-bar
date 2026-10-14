@@ -25,7 +25,7 @@ struct NoDeviceView: View {
                         .fontWeight(.medium)
                         .foregroundColor(.primary)
 
-                    Text("Connect your Nothing or CMF audio device using Bluetooth settings on your Mac")
+                    Text("Connect your Nothing or CMF device using Bluetooth settings on your Mac")
                         .fixedSize(horizontal: false, vertical: true)
                         .font(.callout)
                         .foregroundColor(.secondary)
