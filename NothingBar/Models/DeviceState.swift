@@ -29,6 +29,7 @@ class DeviceState {
     var eqPresetCustom: EQPresetCustom?
     var enhancedBass: EnhancedBass?
     var ringBuds: RingBuds?
+    var speakerSoundMode: SpeakerSoundMode?
 
     var lowLatency: Bool = false
     var inEarDetection: Bool = false

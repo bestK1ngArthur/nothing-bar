@@ -119,6 +119,7 @@ class AppData {
                 },
                 onDisconnect: { [weak self] result in
                     self?.deviceState.isConnected = false
+                    self?.deviceState.speakerSoundMode = nil
                     Task { @MainActor in
                         self?.onConnectionStateChanged?(false)
                     }
@@ -166,6 +167,10 @@ class AppData {
                 onUpdateRingBuds: { [weak self] ringBuds in
                     self?.deviceState.ringBuds = ringBuds
                     AppLogger.device.deviceStateChanged("Ring Buds", value: ringBuds)
+                },
+                onUpdateSpeakerSoundMode: { [weak self] mode in
+                    self?.deviceState.speakerSoundMode = mode
+                    AppLogger.device.deviceStateChanged("Speaker Sound Mode", value: mode)
                 },
                 onError: { [weak self] error in
                     self?.handleError(error)

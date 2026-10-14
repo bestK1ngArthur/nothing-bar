@@ -62,6 +62,10 @@ struct BarSpatialAudioView: View {
         model: DeviceModel?,
         enhancedBass: EnhancedBass?
     ) {
+        if mode != .off, case .night = deviceState.speakerSoundMode {
+            nothing.setSpeakerSoundMode(.normal)
+            deviceState.speakerSoundMode = .normal
+        }
         // Enhanced bass and spatial audio can't work simultaneously for some devices
         if !isCompatibleWithEnhancedBass(model: model),
             mode != .off,

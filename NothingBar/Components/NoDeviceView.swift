@@ -15,17 +15,17 @@ struct NoDeviceView: View {
             VStack(spacing: 20) {
                 Spacer()
 
-                Image(systemName: "headphones")
+                Image(systemName: "waveform")
                     .font(.system(size: 36, weight: .light))
                     .foregroundColor(.secondary)
 
                 VStack(spacing: 12) {
-                    Text("No Headphones Found")
+                    Text("No Devices Found")
                         .font(.title3)
                         .fontWeight(.medium)
                         .foregroundColor(.primary)
 
-                    Text("Connect your Nothing headphones using Bluetooth settings on your Mac")
+                    Text("Connect your Nothing or CMF device using Bluetooth settings on your Mac")
                         .fixedSize(horizontal: false, vertical: true)
                         .font(.callout)
                         .foregroundColor(.secondary)

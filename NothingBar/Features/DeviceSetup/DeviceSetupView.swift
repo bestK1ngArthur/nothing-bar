@@ -147,7 +147,7 @@ struct DeviceSetupView: View {
             case .editSelection:
                 String(localized: "Change model and color", comment: "Device setup window title when editing an existing device")
             case .newDevice, .none:
-                String(localized: "New Nothing headphones connected", comment: "Device setup window title for a newly detected device")
+                String(localized: "New device connected", comment: "Device setup window title for a newly detected device")
         }
     }
 
@@ -281,6 +281,8 @@ private extension DeviceModelSelection {
                 Color.pink
             case "Light Green":
                 Color.green.opacity(0.65)
+            case "Turquoise":
+                Color(red: 0.0, green: 0.72, blue: 0.68)
             default:
                 Color.secondary
         }

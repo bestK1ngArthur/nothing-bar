@@ -67,9 +67,11 @@ The app updates automatically through [Sparkle](https://sparkle-project.org/); y
 - 🟡 CMF Neckband Pro
 - 🟡 CMF Headphone Pro
 - 🟡 CMF Clip Pro
+- 🟡 CMF Speaker S
+- 🟡 CMF Speaker M
 
 > [!TIP]
-> If nothing happens when connecting the headphones, please check the **Bluetooth device name**. It's better if it matches the factory name (or a suitable model from the list above). Some models can be automatically detected by serial number, but not all.
+> If nothing happens when connecting a device, please check the **Bluetooth device name**. It's better if it matches the factory name (or a suitable model from the list above). Some models can be automatically detected by serial number, but not all.
 
 ## How to Contribute
 

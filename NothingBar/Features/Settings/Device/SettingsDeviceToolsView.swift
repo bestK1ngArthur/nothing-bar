@@ -33,6 +33,7 @@ struct SettingsDeviceToolsView: View {
             let inEarDetection = deviceState.inEarDetection
             let model = deviceState.model
             let ringBuds = deviceState.ringBuds
+            let speakerSoundMode = deviceState.speakerSoundMode
 
             Group {
                 SettingsRow(
@@ -45,16 +46,34 @@ struct SettingsDeviceToolsView: View {
                     .disabled(deviceIdentity == nil)
                 }
 
-                SettingsRow(
-                    title: "Low lag mode",
-                    description: "Minimise latency for an improved gaming experience"
-                ) {
-                    Toggle("", isOn: $bindableDeviceState.lowLatency)
-                        .onChange(of: lowLatency) { isEnabled in
-                            nothing.setLowLatency(isEnabled)
-                            AppLogger.settings.uiSettingChanged("Low Latency Mode", value: isEnabled)
-                        }
-                        .disabled(!isConnected)
+                if let model, model.supportsLowLatency {
+                    SettingsRow(
+                        title: "Low lag mode",
+                        description: "Minimise latency for an improved gaming experience"
+                    ) {
+                        Toggle("", isOn: $bindableDeviceState.lowLatency)
+                            .onChange(of: lowLatency) { isEnabled in
+                                nothing.setLowLatency(isEnabled)
+                                AppLogger.settings.uiSettingChanged("Low Latency Mode", value: isEnabled)
+                            }
+                            .disabled(!isConnected)
+                    }
+                }
+
+                if let model, model.supportsSpeakerSoundMode {
+                    SettingsRow(
+                        title: "Night mode",
+                        description: "Turns off automatically after 5 hours"
+                    ) {
+                        Toggle("", isOn: Binding(
+                            get: {
+                                if case .night = deviceState.speakerSoundMode { return true }
+                                return false
+                            },
+                            set: { setNightMode($0) }
+                        ))
+                        .disabled(!isConnected || speakerSoundMode == nil)
+                    }
                 }
 
                 if let model, model.supportsInEarDetection {
@@ -74,12 +93,22 @@ struct SettingsDeviceToolsView: View {
                 if let model,
                    model.supportsRingBuds,
                    let ringBuds {
-                    SettingsRow(
-                        title: "Find my headphones",
-                        description: "Trigger a loud sound to find your headphones"
-                    ) {
-                        ringButtons(current: ringBuds)
-                            .disabled(!isConnected)
+                    if model.isSpeaker {
+                        SettingsRow(
+                            title: "Find my speaker",
+                            description: "Play a sound to find your speaker"
+                        ) {
+                            ringButtons(current: ringBuds)
+                                .disabled(!isConnected)
+                        }
+                    } else {
+                        SettingsRow(
+                            title: "Find my headphones",
+                            description: "Trigger a loud sound to find your headphones"
+                        ) {
+                            ringButtons(current: ringBuds)
+                                .disabled(!isConnected)
+                        }
                     }
                 }
             }
@@ -87,7 +116,9 @@ struct SettingsDeviceToolsView: View {
         .alert(isPresented: $showRingBudsAlert) {
             Alert(
                 title: Text("Volume Warning"),
-                message: Text("Your headphones may be in use. Be sure to remove them from your ears before you continue.\n\nA loud sound will be played which could be uncomfortable for anyone who is wearing them."),
+                message: deviceState.model?.isSpeaker == true
+                    ? Text("A loud sound will play from your speaker.")
+                    : Text("Your headphones may be in use. Be sure to remove them from your ears before you continue.\n\nA loud sound will be played which could be uncomfortable for anyone who is wearing them."),
                 primaryButton: .default(Text("Play")) {
                     if let pendingRingBuds {
                         setRingBuds(pendingRingBuds)
@@ -134,6 +165,24 @@ struct SettingsDeviceToolsView: View {
     private func setRingBuds(_ ringBuds: RingBuds) {
         deviceState.ringBuds = ringBuds
         nothing.setRingBuds(ringBuds)
+    }
+
+    private func setNightMode(_ enabled: Bool) {
+        if enabled {
+            if let preset = deviceState.eqPreset,
+               [.voice, .moreTreble, .moreBass].contains(preset) {
+                nothing.setEQPreset(.balanced)
+                deviceState.eqPreset = .balanced
+            }
+            if deviceState.spatialAudioMode != nil && deviceState.spatialAudioMode != .off {
+                nothing.setSpatialAudioMode(.off)
+                deviceState.spatialAudioMode = .off
+            }
+        }
+        let mode: SpeakerSoundMode = enabled ? .night(autoOffMinutes: 300) : .normal
+        nothing.setSpeakerSoundMode(mode)
+        deviceState.speakerSoundMode = mode
+        AppLogger.settings.uiSettingChanged("Night Mode", value: enabled)
     }
 }
 

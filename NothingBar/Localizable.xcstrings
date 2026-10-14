@@ -4117,6 +4117,222 @@
           }
         }
       }
+    },
+    "Turquoise": {
+      "comment": "Device color name",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turquesa"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turquoise"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turquesa"
+          }
+        }
+      }
+    },
+    "No Devices Found": {
+      "comment": "No device title",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No s’han trobat dispositius"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Devices Found"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se han encontrado dispositivos"
+          }
+        }
+      }
+    },
+    "Connect your Nothing or CMF device using Bluetooth settings on your Mac": {
+      "comment": "No device description",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecta el teu dispositiu Nothing o CMF des de la configuració Bluetooth del Mac"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect your Nothing or CMF device using Bluetooth settings on your Mac"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conecta tu dispositivo Nothing o CMF desde los ajustes Bluetooth del Mac"
+          }
+        }
+      }
+    },
+    "Night mode": {
+      "comment": "Speaker sound mode setting",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mode nocturn"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Night mode"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo nocturno"
+          }
+        }
+      }
+    },
+    "Turns off automatically after 5 hours": {
+      "comment": "Speaker night mode description",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es desactiva automàticament després de 5 hores"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turns off automatically after 5 hours"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se desactiva automáticamente después de 5 horas"
+          }
+        }
+      }
+    },
+    "Find my speaker": {
+      "comment": "Speaker locator setting",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Troba el meu altaveu"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find my speaker"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encontrar mi altavoz"
+          }
+        }
+      }
+    },
+    "Play a sound to find your speaker": {
+      "comment": "Speaker locator description",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reprodueix un so per trobar el teu altaveu"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Play a sound to find your speaker"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reproduce un sonido para encontrar tu altavoz"
+          }
+        }
+      }
+    },
+    "A loud sound will play from your speaker.": {
+      "comment": "Speaker locator warning",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’altaveu reproduirà un so fort."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A loud sound will play from your speaker."
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El altavoz reproducirá un sonido fuerte."
+          }
+        }
+      }
+    },
+    "New device connected": {
+      "comment": "Device setup window title for a newly detected device",
+      "extractionState": "manual",
+      "localizations": {
+        "ca-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nou dispositiu connectat"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New device connected"
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo dispositivo conectado"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
