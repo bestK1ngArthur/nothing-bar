@@ -127,33 +127,35 @@ struct BarAudioEQView: View {
 
     private func presetMenu(current: EQPreset, gains: EQPresetCustom) -> some View {
         let profile = current == .custom ? EQProfile.matching(gains) : nil
-        return Menu {
-            if supportedEqPresets.contains(.custom) {
-                presetItem(.custom, isSelected: current == .custom)
+        let supportsCustomEQ = supportedEqPresets.contains(.custom)
+        return BarPopoverPicker(title: menuTitle(current: current, profile: profile)) {
+            if supportsCustomEQ {
+                presetRow(.custom, isSelected: current == .custom)
+                Divider().padding(.vertical, 4)
             }
-            Section(String(localized: "Nothing Presets")) {
+            BarPickerSection(title: String(localized: "Nothing Presets")) {
                 ForEach(supportedEqPresets.filter { $0 != .custom }, id: \.self) { preset in
-                    presetItem(preset, isSelected: current == preset)
+                    presetRow(preset, isSelected: current == preset)
                 }
             }
-            if supportedEqPresets.contains(.custom) {
-                Section(String(localized: "App Presets")) {
+            if supportsCustomEQ {
+                Divider().padding(.vertical, 4)
+                BarPickerSection(title: String(localized: "App Presets")) {
                     ForEach(EQProfile.general) { item in
-                        profileItem(item, isSelected: item == profile)
+                        profileRow(item, isSelected: item == profile)
                     }
-                    // Models with music style presets of their own would list Pop or Rock twice.
-                    if !supportedEqPresets.contains(where: \.isMusicStyle) {
-                        Menu(String(localized: "Music Styles")) {
-                            ForEach(EQProfile.musicStyles) { item in
-                                profileItem(item, isSelected: item == profile)
-                            }
+                }
+                // Models with music style presets of their own would list Pop or Rock twice.
+                if !supportedEqPresets.contains(where: \.isMusicStyle) {
+                    Divider().padding(.vertical, 4)
+                    BarPickerSection(title: String(localized: "Music Styles")) {
+                        ForEach(EQProfile.musicStyles) { item in
+                            profileRow(item, isSelected: item == profile)
                         }
                     }
                 }
             }
-        } label: { BarMenuLabel(title: menuTitle(current: current, profile: profile)) }
-            .menuStyle(.borderlessButton)
-            .menuIndicator(.hidden)
+        }
     }
 
     /// Custom gains that match an App Preset are still custom, so the preset is named after it.
@@ -162,8 +164,8 @@ struct BarAudioEQView: View {
         return "\(current.localizedDisplayName) · \(profile.name)"
     }
 
-    private func presetItem(_ preset: EQPreset, isSelected: Bool) -> some View {
-        menuItem(preset.menuDisplayName, isSelected: isSelected) {
+    private func presetRow(_ preset: EQPreset, isSelected: Bool) -> some View {
+        BarPickerRow(title: preset.menuDisplayName, isSelected: isSelected) {
             if [.voice, .moreTreble, .moreBass].contains(preset),
                case .night = deviceState.speakerSoundMode {
                 appData.nothing.setSpeakerSoundMode(.normal)
@@ -175,15 +177,10 @@ struct BarAudioEQView: View {
         .help(preset.menuHelp)
     }
 
-    private func profileItem(_ profile: EQProfile, isSelected: Bool) -> some View {
-        menuItem(Text(profile.name), isSelected: isSelected) {
+    private func profileRow(_ profile: EQProfile, isSelected: Bool) -> some View {
+        BarPickerRow(title: Text(profile.name), isSelected: isSelected) {
             switchToCustom(bass: profile.gains.bass, mid: profile.gains.mid, treble: profile.gains.treble)
         }
-    }
-
-    /// A toggle renders the native checkmark next to the selected menu item.
-    private func menuItem(_ label: Text, isSelected: Bool, action: @escaping () -> Void) -> some View {
-        Toggle(isOn: Binding(get: { isSelected }, set: { _ in action() })) { label }
     }
 
     /// Sets gains on the custom preset, switching to it first if needed and keeping

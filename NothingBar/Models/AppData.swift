@@ -101,17 +101,22 @@ class AppData {
                     AppLogger.device.deviceDiscovered("\(device)")
                 },
                 onConnect: { [weak self] result in
+                    guard case let .success(deviceInfo) = result else {
+                        // A failed attempt never established a connection; the search timer keeps retrying.
+                        if self?.deviceState.isConnected == true {
+                            self?.deviceState.isConnected = false
+                            Task { @MainActor in
+                                self?.onConnectionStateChanged?(false)
+                            }
+                        }
+                        AppLogger.connection.connectionChanged(false, result: "\(result)")
+                        return
+                    }
+
                     self?.deviceState.isConnected = true
                     Task { @MainActor in
                         self?.onConnectionStateChanged?(true)
-                    }
-
-                    if case let .success(deviceInfo) = result {
-                        Task { @MainActor in
-                            self?.handleSuccessfulConnection(deviceInfo)
-                            self?.showNotification()
-                        }
-                    } else {
+                        self?.handleSuccessfulConnection(deviceInfo)
                         self?.showNotification()
                     }
 
