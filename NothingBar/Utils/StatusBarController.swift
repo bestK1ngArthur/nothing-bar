@@ -162,8 +162,22 @@ final class StatusBarController: NSObject {
     }
 
     private func shouldClose(for event: NSEvent) -> Bool {
+        // Popovers shown from the panel are its child windows and may extend past its frame.
+        if let window = event.window, isAttachedToPanel(window) {
+            return false
+        }
+
         let screenPoint = screenLocation(for: event)
         return !panel.frame.contains(screenPoint) && !statusItemFrame.contains(screenPoint)
+    }
+
+    private func isAttachedToPanel(_ window: NSWindow) -> Bool {
+        var current: NSWindow? = window
+        while let candidate = current {
+            if candidate === panel { return true }
+            current = candidate.parent
+        }
+        return false
     }
 
     private func shouldCloseForGlobalEvent(_ event: NSEvent) -> Bool {

@@ -80,36 +80,28 @@ struct BarAudioView: View {
         enhancedBass: EnhancedBass?,
         spatialAudioMode: SpatialAudioMode?
     ) -> some View {
-        let value = enhancedBassValue(for: enhancedBass)
-
-        return Menu {
-            Button {
+        BarPopoverPicker(title: enhancedBassValue(for: enhancedBass)) {
+            BarPickerRow(title: Text("Off"), isSelected: enhancedBass?.isEnabled == false) {
                 setEnhancedBassSettings(
                     .init(isEnabled: false, level: 1),
                     model: model,
                     spatialAudioMode: spatialAudioMode
                 )
-            } label: {
-                Text("Off") + (value == "Off" ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
             }
 
             ForEach(1...5, id: \.self) { level in
-                Button {
+                BarPickerRow(
+                    title: Text("Level \(level)"),
+                    isSelected: enhancedBass?.isEnabled == true && enhancedBass?.level == level
+                ) {
                     setEnhancedBassSettings(
                         .init(isEnabled: true, level: level),
                         model: model,
                         spatialAudioMode: spatialAudioMode
                     )
-                } label: {
-                    let isSelected = enhancedBass?.isEnabled == true && enhancedBass?.level == level
-                    Text("Level \(level)") + (isSelected ? Text(" ") + Text(Image(systemName: "checkmark")) : Text(""))
                 }
             }
-        } label: {
-            BarMenuLabel(title: value)
         }
-        .menuStyle(BorderlessButtonMenuStyle())
-        .menuIndicator(.hidden)
     }
 
     private func isCompatibleWithSpatialAudio(model: DeviceModel) -> Bool {
