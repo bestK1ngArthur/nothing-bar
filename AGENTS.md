@@ -39,3 +39,13 @@ xcodebuild -project NothingBar.xcodeproj -scheme NothingBar
 - **Prefer editing over creating.** Extend existing files rather than adding new ones where reasonable.
 - **State flows down.** Follow SwiftUI data flow: state lives in `AppData`/`DeviceState`, views observe and display it.
 - **Menu bar constraints.** The popover has limited screen space — keep UI changes compact.
+
+## Commits and Pull Requests
+
+Use [Conventional Commits](https://www.conventionalcommits.org) for commit messages and PR titles: `type(scope): summary`.
+
+- **Type:** `feat` for new behavior, `fix` for bug fixes; also `refactor`, `perf`, `docs`, `test`, `build`, `ci`, `chore`, `style`, `revert`. Mark breaking changes with `!` after the type or scope.
+- **Scope:** optional, the area changed: `bar`, `settings`, `connection`, `deps`.
+- **Summary:** imperative, lowercase, no trailing period: `fix(bar): show pickers over full-screen apps`.
+- **PR titles matter most.** PRs are squash-merged, so the title becomes the commit on `main`. Name the main change of the PR.
+- **PR description:** a short `## Summary` section with bullet points, in English. No validation section.
